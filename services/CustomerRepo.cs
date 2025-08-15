@@ -55,7 +55,7 @@ namespace LedgerLink.Services
             }
             return existingCustomer;
         }
-        
+
         public Customer? DeleteCustomer(Guid id)
         {
             var customer = _context.Customers.Find(id);
