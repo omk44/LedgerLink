@@ -12,12 +12,20 @@ public class HomeController : Controller
     {
         _logger = logger;
     }
-
-    public IActionResult Index()
-    {
-        return View();
-    }
-
+  private bool IsAdminLoggedIn()
+        {
+            return HttpContext.Session.GetString("IsAdminLoggedIn") == "true";
+        }
+   public IActionResult Index()
+        {
+            if (!IsAdminLoggedIn())
+            {
+                return RedirectToAction("Login", "Account"); // Redirect to login if not authenticated
+            }
+            // If logged in, you can return the default home view or redirect to Product/Index
+            // For now, let's keep it as is, assuming you want a simple home page for logged-in admin.
+            return View();
+        }
     public IActionResult Privacy()
     {
         return View();
