@@ -1,0 +1,63 @@
+@* Path: LedgerLink/Views/Account/Login.cshtml *@
+@model LedgerLink.Models.LoginViewModel 
+
+@{
+    ViewData["Title"] = "Admin Login";
+    // Set Layout to null if you want a completely blank page without the default header/footer.
+    // Or, you could create a specific "_LoginLayout.cshtml" for login pages.
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - LedgerLink</title>
+    @* Link to Bootstrap CSS for basic styling *@
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    @* Link to your custom site CSS *@
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-lg"> @* Added shadow for better appearance *@
+                    <div class="card-header bg-primary text-white text-center py-3"> @* Styled header *@
+                        <h3 class="mb-0">LedgerLink Admin Login</h3>
+                    </div>
+                    <div class="card-body p-4"> @* Added padding *@
+                        <form asp-action="Login" method="post">
+                            @* Display validation errors (e.g., "Invalid username or password") *@
+                            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                            <div class="form-group mb-3"> @* Added margin-bottom for spacing *@
+                                <label asp-for="Username" class="form-label"></label>
+                                <input asp-for="Username" class="form-control" autofocus /> @* Added autofocus *@
+                                <span asp-validation-for="Username" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group mb-4"> @* Added margin-bottom for spacing *@
+                                <label asp-for="Password" class="form-label"></label>
+                                <input asp-for="Password" type="password" class="form-control" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block w-100 py-2">Login</button> @* Styled button *@
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* --- Required JavaScript for Bootstrap and Client-Side Validation --- *@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @* jQuery Validation for client-side form validation (e.g., "Username is required.") *@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>
