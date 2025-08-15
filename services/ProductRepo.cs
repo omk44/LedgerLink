@@ -25,7 +25,7 @@ namespace LedgerLink.Services
         {
             return _context.Products.Find(id);
         }
-        
+
         public Product AddProduct(Product product)
         {
             _context.Products.Add(product);
@@ -52,7 +52,6 @@ namespace LedgerLink.Services
                 _context.Products.Remove(product);
                 _context.SaveChanges();
             }
-
             return product;
         }
     }
