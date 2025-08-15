@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic; // Required for ICollection
 using System.ComponentModel.DataAnnotations; // For data annotations
+using Microsoft.AspNetCore.Mvc.ModelBinding; // <--- ADD THIS LINE!
 
 namespace LedgerLink.Models
 {
@@ -36,6 +37,7 @@ namespace LedgerLink.Models
         // Scalar Property: Unique ID encoded in the barcode (GUID string)
         [Required(ErrorMessage = "Barcode ID is required.")]
         [StringLength(50, ErrorMessage = "Barcode ID cannot exceed 50 characters.")] // GUIDs are 36 chars
+        [BindNever]
         public string Barcode { get; set; } = string.Empty;
 
         // Scalar Property: Tracks the current outstanding balance for the customer
