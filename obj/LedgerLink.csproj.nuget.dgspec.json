@@ -47,6 +47,14 @@
             "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
               "version": "[9.0.4, )"
+            },
+            "QRCoder": {
+              "target": "Package",
+              "version": "[1.6.0, )"
+            },
+            "System.Drawing.Common": {
+              "target": "Package",
+              "version": "[9.0.8, )"
             }
           },
           "imports": [
