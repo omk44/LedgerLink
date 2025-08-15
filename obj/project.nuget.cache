@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "WT/TgxLs8PA+gCIl7eAakAEWPTJsLX+BUhaOQnjbkIdX2C1ZkhKXcIkbeVT8uUh41mRvZur4K4aH5j1MdRU2Bg==",
+  "dgSpecHash": "X9YVhEBxtU7Xy+Ljp1wd3GoHCLuxBMPUziy/Rbtx3B9njziVLSHB4OF2JZMJLLlYJCjnqIyJThq3fa+k5vqSLA==",
   "success": true,
   "projectFilePath": "/home/om/dotnet project/LedgerLink/LedgerLink.csproj",
   "expectedPackageFiles": [
@@ -30,9 +30,11 @@
     "/home/om/.nuget/packages/microsoft.extensions.logging.abstractions/9.0.8/microsoft.extensions.logging.abstractions.9.0.8.nupkg.sha512",
     "/home/om/.nuget/packages/microsoft.extensions.options/9.0.8/microsoft.extensions.options.9.0.8.nupkg.sha512",
     "/home/om/.nuget/packages/microsoft.extensions.primitives/9.0.8/microsoft.extensions.primitives.9.0.8.nupkg.sha512",
+    "/home/om/.nuget/packages/microsoft.win32.systemevents/9.0.8/microsoft.win32.systemevents.9.0.8.nupkg.sha512",
     "/home/om/.nuget/packages/mono.texttemplating/3.0.0/mono.texttemplating.3.0.0.nupkg.sha512",
     "/home/om/.nuget/packages/npgsql/9.0.3/npgsql.9.0.3.nupkg.sha512",
     "/home/om/.nuget/packages/npgsql.entityframeworkcore.postgresql/9.0.4/npgsql.entityframeworkcore.postgresql.9.0.4.nupkg.sha512",
+    "/home/om/.nuget/packages/qrcoder/1.6.0/qrcoder.1.6.0.nupkg.sha512",
     "/home/om/.nuget/packages/system.codedom/6.0.0/system.codedom.6.0.0.nupkg.sha512",
     "/home/om/.nuget/packages/system.collections.immutable/7.0.0/system.collections.immutable.7.0.0.nupkg.sha512",
     "/home/om/.nuget/packages/system.composition/7.0.0/system.composition.7.0.0.nupkg.sha512",
@@ -42,6 +44,7 @@
     "/home/om/.nuget/packages/system.composition.runtime/7.0.0/system.composition.runtime.7.0.0.nupkg.sha512",
     "/home/om/.nuget/packages/system.composition.typedparts/7.0.0/system.composition.typedparts.7.0.0.nupkg.sha512",
     "/home/om/.nuget/packages/system.diagnostics.diagnosticsource/9.0.8/system.diagnostics.diagnosticsource.9.0.8.nupkg.sha512",
+    "/home/om/.nuget/packages/system.drawing.common/9.0.8/system.drawing.common.9.0.8.nupkg.sha512",
     "/home/om/.nuget/packages/system.io.pipelines/9.0.8/system.io.pipelines.9.0.8.nupkg.sha512",
     "/home/om/.nuget/packages/system.reflection.metadata/7.0.0/system.reflection.metadata.7.0.0.nupkg.sha512",
     "/home/om/.nuget/packages/system.runtime.compilerservices.unsafe/6.0.0/system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
