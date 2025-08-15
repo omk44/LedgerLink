@@ -14,7 +14,7 @@ namespace LedgerLink.Models
 
         // Scalar Property: Foreign Key to Customer
         [Required]
-        public int CustomerId { get; set; }
+        public Guid CustomerId { get; set; }
 
         // Reference Navigation Property: The Customer who made this payment
         public Customer Customer { get; set; } = null!; // Non-nullable

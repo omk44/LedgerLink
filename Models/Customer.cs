@@ -8,6 +8,8 @@ namespace LedgerLink.Models
     public class Customer
     {
         // Scalar Property: Primary Key
+        [Key] // Indicates this property is the primary key
+        [Required(ErrorMessage = "Customer ID is required.")]
         public Guid Id { get; set; }
 
         // Scalar Property: Customer's full name with strict validation
