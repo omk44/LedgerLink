@@ -1,0 +1,32 @@
+@* Path: LedgerLink/Views/Customer/ShowQrCode.cshtml *@
+@model LedgerLink.Models.Customer
+
+@{
+    ViewData["Title"] = "Customer QR Code";
+}
+
+<div class="container mt-5 text-center">
+    <h1>QR Code for @Model.FullName</h1>
+    <p>Scan this QR code for quick customer identification.</p>
+
+    <div class="mt-4">
+        @if (!string.IsNullOrEmpty(ViewBag.QrCodeBase64))
+        {
+            <img src="data:image/png;base64,@ViewBag.QrCodeBase64" alt="Customer QR Code" style="width:250px; height:250px; border: 1px solid #ddd; padding: 5px;">
+            <p class="mt-3"><strong>Barcode ID:</strong> @ViewBag.CustomerBarcode</p>
+        }
+        else
+        {
+            <div class="alert alert-danger" role="alert">
+                QR Code could not be generated.
+            </div>
+        }
+    </div>
+
+    <div class="mt-5">
+        <button class="btn btn-primary" onclick="window.print()">Print QR Code</button>
+      @* link to download qr code *@
+        <a href="data:image/png;base64,@ViewBag.QrCodeBase64" download="@(Model.FullName.Replace(" ", "_"))_barcode.png" class="btn btn-success ml-3">Save QR Code Image</a>
+        <a asp-action="Index" class="btn btn-secondary ml-3">Back to Customer List</a>
+    </div>
+</div>
