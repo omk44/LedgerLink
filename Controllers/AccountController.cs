@@ -37,7 +37,7 @@ namespace LedgerLink.Controllers
                 {
                     // "Login" the admin by setting a session variable
                     HttpContext.Session.SetString("IsAdminLoggedIn", "true");
-                    return RedirectToAction("Index", "Home"); // Redirect to your main application page
+                    return RedirectToAction("Index", "Product"); // Redirect to your main application page
                 }
                 // If credentials don't match, add an error to ModelState
                 ModelState.AddModelError(string.Empty, "Invalid username or password.");
