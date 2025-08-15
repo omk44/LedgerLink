@@ -19,8 +19,6 @@ namespace LedgerLink.Services
         /// <param name="darkColorHex">Optional: Hex color for the dark modules (e.g., "#000000" for black).</param>
         /// <param name="lightColorHex">Optional: Hex color for the light modules (e.g., "#FFFFFF" for white).</param>
         /// <returns>A byte array representing the QR code image in PNG format.</returns>
-        /// 
-        /// 
         public byte[] GenerateQrCode(string dataToEncode, int pixelsPerModule = 20,
                                      string darkColorHex = "#000000", string lightColorHex = "#FFFFFF")
         {
