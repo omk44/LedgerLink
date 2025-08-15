@@ -17,6 +17,7 @@ namespace LedgerLink.Services
             _context = context;
         }
 
+        // Changed return type to IEnumerable<Payment>
         public IEnumerable<Payment> GetAllPayments()
         {
             return _context.Payments.ToList();
