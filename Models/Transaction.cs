@@ -13,7 +13,7 @@ namespace LedgerLink.Models
         [Required]
         public Guid CustomerId { get; set; }
 
-        // Reference Navigation Property: The Customer who made this transaction
+         // Reference Navigation Property: The Customer who made this transaction
         public Customer Customer { get; set; } = null!; // Non-nullable, EF Core will load this
 
         // Scalar Property: Foreign Key to Product

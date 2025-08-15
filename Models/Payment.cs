@@ -11,7 +11,7 @@ namespace LedgerLink.Models
         [Required(ErrorMessage = "Payment ID is required.")]
 
         public Guid Id { get; set; }
-
+        
         // Scalar Property: Foreign Key to Customer
         [Required]
         public Guid CustomerId { get; set; }
