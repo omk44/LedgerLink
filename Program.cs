@@ -3,9 +3,9 @@
 using Microsoft.EntityFrameworkCore;
 using LedgerLink.Data; // Your DbContext namespace
 using Npgsql.EntityFrameworkCore.PostgreSQL;
-// REMOVE: using Microsoft.AspNetCore.Identity; // No longer needed
-// REMOVE: using LedgerLink.Models; // ApplicationUser is no longer needed in Program.cs
-// REMOVE: using Microsoft.AspNetCore.Identity.EntityFrameworkCore; // No longer needed
+using LedgerLink.Interface; // Your interfaces
+using LedgerLink.Services; // Your service implementations
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,21 +13,23 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 // Configure DbContext with PostgreSQL
-builder.Services.AddDbContext<AppDbContext>(options => // Changed from AppDbContext<ApplicationUser>
+builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// REMOVE: Identity services
-// builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-//     .AddEntityFrameworkStores<AppDbContext>();
+// --- Add Session Services ---
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Sets how long a session can be inactive before expiring
+    options.Cookie.HttpOnly = true; // Makes the session cookie inaccessible to client-side scripts (security)
+    options.Cookie.IsEssential = true; // Marks the cookie as essential for the app to function (GDPR compliance)
+});
 
 // --- Register your custom repositories and services here ---
-// using LedgerLink.Interface;
-// using LedgerLink.Services;
-builder.Services.AddScoped<LedgerLink.Interface.ICustomerRepo, LedgerLink.Services.CustomerRepo>();
-builder.Services.AddScoped<LedgerLink.Interface.IPaymentRepo, LedgerLink.Services.PaymentRepo>();
-builder.Services.AddScoped<LedgerLink.Interface.IProductRepo, LedgerLink.Services.ProductRepo>();
-builder.Services.AddScoped<LedgerLink.Interface.ITransactionRepo, LedgerLink.Services.TransactionRepo>();
-builder.Services.AddTransient<LedgerLink.Services.QrCodeService>();
+builder.Services.AddScoped<ICustomerRepo, CustomerRepo>();
+builder.Services.AddScoped<IPaymentRepo, PaymentRepo>();
+builder.Services.AddScoped<IProductRepo, ProductRepo>();
+builder.Services.AddScoped<ITransactionRepo, TransactionRepo>();
+builder.Services.AddTransient<QrCodeService>();
 
 
 var app = builder.Build();
@@ -48,9 +50,10 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// REMOVE: Authentication and Authorization middleware
-// app.UseAuthentication();
-// app.UseAuthorization();
+// --- CRITICAL FIX: Add Session Middleware Here ---
+// This middleware MUST be placed after app.UseRouting()
+// and before app.MapControllerRoute() or app.UseEndpoints().
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
