@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LedgerLink.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250815113014_InitialCreate")]
+    [Migration("20250815114503_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
