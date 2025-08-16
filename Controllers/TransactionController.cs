@@ -17,18 +17,23 @@ namespace LedgerLink.Controllers
         private readonly ITransactionRepo _transactionRepo;
         private readonly IPaymentRepo _paymentRepo;
         private readonly ShopSettings _shopSettings; // <--- NEW: To hold shop settings
+        private readonly IEmailService _emailService; // Inject the new service
 
         public TransactionController(
             ICustomerRepo customerRepo,
             IProductRepo productRepo,
             ITransactionRepo transactionRepo,
             IPaymentRepo paymentRepo,
+            IEmailService emailService, // Add to constructor
+
             IOptions<ShopSettings> shopSettingsOptions)
         {
             _customerRepo = customerRepo;
             _productRepo = productRepo;
             _transactionRepo = transactionRepo;
             _paymentRepo = paymentRepo;
+            _emailService = emailService; // Assign
+
             _shopSettings = shopSettingsOptions.Value;
         }
 
@@ -315,6 +320,51 @@ namespace LedgerLink.Controllers
 
             return View(viewModel);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SendReminder(Guid customerId) // Made async to await email/SMS sending
+        {
+            if (!IsAdminLoggedIn())
+            {
+                return Unauthorized();
+            }
+
+            Customer? customer = _customerRepo.GetCustomerById(customerId);
+            if (customer == null)
+            {
+                TempData["ErrorMessage"] = "Customer not found for reminder.";
+                return RedirectToAction("CustomerDetails", new { id = customerId });
+            }
+
+            // --- Reminder Message Content ---
+            // Ensure you have System.Globalization for CultureInfo if not already set globally
+            System.Globalization.CultureInfo indiaCulture = new System.Globalization.CultureInfo("en-IN");
+            string formattedBalance = customer.CurrentBalance.ToString("C", indiaCulture);
+
+            string subject = $"Payment Reminder from {_shopSettings.ShopName} - Balance: {formattedBalance}";
+            string messageBody = $"Dear {customer.FullName},\n\nThis is a friendly reminder that your outstanding balance at {_shopSettings.ShopName} is {formattedBalance}.\n\nPlease settle your dues at your earliest convenience. Thank you for your business!\n\n{_shopSettings.ShopName} - Powered by {_shopSettings.AppName}";
+
+            bool emailSent = false;
+
+            // Send Email Reminder
+            if (!string.IsNullOrEmpty(customer.Email))
+            {
+                emailSent = await _emailService.SendEmailAsync(customer.Email, subject, messageBody);
+            }
+
+
+            if (emailSent)
+            {
+                TempData["SuccessMessage"] = "Payment reminder sent successfully!";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Failed to send payment reminder. Check logs for details and ensure Email is valid.";
+            }
+
+            return RedirectToAction("CustomerDetails", new { id = customerId });
+        }
 
     }
 }
+
