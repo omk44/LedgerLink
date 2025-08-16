@@ -3,8 +3,8 @@ using System.Globalization; // Required for CultureInfo
 using Microsoft.AspNetCore.Localization; // Required for RequestLocalizationOptions
 using Microsoft.EntityFrameworkCore;
 using LedgerLink.Data;
-using LedgerLink.Models; // Required for ShopSettings
-// using Microsoft.Extensions.Options; // Required for IOptions
+using LedgerLink.Models; // Required for ShopSettings=======
+using Microsoft.Extensions.Options; // Required for IOptions
  // Your DbContext namespace
 using Npgsql.EntityFrameworkCore.PostgreSQL;
 using LedgerLink.Interface; // Your interfaces
@@ -49,6 +49,7 @@ builder.Services.AddScoped<IProductRepo, ProductRepo>();
 builder.Services.AddScoped<ITransactionRepo, TransactionRepo>();
 builder.Services.AddTransient<QrCodeService>();
 builder.Services.AddTransient<IEmailService, EmailService>();
+
 builder.Services.Configure<ShopSettings>(builder.Configuration.GetSection("ShopSettings"));
 
 var app = builder.Build();
