@@ -39,6 +39,14 @@
                     <p><strong>Email:</strong> @Model.Customer.Email</p>
                     <p><strong>Address:</strong> @Model.Customer.Address</p>
                     <h5 class="text-danger"><strong>Current Balance:</strong> @Model.Customer.CurrentBalance.ToString("C", indiaCulture)</h5>
+                    @* NEW: Send Reminder Button *@
+                    @if (Model.Customer.CurrentBalance > 0)
+                    {
+                        <form asp-controller="Transaction" asp-action="SendReminder" method="post" class="mt-3">
+                            <input type="hidden" name="customerId" value="@Model.Customer.Id" />
+                            <button type="submit" class="btn btn-outline-danger btn-sm w-100">Send Payment Reminder</button>
+                        </form>
+                    }
                 </div>
             </div>
         </div>
@@ -75,7 +83,6 @@
                             <input type="checkbox" class="form-check-input" id="isCreditTransaction" name="isCreditTransaction" value="true" />
                             <label class="form-check-label" for="isCreditTransaction">Add to Credit (Money Pending)</label>
                         </div>
-                        @* NEW: Payment Mode for non-credit transactions *@
                         <div class="form-group mb-3" id="paymentModeForAddItemDiv">
                             <label for="paymentMode" class="form-label">Payment Mode (if not credit):</label>
                             <select id="paymentMode" name="paymentMode" class="form-control">
