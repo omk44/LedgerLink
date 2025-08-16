@@ -1,32 +1,43 @@
 // Path: LedgerLink/Program.cs
-using System.Globalization; // Required for CultureInfo
-using Microsoft.AspNetCore.Localization; // Required for RequestLocalizationOptions
+
 using Microsoft.EntityFrameworkCore;
-using LedgerLink.Data;
-using LedgerLink.Models; // Required for ShopSettings=======
-using Microsoft.Extensions.Options; // Required for IOptions
- // Your DbContext namespace
+using LedgerLink.Data; // Your DbContext namespace
 using Npgsql.EntityFrameworkCore.PostgreSQL;
+using Microsoft.AspNetCore.Builder;
+
 using LedgerLink.Interface; // Your interfaces
+using LedgerLink.Models;
 using LedgerLink.Services; // Your service implementations
 using System;
+using System.Globalization; // Required for CultureInfo
+using Microsoft.AspNetCore.Localization; // Required for RequestLocalizationOptions
+using Microsoft.Extensions.Options; // Required for IOptions (for ShopSettings)
+// REMOVED: using Microsoft.Extensions.Configuration; // No longer explicitly needed here
 
 var builder = WebApplication.CreateBuilder(args);
-// --- Configure Application Culture for India (en-IN) ---
+
+// --- CRITICAL FIX: REMOVE these explicit configuration loading lines ---
+// WebApplication.CreateBuilder(args) already loads appsettings.json by default.
+// builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+//                      .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
+
+
+// Configure Application Culture for India (en-IN)
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
-    var defaultCulture = new CultureInfo("en-IN"); // English (India) culture
+    var defaultCulture = new CultureInfo("en-IN");
     var supportedCultures = new[]
     {
         defaultCulture,
-        new CultureInfo("en-US"), // Example: also support US English
-        // Add other cultures if needed
+        new CultureInfo("en-US"),
     };
 
     options.DefaultRequestCulture = new RequestCulture(defaultCulture);
     options.SupportedCultures = supportedCultures;
     options.SupportedUICultures = supportedCultures;
 });
+
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -34,27 +45,31 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// --- Add Session Services ---
+// Add Session Services
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30); // Sets how long a session can be inactive before expiring
-    options.Cookie.HttpOnly = true; // Makes the session cookie inaccessible to client-side scripts (security)
-    options.Cookie.IsEssential = true; // Marks the cookie as essential for the app to function (GDPR compliance)
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
 });
 
-// --- Register your custom repositories and services here ---
+// Register ShopSettings from configuration
+builder.Services.Configure<ShopSettings>(builder.Configuration.GetSection("ShopSettings"));
+
+// Register your custom repositories and services
 builder.Services.AddScoped<ICustomerRepo, CustomerRepo>();
-builder.Services.AddScoped<IPaymentRepo, PaymentRepo>();
+builder.Services.AddScoped<IPaymentRepo, PaymentRepo>(); // Corrected from IPaymentRepo
 builder.Services.AddScoped<IProductRepo, ProductRepo>();
-builder.Services.AddScoped<ITransactionRepo, TransactionRepo>();
+builder.Services.AddScoped<ITransactionRepo, TransactionRepo>(); // Corrected from ITransactionRepo
 builder.Services.AddTransient<QrCodeService>();
 builder.Services.AddTransient<IEmailService, EmailService>();
 
-builder.Services.Configure<ShopSettings>(builder.Configuration.GetSection("ShopSettings"));
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseRequestLocalization(); // Must be before UseRouting()
+
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
@@ -70,9 +85,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// --- CRITICAL FIX: Add Session Middleware Here ---
-// This middleware MUST be placed after app.UseRouting()
-// and before app.MapControllerRoute() or app.UseEndpoints().
+// Enable Session Middleware
 app.UseSession();
 
 app.MapControllerRoute(

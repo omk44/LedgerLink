@@ -75,7 +75,7 @@ namespace LedgerLink.Controllers
                 .Take(5)
                 .ToList();
 
-            // Get Customers with credit/payment activity in the period
+            // Get Customers with credit activity in the period
             var customerIdsWithActivity = transactionsInPeriod.Select(t => t.CustomerId)
                                                             .Concat(paymentsInPeriod.Select(p => p.CustomerId))
                                                             .Distinct()
@@ -84,6 +84,10 @@ namespace LedgerLink.Controllers
                 .Where(c => customerIdsWithActivity.Contains(c.Id))
                 .ToList();
 
+            // --- NEW: Get all customers with their current credit, ordered by balance ---
+            var allCustomersWithCredit = allCustomers
+                .OrderByDescending(c => c.CurrentBalance)
+                .ToList();
 
             // Populate ViewModel
             var viewModel = new DashboardViewModel
@@ -98,7 +102,8 @@ namespace LedgerLink.Controllers
                 TopCustomersByCredit = topCustomersByCredit,
                 TransactionsInPeriod = transactionsInPeriod.OrderByDescending(t => t.PurchaseDate).Take(10), // Limit for display
                 PaymentsInPeriod = paymentsInPeriod.OrderByDescending(p => p.PaymentDate).Take(10), // Limit for display
-                CustomersWithActivityInPeriod = customersWithActivityInPeriod.OrderBy(c => c.FullName)
+                CustomersWithActivityInPeriod = customersWithActivityInPeriod.OrderBy(c => c.FullName),
+                AllCustomersWithCredit = allCustomersWithCredit // --- NEW: Assign the list ---
             };
 
             return View(viewModel);
