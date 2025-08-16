@@ -320,7 +320,7 @@ namespace LedgerLink.Controllers
 
             return View(viewModel);
         }
-         [HttpPost]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SendReminder(Guid customerId) // Made async to await email/SMS sending
         {
@@ -352,7 +352,7 @@ namespace LedgerLink.Controllers
                 emailSent = await _emailService.SendEmailAsync(customer.Email, subject, messageBody);
             }
 
-           
+
             if (emailSent)
             {
                 TempData["SuccessMessage"] = "Payment reminder sent successfully!";
@@ -367,3 +367,4 @@ namespace LedgerLink.Controllers
 
     }
 }
+
