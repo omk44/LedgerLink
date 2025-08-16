@@ -103,7 +103,7 @@ namespace LedgerLink.Controllers
                 TransactionsInPeriod = transactionsInPeriod.OrderByDescending(t => t.PurchaseDate).Take(10), // Limit for display
                 PaymentsInPeriod = paymentsInPeriod.OrderByDescending(p => p.PaymentDate).Take(10), // Limit for display
                 CustomersWithActivityInPeriod = customersWithActivityInPeriod.OrderBy(c => c.FullName),
-                AllCustomersWithCredit = allCustomersWithCredit // --- NEW: Assign the list ---
+                AllCustomersWithCredit = allCustomersWithCredit 
             };
 
             return View(viewModel);
