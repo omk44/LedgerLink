@@ -1,0 +1,88 @@
+@* Path: LedgerLink/Views/Transaction/Scan.cshtml *@
+@{
+    ViewData["Title"] = "Scan Customer Card";
+}
+
+<div class="container mt-5 text-center">
+    <h2>@ViewData["Title"]</h2>
+    <p class="text-muted">Hold the customer's QR code in front of the camera to begin a transaction.</p>
+
+    <div id="reader" style="width: 100%; max-width: 500px; margin: 20px auto; border: 1px solid #ddd; border-radius: 8px; overflow: hidden;"></div>
+    <p id="scan-status" class="mt-3 text-info">Initializing scanner...</p>
+    <div id="scan-error" class="mt-3 text-danger" style="display: none;"></div>
+</div>
+
+@section Scripts {
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    @* Ensure jQuery is loaded for the anti-forgery token line. *@
+    @* <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
+
+    <script>
+        async function onScanSuccess(decodedText, decodedResult) {
+            document.getElementById('scan-status').textContent = `Scanned: ${decodedText}. Looking up customer...`;
+            document.getElementById('scan-error').style.display = 'none';
+
+            if (html5QrcodeScanner.isScanning) {
+                html5QrcodeScanner.stop().then(() => {
+                    console.log("QR Code scanner stopped.");
+                }).catch(err => {
+                    console.error("Error stopping QR Code scanner:", err);
+                });
+            }
+
+            try {
+                const antiForgeryToken = $('input[name="__RequestVerificationToken"]').val();
+
+                // CRITICAL FIX: Send the decodedText (which is the Customer.Id Guid string)
+                const response = await fetch('/Transaction/ProcessScan', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': antiForgeryToken
+                    },
+                    body: JSON.stringify(decodedText) // Send the Customer.Id Guid string
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.customerId) {
+                        document.getElementById('scan-status').textContent = 'Customer found! Redirecting...';
+                        window.location.href = `/Transaction/CustomerDetails/${data.customerId}`;
+                    } else {
+                        throw new Error('Customer ID not received from server.');
+                    }
+                } else {
+                    const errorText = await response.text();
+                    throw new Error(`Server error: ${response.status} - ${errorText}`);
+                }
+            } catch (error) {
+                console.error('Error processing scan:', error);
+                document.getElementById('scan-error').textContent = `Error: ${error.message}. Please try again.`;
+                document.getElementById('scan-error').style.display = 'block';
+                document.getElementById('scan-status').textContent = 'Scan failed.';
+                startScanner();
+            }
+        }
+
+        function onScanError(errorMessage) {
+            document.getElementById('scan-status').textContent = 'Scanning... (Ensure QR code is clear)';
+        }
+
+        let html5QrcodeScanner;
+
+        function startScanner() {
+            if (html5QrcodeScanner && html5QrcodeScanner.isScanning) {
+                html5QrcodeScanner.stop();
+            }
+            html5QrcodeScanner = new Html5QrcodeScanner(
+                "reader",
+                { fps: 10, qrbox: { width: 250, height: 250 } },
+                false
+            );
+            html5QrcodeScanner.render(onScanSuccess, onScanError);
+        }
+
+        window.onload = startScanner;
+    </script>
+    @Html.AntiForgeryToken()
+}
