@@ -1,13 +1,32 @@
 @* Path: LedgerLink/Views/Transaction/CustomerDetails.cshtml *@
 @model LedgerLink.Models.CustomerDetailsViewModel
+@using System.Globalization; @* Required for CultureInfo *@
 
 @{
     ViewData["Title"] = $"Transaction for {Model.Customer.FullName}";
+    // Define the culture for Indian Rupees
+    var indiaCulture = new CultureInfo("en-IN");
 }
 
 <div class="container mt-5">
     <h2>Transaction for @Model.Customer.FullName</h2>
     <hr />
+
+    @* Display Success/Error Messages *@
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
 
     <div class="row">
         <div class="col-md-4">
@@ -20,7 +39,7 @@
                     <p><strong>Phone:</strong> @Model.Customer.PhoneNumber</p>
                     <p><strong>Email:</strong> @Model.Customer.Email</p>
                     <p><strong>Address:</strong> @Model.Customer.Address</p>
-                    <h5 class="text-danger"><strong>Current Balance:</strong> $@Model.Customer.CurrentBalance</h5>
+                    <h5 class="text-danger"><strong>Current Balance:</strong> @Model.Customer.CurrentBalance.ToString("C", indiaCulture)</h5>
                 </div>
             </div>
         </div>
@@ -36,9 +55,16 @@
                         <div class="form-group mb-3">
                             <label for="productId" class="form-label">Select Product:</label>
                             <select id="productId" name="productId" class="form-control">
-                                @foreach (var product in Model.Products)
+                                @if (Model.Products.Any())
                                 {
-                                    <option value="@product.Id" data-price="@product.Price">@product.Name - $@product.Price</option>
+                                    @foreach (var product in Model.Products)
+                                    {
+                                        <option value="@product.Id" data-price="@product.Price">@product.Name - @product.Price.ToString("C", indiaCulture)</option>
+                                    }
+                                }
+                                else
+                                {
+                                    <option value="">No products available. Add some from Product Management.</option>
                                 }
                             </select>
                         </div>
@@ -55,6 +81,31 @@
                             <textarea id="notes" name="notes" class="form-control" rows="2"></textarea>
                         </div>
                         <button type="submit" class="btn btn-success w-100">Record Sale</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mt-4">
+                <div class="card-header bg-warning text-dark">
+                    <h4>Record Payment</h4>
+                </div>
+                <div class="card-body">
+                    <form id="addPaymentForm" asp-controller="Transaction" asp-action="AddPayment" method="post">
+                        <input type="hidden" name="customerId" value="@Model.Customer.Id" />
+                        <div class="form-group mb-3">
+                            <label for="amountPaid" class="form-label">Amount Paid:</label>
+                            <input type="number" step="0.01" id="amountPaid" name="amountPaid" class="form-control" value="0.00" min="0.01" />
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="paymentMode" class="form-label">Payment Mode:</label>
+                            <select id="paymentMode" name="paymentMode" class="form-control">
+                                <option value="Cash">Cash</option>
+                                <option value="UPI">UPI</option>
+                                <option value="Card">Card</option>
+                                <option value="Bank Transfer">Bank Transfer</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-warning w-100">Record Payment</button>
                     </form>
                 </div>
             </div>
@@ -91,10 +142,11 @@
                                 {
                                     <tr>
                                         <td>@transaction.PurchaseDate.ToLocalTime().ToString("g")</td>
-                                        <td>@transaction.Product.Name</td>
+                                        @* Assuming Product navigation property is loaded. If not, you'll need to eager load it in repo. *@
+                                        <td>@(transaction.Product?.Name ?? "N/A")</td>
                                         <td>@transaction.Quantity</td>
-                                        <td>@transaction.UnitPrice.ToString("C")</td>
-                                        <td>@transaction.TotalAmount.ToString("C")</td>
+                                        <td>@transaction.UnitPrice.ToString("C", indiaCulture)</td>
+                                        <td>@transaction.TotalAmount.ToString("C", indiaCulture)</td>
                                         <td>@(transaction.IsCreditTransaction ? "Yes" : "No")</td>
                                         <td>@transaction.Notes</td>
                                     </tr>
@@ -110,7 +162,7 @@
     <div class="row mt-4">
         <div class="col-md-12">
             <div class="card shadow-sm">
-                <div class="card-header bg-warning text-dark">
+                <div class="card-header bg-secondary text-white"> @* Changed to secondary for distinction *@
                     <h4>Payment History</h4>
                 </div>
                 <div class="card-body">
@@ -133,7 +185,7 @@
                                 {
                                     <tr>
                                         <td>@payment.PaymentDate.ToLocalTime().ToString("g")</td>
-                                        <td>@payment.AmountPaid.ToString("C")</td>
+                                        <td>@payment.AmountPaid.ToString("C", indiaCulture)</td>
                                         <td>@payment.PaymentMode</td>
                                     </tr>
                                 }
