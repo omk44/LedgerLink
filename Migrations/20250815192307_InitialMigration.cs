@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LedgerLink.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,7 +21,6 @@ namespace LedgerLink.Migrations
                     PhoneNumber = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: false),
                     Email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Address = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
-                    Barcode = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     CurrentBalance = table.Column<decimal>(type: "numeric(18,2)", nullable: false)
                 },
                 constraints: table =>

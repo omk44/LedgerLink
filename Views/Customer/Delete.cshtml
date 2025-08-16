@@ -36,12 +36,7 @@
             <dd class="col-sm-9">
                 @Html.DisplayFor(model => model.Address)
             </dd>
-            <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.Barcode)
-            </dt>
-            <dd class="col-sm-9">
-                @Html.DisplayFor(model => model.Barcode)
-            </dd>
+            @* Removed display for Barcode as it's no longer in the model *@
             <dt class="col-sm-3">
                 @Html.DisplayNameFor(model => model.CurrentBalance)
             </dt>
