@@ -1,6 +1,6 @@
 // Path: LedgerLink/Interface/IEmailSmsService.cs
 using System.Threading.Tasks;
-
+//
 namespace LedgerLink.Interface
 {
     public interface IEmailService
