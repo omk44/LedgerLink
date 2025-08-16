@@ -6,6 +6,7 @@ using LedgerLink.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Options; // <--- NEW: Required for IOptions
 
 namespace LedgerLink.Controllers
 {
@@ -15,17 +16,20 @@ namespace LedgerLink.Controllers
         private readonly IProductRepo _productRepo;
         private readonly ITransactionRepo _transactionRepo;
         private readonly IPaymentRepo _paymentRepo;
+        private readonly ShopSettings _shopSettings; // <--- NEW: To hold shop settings
 
         public TransactionController(
             ICustomerRepo customerRepo,
             IProductRepo productRepo,
             ITransactionRepo transactionRepo,
-            IPaymentRepo paymentRepo)
+            IPaymentRepo paymentRepo,
+            IOptions<ShopSettings> shopSettingsOptions)
         {
             _customerRepo = customerRepo;
             _productRepo = productRepo;
             _transactionRepo = transactionRepo;
             _paymentRepo = paymentRepo;
+            _shopSettings = shopSettingsOptions.Value;
         }
 
         private bool IsAdminLoggedIn()
@@ -255,7 +259,11 @@ namespace LedgerLink.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            ReceiptViewModel viewModel = new ReceiptViewModel();
+            ReceiptViewModel viewModel = new ReceiptViewModel
+            {
+                ShopName = _shopSettings.ShopName, // <--- NEW: Set ShopName from settings
+                AppName = _shopSettings.AppName // <--- NEW: Set AppName from settings
+            };
             Customer? customer = null; // Will be loaded based on transaction/payment
 
             if (isTransaction && transactionId.HasValue)
