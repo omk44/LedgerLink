@@ -194,9 +194,10 @@ namespace LedgerLink.Controllers
                 TempData["SuccessMessage"] = "Item added successfully (paid)!";
             }
 
-            return RedirectToAction("CustomerDetails", new { id = customerId }); // Redirect back to refresh details
+            // Pass the transaction ID (int) and a flag to indicate it's a transaction receipt
+            return RedirectToAction("ShowReceipt", new { transactionId = newTransaction.Id, isTransaction = true });
         }
-    
+
 
 
         // NEW ACTION: POST /Transaction/AddPayment - To record a payment
@@ -245,7 +246,66 @@ namespace LedgerLink.Controllers
             _customerRepo.UpdateCustomer(customer); // Update customer balance in DB
 
             TempData["SuccessMessage"] = "Payment recorded successfully!";
-            return RedirectToAction("CustomerDetails", new { id = customerId }); // Redirect back to refresh details
+            return RedirectToAction("ShowReceipt", new { paymentId = newPayment.Id, isTransaction = false });
+        }
+        public IActionResult ShowReceipt(int? transactionId, Guid? paymentId, bool isTransaction)
+        {
+            if (!IsAdminLoggedIn())
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            ReceiptViewModel viewModel = new ReceiptViewModel();
+            Customer? customer = null; // Will be loaded based on transaction/payment
+
+            if (isTransaction && transactionId.HasValue)
+            {
+                // Load transaction details, eager load Customer and Product
+                Transaction? transaction = _transactionRepo.GetAllTransactions()
+                                                          .FirstOrDefault(t => t.Id == transactionId.Value);
+                if (transaction == null)
+                {
+                    return NotFound("Transaction receipt not found.");
+                }
+
+                customer = _customerRepo.GetCustomerById(transaction.CustomerId); // Get customer for balance
+
+                viewModel.ReceiptType = "Sale";
+                viewModel.Transaction = transaction;
+                viewModel.TransactionItems = new List<Transaction> { transaction }; // For simplicity, one item per transaction
+                viewModel.AmountPaidInThisReceipt = transaction.TotalAmount; // Total sale amount
+            }
+            else if (!isTransaction && paymentId.HasValue)
+            {
+                // Load payment details, eager load Customer
+                Payment? payment = _paymentRepo.GetAllPayments()
+                                              .FirstOrDefault(p => p.Id == paymentId.Value);
+                if (payment == null)
+                {
+                    return NotFound("Payment receipt not found.");
+                }
+
+                customer = _customerRepo.GetCustomerById(payment.CustomerId); // Get customer for balance
+
+                viewModel.ReceiptType = "Payment";
+                viewModel.Payment = payment;
+                viewModel.AmountPaidInThisReceipt = payment.AmountPaid; // Amount paid
+            }
+            else
+            {
+                return BadRequest("Invalid receipt request.");
+            }
+
+            if (customer == null)
+            {
+                return NotFound("Customer associated with receipt not found.");
+            }
+
+            viewModel.Customer = customer;
+            // Get the *updated* balance after the transaction/payment
+            viewModel.CustomerNewBalance = _customerRepo.GetCustomerById(customer.Id)?.CurrentBalance ?? 0.00m; // Re-fetch to ensure latest balance
+
+            return View(viewModel);
         }
 
     }
