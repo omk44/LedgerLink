@@ -1,8 +1,11 @@
-﻿@{
+﻿@* Path: LedgerLink/Views/Home/Index.cshtml *@
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+    @* --- CRITICAL FIX: Display ShopName and AppName from ViewBag --- *@
+    <h1 class="display-4">Welcome to @ViewBag.ShopName!</h1>
+    <p class="lead">Your digital ledger powered by @ViewBag.AppName</p>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
