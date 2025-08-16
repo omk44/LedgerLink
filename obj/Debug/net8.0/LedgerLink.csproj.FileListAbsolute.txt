@@ -138,3 +138,13 @@
 /home/om/dotnet project/LedgerLink/obj/Debug/net8.0/LedgerLink.pdb
 /home/om/dotnet project/LedgerLink/obj/Debug/net8.0/LedgerLink.genruntimeconfig.cache
 /home/om/dotnet project/LedgerLink/obj/Debug/net8.0/ref/LedgerLink.dll
+/home/om/dotnet project/LedgerLink/bin/Debug/net8.0/Microsoft.Bcl.Memory.dll
+/home/om/dotnet project/LedgerLink/bin/Debug/net8.0/Microsoft.IdentityModel.Abstractions.dll
+/home/om/dotnet project/LedgerLink/bin/Debug/net8.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/home/om/dotnet project/LedgerLink/bin/Debug/net8.0/Microsoft.IdentityModel.Logging.dll
+/home/om/dotnet project/LedgerLink/bin/Debug/net8.0/Microsoft.IdentityModel.Tokens.dll
+/home/om/dotnet project/LedgerLink/bin/Debug/net8.0/Newtonsoft.Json.dll
+/home/om/dotnet project/LedgerLink/bin/Debug/net8.0/SendGrid.dll
+/home/om/dotnet project/LedgerLink/bin/Debug/net8.0/StarkbankEcdsa.dll
+/home/om/dotnet project/LedgerLink/bin/Debug/net8.0/System.IdentityModel.Tokens.Jwt.dll
+/home/om/dotnet project/LedgerLink/bin/Debug/net8.0/Twilio.dll
