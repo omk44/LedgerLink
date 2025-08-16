@@ -1,0 +1,51 @@
+# Visual Studio files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Bb]in/
+[Oo]bj/
+*.pdb
+*.exe
+*.dll
+*.tmp
+*.log
+*.bak
+*.old
+*.cache
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Package files
+*.nupkg
+*.snupkg
+*.vstools
+*.vsix
+.nuget/
+packages/
+
+# Rider files
+.idea/
+*.DotSettings
+
+# VS Code files
+.vscode/
+
+# User secrets (if used in future)
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Staging.json
+appsettings.Test.json
+# If you use appsettings.json for secrets in dev, add it here.
+# Otherwise, appsettings.json is usually tracked.
+# appsettings.json
+
+# Other common ignore patterns
+*.DS_Store
+*.localized
+Thumbs.db
