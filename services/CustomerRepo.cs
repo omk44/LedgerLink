@@ -27,19 +27,13 @@ namespace LedgerLink.Services
             return _context.Customers.Find(id);
         }
 
-        // NEW: Implementation for GetCustomerByBarcode
-        public Customer? GetCustomerByBarcode(string barcode)
-        {
-            // Finds a customer by their unique Barcode string
-            return _context.Customers.FirstOrDefault(c => c.Barcode == barcode);
-        }
-
-        public Customer AddCustomer(Customer customer)
+         public Customer AddCustomer(Customer customer)
         {
             if (customer.Id == Guid.Empty)
             {
                 customer.Id = Guid.NewGuid();
             }
+    
             _context.Customers.Add(customer);
             _context.SaveChanges();
             return customer;

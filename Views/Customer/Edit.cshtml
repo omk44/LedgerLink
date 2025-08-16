@@ -13,7 +13,7 @@
             <form asp-action="Edit">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="Id" /> @* Hidden field for the Customer Id (Guid) *@
-                <input type="hidden" asp-for="Barcode" /> @* Hidden field for the Barcode (should not be edited) *@
+                @* Removed hidden input for Barcode as it's no longer in the model *@
                 <div class="form-group mb-3">
                     <label asp-for="FullName" class="control-label"></label>
                     <input asp-for="FullName" class="form-control" />
@@ -34,7 +34,6 @@
                     <textarea asp-for="Address" class="form-control"></textarea>
                     <span asp-validation-for="Address" class="text-danger"></span>
                 </div>
-                @* CurrentBalance is managed by transactions/payments, not directly edited here *@
                 <div class="form-group">
                     <input type="submit" value="Save" class="btn btn-primary" />
                     <a asp-action="Index" class="btn btn-secondary ml-2">Back to List</a>
