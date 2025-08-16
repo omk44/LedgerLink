@@ -1,0 +1,157 @@
+@* Path: LedgerLink/Views/Transaction/Receipt.cshtml *@
+@model LedgerLink.Models.ReceiptViewModel
+@using System.Globalization;
+
+@{
+    ViewData["Title"] = $"{Model.ReceiptType} Receipt";
+    Layout = null; // No layout for printing, or a minimal print-specific layout
+    var indiaCulture = new CultureInfo("en-IN");
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - @Model.ShopName</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        body {
+            font-family: 'Courier New', monospace; /* Receipt-like font */
+            font-size: 0.9em;
+            margin: 20px;
+        }
+        .receipt-container {
+            max-width: 300px; /* Typical receipt width */
+            margin: 0 auto;
+            border: 1px dashed #333;
+            padding: 15px;
+        }
+        .receipt-header, .receipt-footer {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .receipt-header h4 {
+            margin-bottom: 5px;
+        }
+        .receipt-details table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+        .receipt-details th, .receipt-details td {
+            padding: 5px 0;
+            text-align: left;
+            border-bottom: 1px dashed #ccc;
+        }
+        .receipt-details th {
+            font-weight: bold;
+        }
+        .receipt-summary {
+            text-align: right;
+            margin-top: 10px;
+            font-size: 1.1em;
+        }
+        .receipt-balance {
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .print-button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        @@media print { 
+            .print-button-container {
+                display: none; /* Hide print button when printing */
+            }
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            .receipt-container {
+                border: none;
+                padding: 0;
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="receipt-container">
+        <div class="receipt-header">
+            <h4>@Model.ShopName</h4>
+            <p>Date: @Model.ReceiptDate.ToLocalTime().ToString("g")</p>
+            <p>@Model.ReceiptType Receipt</p>
+            <hr style="border-top: 1px dashed #333;" />
+        </div>
+
+        <div class="receipt-customer-info">
+            <p><strong>Customer:</strong> @Model.Customer.FullName</p>
+            <p><strong>Phone:</strong> @Model.Customer.PhoneNumber</p>
+            <p><strong>Email:</strong> @Model.Customer.Email</p>
+            <hr style="border-top: 1px dashed #333;" />
+        </div>
+
+        @if (Model.ReceiptType == "Sale" && Model.Transaction != null)
+        {
+            <div class="receipt-details">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Qty</th>
+                            <th>Price</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.TransactionItems)
+                        {
+                            <tr>
+                                <td>@(item.Product?.Name ?? "N/A")</td>
+                                <td>@item.Quantity</td>
+                                <td>@item.UnitPrice.ToString("C", indiaCulture)</td>
+                                <td>@item.TotalAmount.ToString("C", indiaCulture)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="receipt-summary">
+                    <p>Subtotal: @Model.Transaction.TotalAmount.ToString("C", indiaCulture)</p>
+                    <p>Status: @(Model.Transaction.IsCreditTransaction ? "On Credit" : "Paid")</p>
+                </div>
+            </div>
+        }
+        else if (Model.ReceiptType == "Payment" && Model.Payment != null)
+        {
+            <div class="receipt-details">
+                <p>Amount Paid: @Model.Payment.AmountPaid.ToString("C", indiaCulture)</p>
+                <p>Payment Mode: @Model.Payment.PaymentMode</p>
+            </div>
+        }
+
+        <hr style="border-top: 1px dashed #333;" />
+        <div class="receipt-balance">
+            <p>New Balance: @Model.CustomerNewBalance.ToString("C", indiaCulture)</p>
+        </div>
+        <hr style="border-top: 1px dashed #333;" />
+
+        <div class="receipt-footer">
+            <p>Thank you for your business!</p>
+            <p>@Model.ShopName - @Model.ReceiptDate.Year</p>
+        </div>
+    </div>
+
+    <div class="print-button-container">
+        <button class="btn btn-primary" onclick="window.print()">Print Receipt</button>
+        <a asp-controller="Transaction" asp-action="CustomerDetails" asp-route-id="@Model.Customer.Id" class="btn btn-secondary ml-2">Back to Customer Details</a>
+    </div>
+
+    @* Basic jQuery for Bootstrap collapse/dismiss *@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
