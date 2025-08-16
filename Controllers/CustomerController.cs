@@ -7,8 +7,7 @@ using LedgerLink.Services; // For QrCodeService
 using System; // For Guid
 using System.Collections.Generic; // For IEnumerable
 using System.Linq; // For LINQ methods like FirstOrDefault
-// You might need to add this if not already present, though typically included by default
-// using Microsoft.AspNetCore.Mvc.ModelBinding; // For [BindNever] - ensure this is in Customer.cs
+using System.ComponentModel.DataAnnotations; // For model validation attributes
 
 namespace LedgerLink.Controllers
 {
@@ -28,7 +27,6 @@ namespace LedgerLink.Controllers
             return HttpContext.Session.GetString("IsAdminLoggedIn") == "true";
         }
 
-        // GET: Customer/Index - Displays a list of all customers
         public IActionResult Index()
         {
             if (!IsAdminLoggedIn())
@@ -39,7 +37,6 @@ namespace LedgerLink.Controllers
             return View(customers);
         }
 
-        // GET: Customer/Create - Displays the form to add a new customer
         public IActionResult Create()
         {
             if (!IsAdminLoggedIn())
@@ -49,7 +46,6 @@ namespace LedgerLink.Controllers
             return View();
         }
 
-        // POST: Customer/Create - Handles the form submission to add a new customer
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Customer customer)
@@ -59,59 +55,58 @@ namespace LedgerLink.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            // --- CRITICAL FIX: Remove Barcode from ModelState validation errors ---
-            // This tells ModelState to ignore any errors related to Barcode that occurred
-            // during model binding because it was missing from the form data.
-            ModelState.Remove("Barcode");
+            // CRITICAL FIX: Remove Barcode from ModelState validation errors
+            
 
-            // Generate the unique GUID for the customer's Id and Barcode
-            if (customer.Id == Guid.Empty) // Ensure Id is set if it's a new customer
+            if (customer.Id == Guid.Empty)
             {
                 customer.Id = Guid.NewGuid();
             }
-            customer.Barcode = Guid.NewGuid().ToString(); // Generate and assign the unique barcode
+            // CRITICAL FIX: Assign a new Guid directly to Barcode
 
-            // Now check ModelState.IsValid. The 'Barcode' property now has a value,
-            // and any previous validation errors for it have been cleared.
             if (ModelState.IsValid)
             {
-                _customerRepo.AddCustomer(customer); // This will save to DB
-                return RedirectToAction("ShowQrCode", new { barcode = customer.Barcode });
+                _customerRepo.AddCustomer(customer);
+                // CRITICAL FIX: Pass the Guid.ToString() to the ShowQrCode action
+                return RedirectToAction("ShowQrCode", new { id = customer.Id.ToString() });
             }
-            // If ModelState.IsValid is false (due to other validation errors on FullName, Email, etc.),
-            // the form will be re-rendered with errors.
             return View(customer);
         }
 
-        // GET: Customer/ShowQrCode - Displays the generated QR code for a customer
-        public IActionResult ShowQrCode(string barcode)
+        public IActionResult ShowQrCode(string id) // barcode parameter remains string as it's from URL
         {
             if (!IsAdminLoggedIn())
             {
                 return RedirectToAction("Login", "Account");
             }
 
-            if (string.IsNullOrEmpty(barcode))
+            if (string.IsNullOrEmpty(id))
             {
-                return NotFound("Barcode not provided.");
+                return NotFound("Customer Id not provided.");
             }
 
-            Customer? customer = _customerRepo.GetCustomerByBarcode(barcode);
+            // CRITICAL FIX: Parse the incoming string barcode from URL to Guid
+            if (!Guid.TryParse(id, out Guid parsedBarcodeGuid))
+            {
+                return BadRequest("Invalid customer id format.");
+            }
+
+            // CRITICAL FIX: Pass the Guid to GetCustomerByBarcode
+            Customer? customer = _customerRepo.GetCustomerById(parsedBarcodeGuid);
             if (customer == null)
             {
                 return NotFound("Customer not found for the given barcode.");
             }
 
-            byte[] qrCodeImageBytes = _qrCodeService.GenerateQrCode(customer.Barcode);
+            // Generate the QR code image bytes using the QrCodeService with Guid.ToString()
+            byte[] qrCodeImageBytes = _qrCodeService.GenerateQrCode(customer.Id);
 
             ViewBag.QrCodeBase64 = Convert.ToBase64String(qrCodeImageBytes);
             ViewBag.CustomerName = customer.FullName;
-            ViewBag.CustomerBarcode = customer.Barcode;
-
+            ViewBag.CustomerBarcode = customer.Id.ToString(); // Display as string
             return View(customer);
         }
 
-        // GET: Customer/Edit/{id} - Displays the form to edit an existing customer
         public IActionResult Edit(Guid id)
         {
             if (!IsAdminLoggedIn())
@@ -127,7 +122,6 @@ namespace LedgerLink.Controllers
             return View(customer);
         }
 
-        // POST: Customer/Edit - Handles the form submission to update a customer
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Customer customer)
@@ -137,9 +131,7 @@ namespace LedgerLink.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            // For Edit, Barcode should also be removed from ModelState if it's not in the form
-            // or if you want to ensure it's not validated from incoming data.
-            ModelState.Remove("Barcode");
+
 
             if (ModelState.IsValid)
             {
@@ -149,7 +141,6 @@ namespace LedgerLink.Controllers
             return View(customer);
         }
 
-        // GET: Customer/Delete/{id} - Displays a confirmation page before deleting a customer
         public IActionResult Delete(Guid id)
         {
             if (!IsAdminLoggedIn())
@@ -165,7 +156,6 @@ namespace LedgerLink.Controllers
             return View(customer);
         }
 
-        // POST: Customer/DeleteConfirmed - Handles the actual deletion of a customer
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(Guid id)
