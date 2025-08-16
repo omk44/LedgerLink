@@ -34,12 +34,6 @@ namespace LedgerLink.Models
         [StringLength(200, ErrorMessage = "Address cannot exceed 200 characters.")]
         public string? Address { get; set; } // Nullable
 
-        // Scalar Property: Unique ID encoded in the barcode (GUID string)
-        [Required(ErrorMessage = "Barcode ID is required.")]
-        [StringLength(50, ErrorMessage = "Barcode ID cannot exceed 50 characters.")] // GUIDs are 36 chars
-        [BindNever]
-        public string Barcode { get; set; } = string.Empty;
-
         // Scalar Property: Tracks the current outstanding balance for the customer
         [Range(0.00, 999999999.99, ErrorMessage = "Current Balance must be a non-negative value.")]
         public decimal CurrentBalance { get; set; } = 0.00m; // Default to 0 for new customers
