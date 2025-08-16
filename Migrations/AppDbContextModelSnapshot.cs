@@ -32,11 +32,6 @@ namespace LedgerLink.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
-                    b.Property<string>("Barcode")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
                     b.Property<decimal>("CurrentBalance")
                         .HasColumnType("numeric(18, 2)");
 
