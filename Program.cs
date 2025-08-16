@@ -1,5 +1,6 @@
 // Path: LedgerLink/Program.cs
-
+using System.Globalization; // Required for CultureInfo
+using Microsoft.AspNetCore.Localization; // Required for RequestLocalizationOptions
 using Microsoft.EntityFrameworkCore;
 using LedgerLink.Data; // Your DbContext namespace
 using Npgsql.EntityFrameworkCore.PostgreSQL;
@@ -8,7 +9,21 @@ using LedgerLink.Services; // Your service implementations
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
+// --- Configure Application Culture for India (en-IN) ---
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var defaultCulture = new CultureInfo("en-IN"); // English (India) culture
+    var supportedCultures = new[]
+    {
+        defaultCulture,
+        new CultureInfo("en-US"), // Example: also support US English
+        // Add other cultures if needed
+    };
 
+    options.DefaultRequestCulture = new RequestCulture(defaultCulture);
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+});
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 

@@ -114,5 +114,110 @@ namespace LedgerLink.Controllers
 
             return View(viewModel);
         }
+         // NEW ACTION: POST /Transaction/AddItem - To record a product sale
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddItem(Guid customerId, int productId, int quantity, bool isCreditTransaction, string? notes)
+        {
+            if (!IsAdminLoggedIn())
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            // 1. Get Customer and Product details
+            Customer? customer = _customerRepo.GetCustomerById(customerId);
+            Product? product = _productRepo.GetProductById(productId);
+
+            if (customer == null || product == null)
+            {
+                // Redirect back to CustomerDetails with an error message or show a specific error view
+                TempData["ErrorMessage"] = "Customer or Product not found.";
+                return RedirectToAction("CustomerDetails", new { id = customerId });
+            }
+
+            if (quantity <= 0)
+            {
+                TempData["ErrorMessage"] = "Quantity must be greater than zero.";
+                return RedirectToAction("CustomerDetails", new { id = customerId });
+            }
+
+            // 2. Calculate total amount for this transaction
+            decimal totalAmount = product.Price * quantity;
+
+            // 3. Create new Transaction record
+            var newTransaction = new Transaction
+            {
+                CustomerId = customerId,
+                ProductId = productId,
+                Quantity = quantity,
+                UnitPrice = product.Price, // Store price at time of purchase
+                TotalAmount = totalAmount,
+                IsCreditTransaction = isCreditTransaction,
+                PurchaseDate = DateTime.UtcNow,
+                Notes = notes
+            };
+
+            _transactionRepo.AddTransaction(newTransaction); // Save transaction to DB
+
+            // 4. Update Customer's CurrentBalance if it's a credit transaction
+            if (isCreditTransaction)
+            {
+                customer.CurrentBalance += totalAmount;
+                _customerRepo.UpdateCustomer(customer); // Update customer balance in DB
+            }
+
+            TempData["SuccessMessage"] = "Item added successfully!";
+            return RedirectToAction("CustomerDetails", new { id = customerId }); // Redirect back to refresh details
+        }
+
+        // NEW ACTION: POST /Transaction/AddPayment - To record a payment
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddPayment(Guid customerId, decimal amountPaid, string paymentMode)
+        {
+            if (!IsAdminLoggedIn())
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            // 1. Get Customer details
+            Customer? customer = _customerRepo.GetCustomerById(customerId);
+
+            if (customer == null)
+            {
+                TempData["ErrorMessage"] = "Customer not found for payment.";
+                return RedirectToAction("CustomerDetails", new { id = customerId });
+            }
+
+            if (amountPaid <= 0)
+            {
+                TempData["ErrorMessage"] = "Amount paid must be greater than zero.";
+                return RedirectToAction("CustomerDetails", new { id = customerId });
+            }
+
+            // 2. Create new Payment record
+            var newPayment = new Payment
+            {
+                CustomerId = customerId,
+                AmountPaid = amountPaid,
+                PaymentMode = paymentMode,
+                PaymentDate = DateTime.UtcNow
+            };
+
+            _paymentRepo.AddPayment(newPayment); // Save payment to DB
+
+            // 3. Update Customer's CurrentBalance (reduce it)
+            customer.CurrentBalance -= amountPaid;
+            // Ensure balance doesn't go below zero if they overpay (optional, depends on business logic)
+            if (customer.CurrentBalance < 0)
+            {
+                customer.CurrentBalance = 0;
+            }
+            _customerRepo.UpdateCustomer(customer); // Update customer balance in DB
+
+            TempData["SuccessMessage"] = "Payment recorded successfully!";
+            return RedirectToAction("CustomerDetails", new { id = customerId }); // Redirect back to refresh details
+        }
+
     }
 }
