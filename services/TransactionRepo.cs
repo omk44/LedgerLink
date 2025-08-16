@@ -1,9 +1,10 @@
 // Path: LedgerLink/Services/TransactionRepo.cs
 using LedgerLink.Models;
-using LedgerLink.Data; // Required to inject AppDbContext
+using LedgerLink.Data;
 using LedgerLink.Interface;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore; // Required for Include()
 
 namespace LedgerLink.Services
 {
@@ -18,16 +19,20 @@ namespace LedgerLink.Services
 
         public IEnumerable<Transaction> GetAllTransactions()
         {
-            // Include navigation properties if you want to load related Customer and Product data
-            // For example: return _context.Transactions.Include(t => t.Customer).Include(t => t.Product).ToList();
-            return _context.Transactions.ToList();
+            // CRITICAL FIX: Eager load Customer and Product for display in CustomerDetails view
+            return _context.Transactions
+                           .Include(t => t.Customer) // Load related Customer data
+                           .Include(t => t.Product)  // Load related Product data
+                           .ToList();
         }
 
         public Transaction? GetTransactionById(int id)
         {
-            // Include navigation properties if you want to load related Customer and Product data
-            // For example: return _context.Transactions.Include(t => t.Customer).Include(t => t.Product).FirstOrDefault(t => t.Id == id);
-            return _context.Transactions.Find(id);
+            // CRITICAL FIX: Eager load Customer and Product for single transaction lookup
+            return _context.Transactions
+                           .Include(t => t.Customer)
+                           .Include(t => t.Product)
+                           .FirstOrDefault(t => t.Id == id);
         }
 
         public Transaction AddTransaction(Transaction transaction)
