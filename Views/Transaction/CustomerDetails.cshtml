@@ -1,10 +1,9 @@
 @* Path: LedgerLink/Views/Transaction/CustomerDetails.cshtml *@
 @model LedgerLink.Models.CustomerDetailsViewModel
-@using System.Globalization; @* Required for CultureInfo *@
+@using System.Globalization;
 
 @{
     ViewData["Title"] = $"Transaction for {Model.Customer.FullName}";
-    // Define the culture for Indian Rupees
     var indiaCulture = new CultureInfo("en-IN");
 }
 
@@ -76,6 +75,16 @@
                             <input type="checkbox" class="form-check-input" id="isCreditTransaction" name="isCreditTransaction" value="true" />
                             <label class="form-check-label" for="isCreditTransaction">Add to Credit (Money Pending)</label>
                         </div>
+                        @* NEW: Payment Mode for non-credit transactions *@
+                        <div class="form-group mb-3" id="paymentModeForAddItemDiv">
+                            <label for="paymentMode" class="form-label">Payment Mode (if not credit):</label>
+                            <select id="paymentMode" name="paymentMode" class="form-control">
+                                <option value="Cash">Cash</option>
+                                <option value="UPI">UPI</option>
+                                <option value="Card">Card</option>
+                                <option value="Bank Transfer">Bank Transfer</option>
+                            </select>
+                        </div>
                         <div class="form-group mb-3">
                             <label for="notes" class="form-label">Notes (Optional):</label>
                             <textarea id="notes" name="notes" class="form-control" rows="2"></textarea>
@@ -142,7 +151,6 @@
                                 {
                                     <tr>
                                         <td>@transaction.PurchaseDate.ToLocalTime().ToString("g")</td>
-                                        @* Assuming Product navigation property is loaded. If not, you'll need to eager load it in repo. *@
                                         <td>@(transaction.Product?.Name ?? "N/A")</td>
                                         <td>@transaction.Quantity</td>
                                         <td>@transaction.UnitPrice.ToString("C", indiaCulture)</td>
@@ -162,7 +170,7 @@
     <div class="row mt-4">
         <div class="col-md-12">
             <div class="card shadow-sm">
-                <div class="card-header bg-secondary text-white"> @* Changed to secondary for distinction *@
+                <div class="card-header bg-secondary text-white">
                     <h4>Payment History</h4>
                 </div>
                 <div class="card-body">
