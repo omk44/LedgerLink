@@ -1,4 +1,4 @@
-@* Path: LedgerLink/Views/Transaction/Receipt.cshtml *@
+@* Path: LedgerLink/Views/Transaction/ShowReceipt.cshtml *@
 @model LedgerLink.Models.ReceiptViewModel
 @using System.Globalization;
 
@@ -18,12 +18,12 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <style>
         body {
-            font-family: 'Courier New', monospace; /* Receipt-like font */
+            font-family: 'Courier New', monospace;
             font-size: 0.9em;
             margin: 20px;
         }
         .receipt-container {
-            max-width: 300px; /* Typical receipt width */
+            max-width: 300px;
             margin: 0 auto;
             border: 1px dashed #333;
             padding: 15px;
@@ -63,9 +63,9 @@
             text-align: center;
             margin-top: 20px;
         }
-        @@media print { 
+        @@media print {
             .print-button-container {
-                display: none; /* Hide print button when printing */
+                display: none;
             }
             body {
                 margin: 0;
@@ -82,7 +82,8 @@
 <body>
     <div class="receipt-container">
         <div class="receipt-header">
-            <h4>@Model.ShopName</h4>
+            <h4>@Model.ShopName</h4> @* <--- NEW: Display Shop Name *@
+            <p>@Model.AppName</p> @* <--- NEW: Display App Name *@
             <p>Date: @Model.ReceiptDate.ToLocalTime().ToString("g")</p>
             <p>@Model.ReceiptType Receipt</p>
             <hr style="border-top: 1px dashed #333;" />
@@ -141,7 +142,7 @@
 
         <div class="receipt-footer">
             <p>Thank you for your business!</p>
-            <p>@Model.ShopName - @Model.ReceiptDate.Year</p>
+            <p>@Model.ShopName - @Model.ReceiptDate.Year</p> @* <--- NEW: Use ShopName here *@
         </div>
     </div>
 
@@ -150,7 +151,6 @@
         <a asp-controller="Transaction" asp-action="CustomerDetails" asp-route-id="@Model.Customer.Id" class="btn btn-secondary ml-2">Back to Customer Details</a>
     </div>
 
-    @* Basic jQuery for Bootstrap collapse/dismiss *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </body>
