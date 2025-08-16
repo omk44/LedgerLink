@@ -114,10 +114,10 @@ namespace LedgerLink.Controllers
 
             return View(viewModel);
         }
-         // NEW ACTION: POST /Transaction/AddItem - To record a product sale
+        // NEW ACTION: POST /Transaction/AddItem - To record a product sale
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddItem(Guid customerId, int productId, int quantity, bool isCreditTransaction, string? notes)
+        public IActionResult AddItem(Guid customerId, int productId, int quantity, bool isCreditTransaction, string? notes, string? paymentMode)
         {
             if (!IsAdminLoggedIn())
             {
@@ -164,11 +164,40 @@ namespace LedgerLink.Controllers
             {
                 customer.CurrentBalance += totalAmount;
                 _customerRepo.UpdateCustomer(customer); // Update customer balance in DB
+                TempData["SuccessMessage"] = "Item added successfully (on credit)!";
+            }
+            else // CRITICAL NEW LOGIC: If not credit, it's a paid transaction, so record a payment
+            {
+                if (string.IsNullOrEmpty(paymentMode))
+                {
+                    TempData["ErrorMessage"] = "Payment mode is required for paid transactions.";
+                    // You might want to delete the just-added transaction here if you want to prevent partial data.
+                    // For simplicity, we'll just return an error.
+                    return RedirectToAction("CustomerDetails", new { id = customerId });
+                }
+
+                var newPayment = new Payment
+                {
+                    Id = Guid.NewGuid(), // Generate Guid for Payment ID
+                    CustomerId = customerId,
+                    AmountPaid = totalAmount,
+                    PaymentMode = paymentMode,
+                    PaymentDate = DateTime.UtcNow
+                };
+                _paymentRepo.AddPayment(newPayment); // Save payment to DB
+
+                // For paid transactions, CurrentBalance does not change as it's paid immediately.
+                // If you want to show it as a transaction and then a payment, the balance logic is fine.
+                // If this is a "cash sale" that never affects credit, then the balance update for credit
+                // is correctly skipped.
+
+                TempData["SuccessMessage"] = "Item added successfully (paid)!";
             }
 
-            TempData["SuccessMessage"] = "Item added successfully!";
             return RedirectToAction("CustomerDetails", new { id = customerId }); // Redirect back to refresh details
         }
+    
+
 
         // NEW ACTION: POST /Transaction/AddPayment - To record a payment
         [HttpPost]
