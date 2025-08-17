@@ -18,4 +18,14 @@
     <PackageReference Include="Twilio" Version="7.12.0" />
   </ItemGroup>
 
+  <!-- CRITICAL FIX: Ensure appsettings.json is copied to the output directory -->
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="appsettings.Development.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
