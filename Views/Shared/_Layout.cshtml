@@ -1,18 +1,36 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.Extensions.Options;
+@inject IOptions<LedgerLink.Models.ShopSettings> ShopSettingsOptions 
+
+@{
+    // Access ShopSettings directly in the layout
+    var shopName = ShopSettingsOptions.Value.ShopName;
+    var appName = ShopSettingsOptions.Value.AppName;
+    var shopEmail = ShopSettingsOptions.Value.ShopEmail; // Get shop email
+    var shopPhoneNumber = ShopSettingsOptions.Value.ShopPhoneNumber; // Get shop phone number
+    // Social media URLs are no longer needed in the layout for display
+    // var instagramUrl = ShopSettingsOptions.Value.InstagramUrl;
+    // var twitterUrl = ShopSettingsOptions.Value.TwitterUrl;
+    // var linkedInUrl = ShopSettingsOptions.Value.LinkedInUrl;
+
+    ViewData["Title"] ??= appName; // Set default title if not already set by a view
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - LedgerLink</title>
+    <title>@ViewData["Title"] - @appName</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/LedgerLink.styles.css" asp-append-version="true" />
+    <!-- REMOVED: Tailwind CSS CDN and inline <style> for SVG icons -->
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">LedgerLink</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">@appName</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -50,8 +68,6 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
                             </li>
                         }
-                        @* --- END ADDED NAVIGATION LINKS --- *@
-
                     </ul>
                 </div>
             </div>
@@ -64,8 +80,26 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - LedgerLink - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <div class="container py-3 text-center"> @* Centered text for contact info *@
+            <div class="mb-2">
+                <strong>@shopName</strong> &copy; @DateTime.Now.Year - @appName. All rights reserved.
+            </div>
+            <div class="mb-2">
+                <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy Policy</a>
+            </div>
+            <div class="mb-2">
+                <strong>Contact Us:</strong>
+                @if (!string.IsNullOrEmpty(shopEmail))
+                {
+                    <a href="mailto:@shopEmail" class="text-muted ml-2">@shopEmail</a>
+                }
+                @if (!string.IsNullOrEmpty(shopPhoneNumber))
+                {
+                    <span class="text-muted ml-2">|</span>
+                    <a href="tel:@shopPhoneNumber" class="text-muted ml-2">@shopPhoneNumber</a>
+                }
+            </div>
+            @* REMOVED: The entire div containing SVG social media icons *@
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
