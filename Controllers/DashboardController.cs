@@ -1,4 +1,3 @@
-// Path: LedgerLink/Controllers/DashboardController.cs
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using LedgerLink.Interface;

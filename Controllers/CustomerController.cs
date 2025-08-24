@@ -1,4 +1,3 @@
-// Path: LedgerLink/Controllers/CustomerController.cs
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http; // Required for HttpContext.Session
 using LedgerLink.Interface; // For ICustomerRepo
