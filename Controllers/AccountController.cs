@@ -1,4 +1,3 @@
-// Path: LedgerLink/Controllers/AccountController.cs
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http; // Required for HttpContext.Session
 using LedgerLink.Models; // Required for LoginViewModel
@@ -7,9 +6,8 @@ namespace LedgerLink.Controllers
 {
     public class AccountController : Controller
     {
-        // --- HARDCODED CREDENTIALS ---
-        // REMINDER: This is EXTREMELY INSECURE and for learning/prototyping ONLY.
-        // NEVER use hardcoded credentials or this session-based authentication in a production application.
+
+        // This is EXTREMELY INSECURE and for learning/prototyping ONLY.
         private const string AdminUsername = "admin";
         private const string AdminPassword = "password";
 

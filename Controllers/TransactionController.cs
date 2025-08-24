@@ -248,10 +248,11 @@ namespace LedgerLink.Controllers
             // 3. Update Customer's CurrentBalance (reduce it)
             customer.CurrentBalance -= amountPaid;
             // Ensure balance doesn't go below zero if they overpay (optional, depends on business logic)
-            if (customer.CurrentBalance < 0)
-            {
-                customer.CurrentBalance = 0;
-            }
+            // if (customer.CurrentBalance < 0)
+            // {
+            //     customer.CurrentBalance = 0;
+            // }
+            //it will allow -ve balance as it is future it will be minused from credit transactions
             _customerRepo.UpdateCustomer(customer); // Update customer balance in DB
 
             TempData["SuccessMessage"] = "Payment recorded successfully!";
