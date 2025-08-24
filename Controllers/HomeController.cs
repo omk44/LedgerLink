@@ -36,9 +36,10 @@ namespace LedgerLink.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+         public IActionResult Privacy()
         {
-            return View();
+            // No login check needed for Privacy page, it should be public
+            return View(_shopSettings); // Pass the ShopSettings model directly
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
