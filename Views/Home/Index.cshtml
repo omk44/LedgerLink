@@ -1,11 +1,77 @@
 ﻿@* Path: LedgerLink/Views/Home/Index.cshtml *@
+@* No @model directive needed as we're using ViewBag *@
+
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Welcome to " + ViewBag.ShopName; // Dynamic title
 }
 
-<div class="text-center">
-    @* --- CRITICAL FIX: Display ShopName and AppName from ViewBag --- *@
-    <h1 class="display-4">Welcome to @ViewBag.ShopName!</h1>
-    <p class="lead">Your digital ledger powered by @ViewBag.AppName</p>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 text-primary">Welcome, @ViewBag.ShopName Admin!</h1>
+        <p class="lead text-muted">Your digital ledger, powered by <strong class="text-info">@ViewBag.AppName</strong>, is ready to help you manage your business efficiently.</p>
+        <hr class="my-4">
+        <p class="text-secondary">Quickly access your tools and insights below.</p>
+    </div>
+
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-4 mb-3">
+            <div class="card text-center shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title text-success">Manage Products</h5>
+                    <p class="card-text">Add, edit, or remove items you sell.</p>
+                    <a asp-controller="Product" asp-action="Index" class="btn btn-success mt-2">Go to Products</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card text-center shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title text-info">Manage Customers</h5>
+                    <p class="card-text">View, add, or edit customer details and generate QR codes.</p>
+                    <a asp-controller="Customer" asp-action="Index" class="btn btn-info mt-2">Go to Customers</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card text-center shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title text-warning">Process Transactions</h5>
+                    <p class="card-text">Scan customer QR codes to record sales and payments.</p>
+                    <a asp-controller="Transaction" asp-action="Scan" class="btn btn-warning mt-2">Start Scanning</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow-lg p-4 bg-light">
+                <h3 class="text-center text-secondary mb-4">Future Analytics & Growth Insights</h3>
+                <p class="text-muted text-center">
+                    **@ViewBag.AppName** is continuously evolving to provide you with smarter ways to grow your business.
+                    Soon, you'll be able to generate advanced reports to identify key customer behaviors and optimize your sales strategies.
+                </p>
+                <ul class="list-group list-group-flush mt-4">
+                    <li class="list-group-item bg-light">
+                        <strong class="text-primary">Festival Discount Optimization:</strong> Identify customers with low credit and high purchase frequency (paid transactions) to offer targeted discounts during festive seasons, rewarding loyalty and encouraging more cash sales.
+                    </li>
+                    <li class="list-group-item bg-light">
+                        <strong class="text-primary">Credit Risk Analysis:</strong> Pinpoint customers with high outstanding credit and slow payment history, allowing for proactive follow-ups or adjusted credit limits.
+                    </li>
+                    <li class="list-group-item bg-light">
+                        <strong class="text-primary">Sales Trend Reporting:</strong> Analyze product sales over time, identify peak buying periods, and optimize inventory management.
+                    </li>
+                    <li class="list-group-item bg-light">
+                        <strong class="text-primary">Customer Value Segmentation:</strong> Categorize customers based on their spending habits, credit usage, and payment reliability to tailor marketing efforts and special offers.
+                    </li>
+                    <li class="list-group-item bg-light">
+                        <strong class="text-primary">Payment Behavior Insights:</strong> Understand common payment modes and peak payment times to streamline your financial operations.
+                    </li>
+                </ul>
+                <p class="text-center mt-4 text-muted">
+                    Your data is your power. We're building the tools to unlock it for **@ViewBag.ShopName**!
+                </p>
+            </div>
+        </div>
+    </div>
 </div>
