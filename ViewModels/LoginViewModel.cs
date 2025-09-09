@@ -1,7 +1,7 @@
 // Path: LedgerLink/Models/LoginViewModel.cs
 using System.ComponentModel.DataAnnotations; // Required for [Required] and [DataType]
 
-namespace LedgerLink.Models
+namespace LedgerLink.ViewModels
 {
     public class LoginViewModel
     {

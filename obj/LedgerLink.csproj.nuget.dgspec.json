@@ -1,25 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "/home/om/dotnet project/LedgerLink/LedgerLink.csproj": {}
+    "C:\\Users\\Dell\\Desktop\\LedgerLink\\LedgerLink\\LedgerLink.csproj": {}
   },
   "projects": {
-    "/home/om/dotnet project/LedgerLink/LedgerLink.csproj": {
+    "C:\\Users\\Dell\\Desktop\\LedgerLink\\LedgerLink\\LedgerLink.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/om/dotnet project/LedgerLink/LedgerLink.csproj",
+        "projectUniqueName": "C:\\Users\\Dell\\Desktop\\LedgerLink\\LedgerLink\\LedgerLink.csproj",
         "projectName": "LedgerLink",
-        "projectPath": "/home/om/dotnet project/LedgerLink/LedgerLink.csproj",
-        "packagesPath": "/home/om/.nuget/packages/",
-        "outputPath": "/home/om/dotnet project/LedgerLink/obj/",
+        "projectPath": "C:\\Users\\Dell\\Desktop\\LedgerLink\\LedgerLink\\LedgerLink.csproj",
+        "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Dell\\Desktop\\LedgerLink\\LedgerLink\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/home/om/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\Dell\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -32,6 +38,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -84,7 +95,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.118/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.413/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

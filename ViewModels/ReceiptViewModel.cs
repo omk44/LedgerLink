@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LedgerLink.Models;
 
-namespace LedgerLink.Models
+
+namespace LedgerLink.ViewModels
 {
     public class ReceiptViewModel
     {

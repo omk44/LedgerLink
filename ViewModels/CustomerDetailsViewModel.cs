@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using LedgerLink.Models;
 
-namespace LedgerLink.Models
+namespace LedgerLink.ViewModels
 {
     public class CustomerDetailsViewModel
     {

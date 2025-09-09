@@ -1,5 +1,5 @@
 // Path: LedgerLink/Models/ShopSettings.cs
-namespace LedgerLink.Models
+namespace LedgerLink.ViewModels
 {
     public class ShopSettings
     {

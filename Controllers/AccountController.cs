@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http; // Required for HttpContext.Session
-using LedgerLink.Models; // Required for LoginViewModel
+using LedgerLink.ViewModels; // Required for LoginViewModel
 
 namespace LedgerLink.Controllers
 {
