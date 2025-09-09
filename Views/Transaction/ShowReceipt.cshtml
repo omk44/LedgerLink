@@ -100,31 +100,31 @@
         {
             <div class="receipt-details">
                 <table>
-                    <thead>
+                <thead>
+                    <tr>
+                        <th style="width: 40%; text-align: left;">Item</th>
+                        <th style="width: 15%; text-align: center;">Qty</th>
+                        <th style="width: 20%; text-align: right;">Price</th>
+                        <th style="width: 25%; text-align: right;">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.TransactionItems)
+                    {
                         <tr>
-                            <th>Item</th>
-                            <th>Qty</th>
-                            <th>Price</th>
-                            <th>Total</th>
+                            <td>@(item.Product?.Name ?? "N/A") @(item.Product.QuantityValue) @(item.Product.QuantityUnit)</td>
+                            <td style="text-align: center;">@item.Quantity</td>
+                            <td style="text-align: right;">@item.UnitPrice.ToString("C", indiaCulture)</td>
+                            <td style="text-align: right;">@item.TotalAmount.ToString("C", indiaCulture)</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.TransactionItems)
-                        {
-                            <tr>
-                                <td>@(item.Product?.Name ?? "N/A")</td>
-                                <td>@item.Quantity</td>
-                                <td>@item.UnitPrice.ToString("C", indiaCulture)</td>
-                                <td>@item.TotalAmount.ToString("C", indiaCulture)</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-                <div class="receipt-summary">
-                    <p>Subtotal: @Model.Transaction.TotalAmount.ToString("C", indiaCulture)</p>
-                    <p>Status: @(Model.Transaction.IsCreditTransaction ? "On Credit" : "Paid")</p>
-                </div>
+                    }
+                </tbody>
+            </table>
+            <div class="receipt-summary">
+                <p>Subtotal: @Model.Transaction.TotalAmount.ToString("C", indiaCulture)</p>
+                <p>Status: @(Model.Transaction.IsCreditTransaction ? "On Credit" : "Paid")</p>
             </div>
+        </div>
         }
         else if (Model.ReceiptType == "Payment" && Model.Payment != null)
         {

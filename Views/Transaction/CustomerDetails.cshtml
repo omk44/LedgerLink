@@ -66,7 +66,7 @@
                                 {
                                     @foreach (var product in Model.Products)
                                     {
-                                        <option value="@product.Id" data-price="@product.Price">@product.Name - @product.Price.ToString("C", indiaCulture)</option>
+                                        <option value="@product.Id" data-price="@product.Price">@product.Name - @product.Price.ToString("C", indiaCulture) - @product.QuantityValue (@product.QuantityUnit)</option>
                                     }
                                 }
                                 else
@@ -158,7 +158,7 @@
                                 {
                                     <tr>
                                         <td>@transaction.PurchaseDate.ToLocalTime().ToString("g")</td>
-                                        <td>@(transaction.Product?.Name ?? "N/A")</td>
+                                        <td>@(transaction.Product?.Name ?? "N/A") @(transaction.Product.QuantityValue) - @(transaction.Product.QuantityUnit)</td>
                                         <td>@transaction.Quantity</td>
                                         <td>@transaction.UnitPrice.ToString("C", indiaCulture)</td>
                                         <td>@transaction.TotalAmount.ToString("C", indiaCulture)</td>

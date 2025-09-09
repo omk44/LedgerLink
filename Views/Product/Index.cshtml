@@ -17,6 +17,7 @@
             <tr>
                 <th>@Html.DisplayNameFor(model => model.Name)</th>
                 <th>@Html.DisplayNameFor(model => model.Price)</th>
+                <th>Quantity</th>
                 <th>@Html.DisplayNameFor(model => model.Description)</th>
                 <th>Actions</th>
             </tr>
@@ -26,9 +27,24 @@
             {
                 <tr>
                     <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                    @* CRITICAL FIX: Format Price as Indian Rupee *@
+                    
+                    @* Format Price as Indian Rupee *@
                     <td>@item.Price.ToString("C", new System.Globalization.CultureInfo("en-IN"))</td>
+                    
+                    @* Show Quantity + Unit together *@
+                    <td>
+                        @if (item.QuantityValue > 0 && !string.IsNullOrEmpty(item.QuantityUnit))
+                        {
+                            @($"{item.QuantityValue} {item.QuantityUnit}")
+                        }
+                        else
+                        {
+                            <span class="text-muted">N/A</span>
+                        }
+                    </td>
+                    
                     <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                    
                     <td>
                         <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-info">Edit</a> |
                         <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>

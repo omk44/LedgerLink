@@ -102,6 +102,14 @@ namespace LedgerLink.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric(18, 2)");
 
+                    b.Property<string>("QuantityUnit")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<decimal>("QuantityValue")
+                        .HasColumnType("numeric");
+
                     b.HasKey("Id");
 
                     b.ToTable("Products");

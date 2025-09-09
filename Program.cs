@@ -5,7 +5,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL;
 using Microsoft.AspNetCore.Builder;
 using LedgerLink.ViewModels;
 using LedgerLink.Interface; // Your interfaces
-using LedgerLink.Models;
+using LedgerLink.ViewModels;
 using LedgerLink.Services; // Your service implementations
 using System;
 using System.Globalization; // Required for CultureInfo
