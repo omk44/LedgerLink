@@ -142,6 +142,11 @@ namespace LedgerLink.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
+                    b.Property<string>("QuantityUnit")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("numeric(18, 2)");
 
