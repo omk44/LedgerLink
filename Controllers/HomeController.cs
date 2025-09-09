@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using LedgerLink.Models;
+using LedgerLink.ViewModels;
 using Microsoft.Extensions.Options; // Required for IOptions
 using Microsoft.AspNetCore.Http; // Required for HttpContext.Session
 using Microsoft.Extensions.Logging; // Required for ILogger
