@@ -34,6 +34,12 @@ namespace LedgerLink.Models
         [Range(0.01, 100000.00, ErrorMessage = "Unit Price must be greater than 0.")]
         public decimal UnitPrice { get; set; }
 
+        // NEW PROPERTY
+        [Required]
+        [StringLength(20)]
+        public string QuantityUnit { get; set; } = string.Empty;
+
+        
         // Scalar Property: Total amount for this transaction (Quantity * UnitPrice)
         // Store this to avoid recalculation and for exact historical record
         [Required(ErrorMessage = "Total Amount is required.")]

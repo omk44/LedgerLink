@@ -82,8 +82,8 @@
 <body>
     <div class="receipt-container">
         <div class="receipt-header">
-            <h4>@Model.ShopName</h4> @* <--- NEW: Display Shop Name *@
-            <p>@Model.AppName</p> @* <--- NEW: Display App Name *@
+            <h4>@Model.ShopName</h4>
+            <p>@Model.AppName</p>
             <p>Date: @Model.ReceiptDate.ToLocalTime().ToString("g")</p>
             <p>@Model.ReceiptType Receipt</p>
             <hr style="border-top: 1px dashed #333;" />
@@ -100,31 +100,31 @@
         {
             <div class="receipt-details">
                 <table>
-                <thead>
-                    <tr>
-                        <th style="width: 40%; text-align: left;">Item</th>
-                        <th style="width: 15%; text-align: center;">Qty</th>
-                        <th style="width: 20%; text-align: right;">Price</th>
-                        <th style="width: 25%; text-align: right;">Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.TransactionItems)
-                    {
+                    <thead>
                         <tr>
-                            <td>@(item.Product?.Name ?? "N/A") @(item.Product.QuantityValue) @(item.Product.QuantityUnit)</td>
-                            <td style="text-align: center;">@item.Quantity</td>
-                            <td style="text-align: right;">@item.UnitPrice.ToString("C", indiaCulture)</td>
-                            <td style="text-align: right;">@item.TotalAmount.ToString("C", indiaCulture)</td>
+                            <th>Item</th>
+                            <th>Qty</th>
+                            <th>Price</th>
+                            <th>Total</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
-            <div class="receipt-summary">
-                <p>Subtotal: @Model.Transaction.TotalAmount.ToString("C", indiaCulture)</p>
-                <p>Status: @(Model.Transaction.IsCreditTransaction ? "On Credit" : "Paid")</p>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.TransactionItems)
+                        {
+                            <tr>
+                                <td>@(item.Product?.Name ?? "N/A")</td>
+                                <td>@item.Quantity</td>
+                                <td>@item.UnitPrice.ToString("C", indiaCulture)</td>
+                                <td>@item.TotalAmount.ToString("C", indiaCulture)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="receipt-summary">
+                    <p>Subtotal: @Model.Transaction.TotalAmount.ToString("C", indiaCulture)</p>
+                    <p>Status: @(Model.Transaction.IsCreditTransaction ? "On Credit" : "Paid")</p>
+                </div>
             </div>
-        </div>
         }
         else if (Model.ReceiptType == "Payment" && Model.Payment != null)
         {
@@ -142,7 +142,7 @@
 
         <div class="receipt-footer">
             <p>Thank you for your business!</p>
-            <p>@Model.ShopName - @Model.ReceiptDate.Year</p> @* <--- NEW: Use ShopName here *@
+            <p>@Model.ShopName - @Model.ReceiptDate.Year</p>
         </div>
     </div>
 
