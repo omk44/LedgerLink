@@ -169,6 +169,7 @@ namespace LedgerLink.Controllers
                 QuantityUnit = product.QuantityUnit // CRITICAL FIX: Assign QuantityUnit from the product
             };
 
+
             _transactionRepo.AddTransaction(newTransaction); // Save transaction to DB
 
             // 4. Update Customer's CurrentBalance if it's a credit transaction
