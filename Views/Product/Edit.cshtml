@@ -13,21 +13,45 @@
             <form asp-action="Edit">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="Id" /> @* Hidden field for the Product Id *@
+
                 <div class="form-group mb-3">
                     <label asp-for="Name" class="control-label"></label>
                     <input asp-for="Name" class="form-control" />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
+
                 <div class="form-group mb-3">
                     <label asp-for="Price" class="control-label"></label>
                     <input asp-for="Price" class="form-control" />
                     <span asp-validation-for="Price" class="text-danger"></span>
                 </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="QuantityValue" class="control-label"></label>
+                    <input asp-for="QuantityValue" class="form-control" />
+                    <span asp-validation-for="QuantityValue" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="QuantityUnit" class="control-label"></label>
+                    <select asp-for="QuantityUnit" class="form-control">
+                        <option value="">-- Select Unit --</option>
+                        <option value="pcs">Pieces</option>
+                        <option value="ml">Milliliters</option>
+                        <option value="l">Liters</option>
+                        <option value="gm">Grams</option>
+                        <option value="kg">Kilograms</option>
+                        <option value="pack">Pack</option>
+                    </select>
+                    <span asp-validation-for="QuantityUnit" class="text-danger"></span>
+                </div>
+
                 <div class="form-group mb-3">
                     <label asp-for="Description" class="control-label"></label>
                     <textarea asp-for="Description" class="form-control"></textarea>
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
+
                 <div class="form-group">
                     <input type="submit" value="Save" class="btn btn-primary" />
                     <a asp-action="Index" class="btn btn-secondary ml-2">Back to List</a>

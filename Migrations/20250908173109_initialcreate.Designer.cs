@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LedgerLink.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250815192307_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20250908173109_initialcreate")]
+    partial class initialcreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -104,6 +104,14 @@ namespace LedgerLink.Migrations
 
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric(18, 2)");
+
+                    b.Property<string>("QuantityUnit")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<decimal>("QuantityValue")
+                        .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
