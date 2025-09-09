@@ -155,16 +155,18 @@ namespace LedgerLink.Controllers
             decimal totalAmount = product.Price * quantity;
 
             // 3. Create new Transaction record
-            var newTransaction = new Transaction
+             var newTransaction = new Transaction
             {
+                Id = 0, // Let DB generate int ID
                 CustomerId = customerId,
                 ProductId = productId,
                 Quantity = quantity,
-                UnitPrice = product.Price, // Store price at time of purchase
+                UnitPrice = product.Price,
                 TotalAmount = totalAmount,
                 IsCreditTransaction = isCreditTransaction,
                 PurchaseDate = DateTime.UtcNow,
-                Notes = notes
+                Notes = notes,
+                QuantityUnit = product.QuantityUnit // CRITICAL FIX: Assign QuantityUnit from the product
             };
 
             _transactionRepo.AddTransaction(newTransaction); // Save transaction to DB
