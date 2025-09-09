@@ -1,10 +1,9 @@
 // Path: LedgerLink/Program.cs
-
 using Microsoft.EntityFrameworkCore;
 using LedgerLink.Data; // Your DbContext namespace
 using Npgsql.EntityFrameworkCore.PostgreSQL;
 using Microsoft.AspNetCore.Builder;
-
+using LedgerLink.ViewModels;
 using LedgerLink.Interface; // Your interfaces
 using LedgerLink.ViewModels;
 using LedgerLink.Services; // Your service implementations
