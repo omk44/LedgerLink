@@ -1,3 +1,3 @@
 ﻿<Project>
-  <Import Project="..\build\LedgerLink.props" />
+  <Import Project="../build/LedgerLink.props" />
 </Project>
