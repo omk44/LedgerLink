@@ -158,7 +158,16 @@
                                 {
                                     <tr>
                                         <td>@transaction.PurchaseDate.ToLocalTime().ToString("g")</td>
-                                        <td>@(transaction.Product?.Name ?? "N/A") @(transaction.Product.QuantityValue) - @(transaction.Product.QuantityUnit)</td>
+                                        <td>
+                                            @if (transaction.Product != null)
+                                            {
+                                                @($"{transaction.Product.Name} {transaction.Product.QuantityValue} - {transaction.Product.QuantityUnit}")
+                                            }
+                                            else
+                                            {
+                                                @("N/A")
+                                            }
+                                        </td>
                                         <td>@transaction.Quantity</td>
                                         <td>@transaction.UnitPrice.ToString("C", indiaCulture)</td>
                                         <td>@transaction.TotalAmount.ToString("C", indiaCulture)</td>
