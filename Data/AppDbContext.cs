@@ -53,7 +53,7 @@ namespace LedgerLink.Data
                 .HasMany<Transaction>()
                 .WithOne(t => t.Product)
                 .HasForeignKey(t => t.ProductId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }
