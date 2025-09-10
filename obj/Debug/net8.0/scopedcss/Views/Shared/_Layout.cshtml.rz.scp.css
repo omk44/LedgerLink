@@ -1,48 +1,33 @@
-/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
+/* Path: LedgerLink/Views/Shared/_Layout.cshtml.css */
+/* Styles specific to the _Layout.cshtml file */
 
 a.navbar-brand[b-y535oqqwaz] {
   white-space: normal;
   text-align: center;
   word-break: break-all;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #343a40 !important;
 }
 
-a[b-y535oqqwaz] {
-  color: #0077cc;
+/* Navigation Links */
+.nav-item .nav-link[b-y535oqqwaz] {
+  color: #495057 !important;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
 }
 
-.btn-primary[b-y535oqqwaz] {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
-.nav-pills .nav-link.active[b-y535oqqwaz], .nav-pills .show > .nav-link[b-y535oqqwaz] {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.nav-item .nav-link:hover[b-y535oqqwaz] {
+  color: #007bff !important;
 }
 
 .border-top[b-y535oqqwaz] {
-  border-top: 1px solid #e5e5e5;
+  border-top: 1px solid #dee2e6 !important;
 }
 .border-bottom[b-y535oqqwaz] {
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid #dee2e6 !important;
 }
 
 .box-shadow[b-y535oqqwaz] {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
-
-button.accept-policy[b-y535oqqwaz] {
-  font-size: 1rem;
-  line-height: inherit;
-}
-
-.footer[b-y535oqqwaz] {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px;
+  box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;
 }

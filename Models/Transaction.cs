@@ -17,11 +17,10 @@ namespace LedgerLink.Models
         public Customer Customer { get; set; } = null!; // Non-nullable, EF Core will load this
 
         // Scalar Property: Foreign Key to Product
-        [Required]
-        public int ProductId { get; set; }
+        public int? ProductId { get; set; }
 
         // Reference Navigation Property: The Product involved in this transaction
-        public Product Product { get; set; } = null!; // Non-nullable
+        public Product? Product { get; set; } = null!; // Non-nullable
 
         // Scalar Property: Quantity of the product purchased
         [Required(ErrorMessage = "Quantity is required.")]

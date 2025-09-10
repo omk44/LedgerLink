@@ -112,7 +112,8 @@
                         @foreach (var item in Model.TransactionItems)
                         {
                             <tr>
-                                <td>@(item.Product?.Name ?? "N/A")</td>
+                                @* CRITICAL FIX: Display both Product Name and QuantityUnit from the product model *@
+                                <td>@(item.Product?.Name ?? "N/A") @(item.Product?.QuantityValue)@(item.Product?.QuantityUnit)</td>
                                 <td>@item.Quantity</td>
                                 <td>@item.UnitPrice.ToString("C", indiaCulture)</td>
                                 <td>@item.TotalAmount.ToString("C", indiaCulture)</td>
