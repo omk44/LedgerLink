@@ -4,7 +4,7 @@
 
 @{
     ViewData["Title"] = $"{Model.ReceiptType} Receipt";
-    Layout = null; // No layout for printing, or a minimal print-specific layout
+    Layout = null;
     var indiaCulture = new CultureInfo("en-IN");
 }
 
@@ -112,8 +112,7 @@
                         @foreach (var item in Model.TransactionItems)
                         {
                             <tr>
-                                @* CRITICAL FIX: Display both Product Name and QuantityUnit from the product model *@
-                                <td>@(item.Product?.Name ?? "N/A") @(item.Product?.QuantityValue)@(item.Product?.QuantityUnit)</td>
+                                <td>@item.Product?.Name (@item.QuantityUnit)</td>
                                 <td>@item.Quantity</td>
                                 <td>@item.UnitPrice.ToString("C", indiaCulture)</td>
                                 <td>@item.TotalAmount.ToString("C", indiaCulture)</td>
@@ -121,8 +120,14 @@
                         }
                     </tbody>
                 </table>
+                <hr style="border-top: 1px dashed #333;" />
                 <div class="receipt-summary">
-                    <p>Subtotal: @Model.Transaction.TotalAmount.ToString("C", indiaCulture)</p>
+                    @if (Model.Transaction.DiscountAmount > 0)
+                    {
+                        <p>Subtotal: @Model.Transaction.TotalAmount.ToString("C", indiaCulture)</p>
+                        <p>Discount (@Model.Transaction.DiscountPercentage.ToString("F2")%): -@Model.Transaction.DiscountAmount.ToString("C", indiaCulture)</p>
+                    }
+                    <p>Final Amount: @Model.Transaction.FinalAmount.ToString("C", indiaCulture)</p>
                     <p>Status: @(Model.Transaction.IsCreditTransaction ? "On Credit" : "Paid")</p>
                 </div>
             </div>
