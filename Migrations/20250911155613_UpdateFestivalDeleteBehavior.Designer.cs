@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LedgerLink.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250910150524_InitialSetup")]
-    partial class InitialSetup
+    [Migration("20250911155613_UpdateFestivalDeleteBehavior")]
+    partial class UpdateFestivalDeleteBehavior
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,6 +56,71 @@ namespace LedgerLink.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Customers");
+                });
+
+            modelBuilder.Entity("LedgerLink.Models.DiscountRule", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<decimal>("DiscountPercentage")
+                        .HasColumnType("numeric(5, 2)");
+
+                    b.Property<int>("FestivalId")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("MaxCustomerCreditBalance")
+                        .HasColumnType("numeric(18, 2)");
+
+                    b.Property<decimal>("MinCustomerCreditBalance")
+                        .HasColumnType("numeric(18, 2)");
+
+                    b.Property<decimal>("MinPurchaseAmount")
+                        .HasColumnType("numeric(18, 2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FestivalId");
+
+                    b.ToTable("DiscountRules");
+                });
+
+            modelBuilder.Entity("LedgerLink.Models.Festival", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Festivals");
                 });
 
             modelBuilder.Entity("LedgerLink.Models.Payment", b =>
@@ -129,6 +194,18 @@ namespace LedgerLink.Migrations
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uuid");
 
+                    b.Property<decimal>("DiscountAmount")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("DiscountPercentage")
+                        .HasColumnType("numeric");
+
+                    b.Property<int?>("FestivalId")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("FinalAmount")
+                        .HasColumnType("numeric");
+
                     b.Property<bool>("IsCreditTransaction")
                         .HasColumnType("boolean");
 
@@ -160,9 +237,22 @@ namespace LedgerLink.Migrations
 
                     b.HasIndex("CustomerId");
 
+                    b.HasIndex("FestivalId");
+
                     b.HasIndex("ProductId");
 
                     b.ToTable("Transactions");
+                });
+
+            modelBuilder.Entity("LedgerLink.Models.DiscountRule", b =>
+                {
+                    b.HasOne("LedgerLink.Models.Festival", "Festival")
+                        .WithMany("DiscountRules")
+                        .HasForeignKey("FestivalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Festival");
                 });
 
             modelBuilder.Entity("LedgerLink.Models.Payment", b =>
@@ -184,12 +274,19 @@ namespace LedgerLink.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("LedgerLink.Models.Festival", "Festival")
+                        .WithMany()
+                        .HasForeignKey("FestivalId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("LedgerLink.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Customer");
+
+                    b.Navigation("Festival");
 
                     b.Navigation("Product");
                 });
@@ -199,6 +296,11 @@ namespace LedgerLink.Migrations
                     b.Navigation("Payments");
 
                     b.Navigation("Transactions");
+                });
+
+            modelBuilder.Entity("LedgerLink.Models.Festival", b =>
+                {
+                    b.Navigation("DiscountRules");
                 });
 #pragma warning restore 612, 618
         }
