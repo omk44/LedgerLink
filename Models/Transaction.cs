@@ -1,59 +1,59 @@
 // Path: LedgerLink/Models/Transaction.cs
 using System;
-using System.ComponentModel.DataAnnotations; // For data annotations
+using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace LedgerLink.Models
 {
     public class Transaction
     {
-        // Scalar Property: Primary Key
         public int Id { get; set; }
 
-        // Scalar Property: Foreign Key to Customer
         [Required]
         public Guid CustomerId { get; set; }
+        public Customer Customer { get; set; } = null!;
 
-         // Reference Navigation Property: The Customer who made this transaction
-        public Customer Customer { get; set; } = null!; // Non-nullable, EF Core will load this
-
-        // Scalar Property: Foreign Key to Product
+        // The foreign key is now nullable. It can be null if the Product is deleted.
         public int? ProductId { get; set; }
+        
+        // CRITICAL FIX: The navigation property MUST be nullable to match the FK.
+        public Product? Product { get; set; }
 
-        // Reference Navigation Property: The Product involved in this transaction
-        public Product? Product { get; set; } = null!; // Non-nullable
-
-        // Scalar Property: Quantity of the product purchased
         [Required(ErrorMessage = "Quantity is required.")]
         [Range(1, 10000, ErrorMessage = "Quantity must be at least 1.")]
         public int Quantity { get; set; }
 
-        // Scalar Property: Price of a single unit at the time of purchase
-        // Important for historical accuracy if product prices change
         [Required(ErrorMessage = "Unit Price at purchase is required.")]
         [Range(0.01, 100000.00, ErrorMessage = "Unit Price must be greater than 0.")]
         public decimal UnitPrice { get; set; }
 
-        // NEW PROPERTY
-        [Required]
-        [StringLength(20)]
-        public string QuantityUnit { get; set; } = string.Empty;
-
-        
-        // Scalar Property: Total amount for this transaction (Quantity * UnitPrice)
-        // Store this to avoid recalculation and for exact historical record
         [Required(ErrorMessage = "Total Amount is required.")]
         [Range(0.01, 10000000.00, ErrorMessage = "Total Amount must be greater than 0.")]
         public decimal TotalAmount { get; set; }
 
-        // Scalar Property: Crucial flag - true if this transaction adds to customer's credit
-        public bool IsCreditTransaction { get; set; } = false; // Default to a paid transaction
+        public bool IsCreditTransaction { get; set; } = false;
 
-        // Scalar Property: Date and time of the purchase
         [Required]
-        public DateTime PurchaseDate { get; set; } = DateTime.UtcNow; // Best practice: Use UtcNow
+        public DateTime PurchaseDate { get; set; } = DateTime.UtcNow;
 
-        // Scalar Property: Optional notes for the transaction
         [StringLength(500, ErrorMessage = "Notes cannot exceed 500 characters.")]
-        public string? Notes { get; set; } // Nullable
+        public string? Notes { get; set; }
+
+        // NEW PROPERTIES FOR DISCOUNT TRACKING
+        public int? FestivalId { get; set; }
+        public Festival? Festival { get; set; }
+
+        [Range(0.00, 100.00, ErrorMessage = "Discount Percentage must be between 0 and 100.")]
+        public decimal DiscountPercentage { get; set; } = 0.00m;
+
+        [Range(0.00, 10000000.00, ErrorMessage = "Discount Amount must be non-negative.")]
+        public decimal DiscountAmount { get; set; } = 0.00m;
+
+        [Range(0.00, 10000000.00, ErrorMessage = "Final Amount must be non-negative.")]
+        public decimal FinalAmount { get; set; }
+
+        [Required]
+        [StringLength(20)]
+        public string QuantityUnit { get; set; } = string.Empty;
     }
 }
