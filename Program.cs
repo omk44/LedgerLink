@@ -61,7 +61,8 @@ builder.Services.AddScoped<IProductRepo, ProductRepo>();
 builder.Services.AddScoped<ITransactionRepo, TransactionRepo>(); // Corrected from ITransactionRepo
 builder.Services.AddTransient<QrCodeService>();
 builder.Services.AddTransient<IEmailService, EmailService>();
-
+builder.Services.AddScoped<IFestivalRepo, FestivalRepo>();
+builder.Services.AddScoped<IDiscountRuleRepo, DiscountRuleRepo>();
 
 var app = builder.Build();
 
