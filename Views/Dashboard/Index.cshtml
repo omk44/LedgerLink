@@ -1,35 +1,42 @@
 @* Path: LedgerLink/Views/Dashboard/Index.cshtml *@
 @model LedgerLink.ViewModels.DashboardViewModel
-@using System.Globalization; @* Required for CultureInfo *@
+@using System.Globalization;
 
 @{
     ViewData["Title"] = "Admin Dashboard";
-    var indiaCulture = new CultureInfo("en-IN"); // Define CultureInfo inside a Razor code block
+    var indiaCulture = new CultureInfo("en-IN"); 
 }
 
 <div class="container mt-5">
     <h2>@ViewData["Title"]</h2>
     <hr />
 
-    @* Date Filter Form *@
+    <!-- ===================== Section 1: Date Filter ===================== -->
+    <h3 class="mt-4 mb-3 text-primary">📅 Date Filter</h3>
     <form asp-controller="Dashboard" asp-action="Index" method="get" class="mb-4">
         <div class="row">
             <div class="col-md-4">
                 <label for="startDate" class="form-label">Start Date:</label>
-                <input type="date" id="startDate" name="startDate" class="form-control" value="@Model.StartDate.ToString("yyyy-MM-dd")" />
+                <input type="date" id="startDate" name="startDate" class="form-control"
+                       value="@Model.StartDate.ToString("yyyy-MM-dd")" />
             </div>
             <div class="col-md-4">
                 <label for="endDate" class="form-label">End Date:</label>
-                <input type="date" id="endDate" name="endDate" class="form-control" value="@Model.EndDate.ToString("yyyy-MM-dd")" />
+                <input type="date" id="endDate" name="endDate" class="form-control"
+                       value="@Model.EndDate.ToString("yyyy-MM-dd")" />
             </div>
             <div class="col-md-4 d-flex align-items-end">
                 <button type="submit" class="btn btn-primary w-100">Apply Filter</button>
             </div>
         </div>
     </form>
+    <!-- ===================== END Section 1 ===================== -->
 
+
+    <!-- ===================== Section 2: Overall Summary ===================== -->
+    <h3 class="mt-4 mb-3 text-primary">📊 Overall Summary</h3>
     <div class="row mb-4">
-        @* Card 1: Total Outstanding Credit (Overall) *@
+        <!-- Card 1 -->
         <div class="col-md-4">
             <div class="card text-white bg-danger mb-3 shadow-sm">
                 <div class="card-header">Total Outstanding Credit (Overall)</div>
@@ -39,8 +46,7 @@
                 </div>
             </div>
         </div>
-
-        @* Card 2: Total Customers (Overall) *@
+        <!-- Card 2 -->
         <div class="col-md-4">
             <div class="card text-white bg-info mb-3 shadow-sm">
                 <div class="card-header">Total Customers (Overall)</div>
@@ -50,8 +56,7 @@
                 </div>
             </div>
         </div>
-
-        @* Card 3: Total Products (Overall) *@
+        <!-- Card 3 -->
         <div class="col-md-4">
             <div class="card text-white bg-success mb-3 shadow-sm">
                 <div class="card-header">Total Products (Overall)</div>
@@ -62,33 +67,38 @@
             </div>
         </div>
     </div>
+    <!-- ===================== END Section 2 ===================== -->
 
+
+    <!-- ===================== Section 3: Period Summary ===================== -->
+    <h3 class="mt-4 mb-3 text-primary">📈 Period Summary (@Model.StartDate.ToShortDateString() → @Model.EndDate.ToShortDateString())</h3>
     <div class="row mb-4">
-        @* Card 4: Total Sales in Period *@
+        <!-- Card 4 -->
         <div class="col-md-6">
             <div class="card text-dark bg-light mb-3 shadow-sm">
                 <div class="card-header">Total Sales in Period</div>
                 <div class="card-body">
                     <h5 class="card-title">@Model.TotalSalesInPeriod.ToString("C", indiaCulture)</h5>
-                    <p class="card-text">Total value of transactions from @Model.StartDate.ToShortDateString() to @Model.EndDate.ToShortDateString().</p>
                 </div>
             </div>
         </div>
-
-        @* Card 5: Total Payments in Period *@
+        <!-- Card 5 -->
         <div class="col-md-6">
             <div class="card text-dark bg-light mb-3 shadow-sm">
                 <div class="card-header">Total Payments in Period</div>
                 <div class="card-body">
                     <h5 class="card-title">@Model.TotalPaymentsInPeriod.ToString("C", indiaCulture)</h5>
-                    <p class="card-text">Total payments received from @Model.StartDate.ToShortDateString() to @Model.EndDate.ToShortDateString().</p>
                 </div>
             </div>
         </div>
     </div>
+    <!-- ===================== END Section 3 ===================== -->
 
+
+    <!-- ===================== Section 4: Customer Insights ===================== -->
+    <h3 class="mt-4 mb-3 text-primary">👥 Customer Insights</h3>
     <div class="row mt-4">
-        @* Section: Top Customers by Credit (Overall) *@
+        <!-- Top Customers -->
         <div class="col-md-6">
             <div class="card shadow-sm">
                 <div class="card-header bg-danger text-white">
@@ -102,12 +112,7 @@
                     else
                     {
                         <table class="table table-striped table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Balance</th>
-                                </tr>
-                            </thead>
+                            <thead><tr><th>Name</th><th>Balance</th></tr></thead>
                             <tbody>
                                 @foreach (var customer in Model.TopCustomersByCredit)
                                 {
@@ -123,7 +128,7 @@
             </div>
         </div>
 
-        @* Section: Customers with Activity in Period *@
+        <!-- Customers with Activity -->
         <div class="col-md-6">
             <div class="card shadow-sm">
                 <div class="card-header bg-info text-white">
@@ -137,12 +142,7 @@
                     else
                     {
                         <table class="table table-striped table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Phone</th>
-                                </tr>
-                            </thead>
+                            <thead><tr><th>Name</th><th>Phone</th></tr></thead>
                             <tbody>
                                 @foreach (var customer in Model.CustomersWithActivityInPeriod)
                                 {
@@ -158,13 +158,16 @@
             </div>
         </div>
     </div>
+    <!-- ===================== END Section 4 ===================== -->
 
-    @* --- Overall All Customer Credit Total Table --- *@
+
+    <!-- ===================== Section 5: Overall Customer Credit Totals ===================== -->
+    <h3 class="mt-4 mb-3 text-primary">💰 Overall Customer Credit Totals</h3>
     <div class="row mt-4">
         <div class="col-md-12">
             <div class="card shadow-sm">
                 <div class="card-header bg-warning text-dark">
-                    <h4>Overall Customer Credit Totals</h4>
+                    <h4>Customer Balances</h4>
                 </div>
                 <div class="card-body">
                     @if (!Model.AllCustomersWithCredit.Any())
@@ -206,11 +209,13 @@
             </div>
         </div>
     </div>
-    @* --- END Overall All Customer Credit Total Table --- *@
+    <!-- ===================== END Section 5 ===================== -->
 
 
+    <!-- ===================== Section 6: Transactions & Payments ===================== -->
+    <h3 class="mt-4 mb-3 text-primary">💳 Transactions & Payments</h3>
     <div class="row mt-4">
-        @* Section: Transactions in Period *@
+        <!-- Transactions -->
         <div class="col-md-6">
             <div class="card shadow-sm">
                 <div class="card-header bg-primary text-white">
@@ -224,14 +229,7 @@
                     else
                     {
                         <table class="table table-striped table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Customer</th>
-                                    <th>Total</th>
-                                    <th>Credit?</th>
-                                </tr>
-                            </thead>
+                            <thead><tr><th>Date</th><th>Customer</th><th>Total</th><th>Credit?</th></tr></thead>
                             <tbody>
                                 @foreach (var transaction in Model.TransactionsInPeriod)
                                 {
@@ -249,7 +247,7 @@
             </div>
         </div>
 
-        @* Section: Payments in Period *@
+        <!-- Payments -->
         <div class="col-md-6">
             <div class="card shadow-sm">
                 <div class="card-header bg-secondary text-white">
@@ -263,14 +261,7 @@
                     else
                     {
                         <table class="table table-striped table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Customer</th>
-                                    <th>Amount</th>
-                                    <th>Mode</th>
-                                </tr>
-                            </thead>
+                            <thead><tr><th>Date</th><th>Customer</th><th>Amount</th><th>Mode</th></tr></thead>
                             <tbody>
                                 @foreach (var payment in Model.PaymentsInPeriod)
                                 {
@@ -288,4 +279,6 @@
             </div>
         </div>
     </div>
+    <!-- ===================== END Section 6 ===================== -->
+
 </div>
