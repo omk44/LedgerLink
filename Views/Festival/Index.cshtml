@@ -1,0 +1,51 @@
+@* Path: LedgerLink/Views/Festival/Index.cshtml *@
+@model IEnumerable<LedgerLink.Models.Festival>
+
+@{
+    ViewData["Title"] = "Manage Festivals";
+}
+
+<div class="container mt-5">
+    <h2>@ViewData["Title"]</h2>
+
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Add New Festival</a>
+    </p>
+
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Name)</th>
+                <th>@Html.DisplayNameFor(model => model.StartDate)</th>
+                <th>@Html.DisplayNameFor(model => model.EndDate)</th>
+                <th>@Html.DisplayNameFor(model => model.IsActive)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                    <td>@item.StartDate.ToShortDateString()</td>
+                    <td>@item.EndDate.ToShortDateString()</td>
+                    <td>
+                        @if (item.IsActive)
+                        {
+                            <span class="badge bg-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Inactive</span>
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-info">Edit</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a> |
+                        <a asp-controller="DiscountRule" asp-action="Index" asp-route-festivalId="@item.Id" class="btn btn-sm btn-secondary">Rules</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -54,6 +54,38 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRGFzaGJvYXJkL0luZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[/home/om/dotnet project/LedgerLink/Views/DiscountRule/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRGlzY291bnRSdWxlL0NyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/om/dotnet project/LedgerLink/Views/DiscountRule/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRGlzY291bnRSdWxlL0RlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/om/dotnet project/LedgerLink/Views/DiscountRule/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRGlzY291bnRSdWxlL0VkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/om/dotnet project/LedgerLink/Views/DiscountRule/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRGlzY291bnRSdWxlL0luZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/om/dotnet project/LedgerLink/Views/Festival/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRmVzdGl2YWwvQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/om/dotnet project/LedgerLink/Views/Festival/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRmVzdGl2YWwvRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/om/dotnet project/LedgerLink/Views/Festival/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRmVzdGl2YWwvRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/om/dotnet project/LedgerLink/Views/Festival/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRmVzdGl2YWwvSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [/home/om/dotnet project/LedgerLink/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

@@ -1,0 +1,44 @@
+@* Path: LedgerLink/Views/DiscountRule/Index.cshtml *@
+@model IEnumerable<LedgerLink.Models.DiscountRule>
+
+@{
+    ViewData["Title"] = $"Rules for {ViewBag.FestivalName}";
+}
+
+<div class="container mt-5">
+    <h2>@ViewData["Title"]</h2>
+
+    <p>
+        <a asp-action="Create" asp-route-festivalId="@ViewBag.FestivalId" class="btn btn-primary">Add New Rule</a>
+        <a asp-action="Index" asp-controller="Festival" class="btn btn-secondary ml-2">Back to Festivals</a>
+    </p>
+
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Discount %</th>
+                <th>Min Credit</th>
+                <th>Max Credit</th>
+                <th>Min Purchase</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.DiscountPercentage)%</td>
+                    <td>@Html.DisplayFor(modelItem => item.MinCustomerCreditBalance)</td>
+                    <td>@Html.DisplayFor(modelItem => item.MaxCustomerCreditBalance)</td>
+                    <td>@Html.DisplayFor(modelItem => item.MinPurchaseAmount)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-info">Edit</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

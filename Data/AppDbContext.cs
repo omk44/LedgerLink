@@ -13,6 +13,8 @@ namespace LedgerLink.Data
         public DbSet<Transaction> Transactions { get; set; } = null!;
         public DbSet<Payment> Payments { get; set; } = null!;
 
+        public DbSet<Festival> Festivals { get; set; } = null!;
+        public DbSet<DiscountRule> DiscountRules { get; set; } = null!;
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // --- Configure Primary Keys ---
@@ -54,6 +56,31 @@ namespace LedgerLink.Data
                 .WithOne(t => t.Product)
                 .HasForeignKey(t => t.ProductId)
                 .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<DiscountRule>()
+                .Property(r => r.DiscountPercentage)
+                .HasColumnType("numeric(5, 2)");
+            modelBuilder.Entity<DiscountRule>()
+                .Property(r => r.MinCustomerCreditBalance)
+                .HasColumnType("numeric(18, 2)");
+            modelBuilder.Entity<DiscountRule>()
+                .Property(r => r.MaxCustomerCreditBalance)
+                .HasColumnType("numeric(18, 2)");
+            modelBuilder.Entity<DiscountRule>()
+                .Property(r => r.MinPurchaseAmount)
+                .HasColumnType("numeric(18, 2)");
+
+            modelBuilder.Entity<Festival>()
+            .HasMany(f => f.DiscountRules) // A Festival has many DiscountRules
+            .WithOne(r => r.Festival)      // Each DiscountRule belongs to one Festival
+            .HasForeignKey(r => r.FestivalId) // Foreign key in DiscountRule table
+            .OnDelete(DeleteBehavior.Cascade); // If a Festival is deleted, delete its rules too
+
+            modelBuilder.Entity<Festival>()
+                .HasMany<Transaction>()
+                .WithOne(t => t.Festival)
+                .HasForeignKey(t => t.FestivalId)
+                .OnDelete(DeleteBehavior.SetNull); // <-- ADDED this rule
         }
     }
 }

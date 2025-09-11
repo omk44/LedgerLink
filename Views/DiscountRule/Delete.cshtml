@@ -1,0 +1,48 @@
+@* Path: LedgerLink/Views/DiscountRule/Delete.cshtml *@
+@model LedgerLink.Models.DiscountRule
+
+@{
+    ViewData["Title"] = $"Delete Rule for {ViewBag.FestivalName}";
+}
+
+<div class="container mt-5">
+    <h2>@ViewData["Title"]</h2>
+    <h3 class="text-danger">Are you sure you want to delete this discount rule?</h3>
+    <hr />
+    <div>
+        <h4>Rule Details</h4>
+        <dl class="row">
+            <dt class="col-sm-3">
+                Discount Percentage
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.DiscountPercentage)%
+            </dd>
+            <dt class="col-sm-3">
+                Credit Range
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.MinCustomerCreditBalance) - @Html.DisplayFor(model => model.MaxCustomerCreditBalance)
+            </dd>
+            <dt class="col-sm-3">
+                Min Purchase
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.MinPurchaseAmount)
+            </dd>
+            <dt class="col-sm-3">
+                Description
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+        </dl>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="FestivalId" />
+            <input type="submit" value="Delete" class="btn btn-danger" />
+            <a asp-action="Index" asp-route-festivalId="@ViewBag.FestivalId" class="btn btn-secondary ml-2">Back to Rules</a>
+        </form>
+    </div>
+</div>
