@@ -1,6 +1,8 @@
 @* Path: LedgerLink/Views/Transaction/CustomerDetails.cshtml *@
 @model LedgerLink.ViewModels.CustomerDetailsViewModel
 @using System.Globalization;
+@using X.PagedList.Mvc.Core
+@using X.PagedList
 
 @{
     ViewData["Title"] = $"Transaction for {Model.Customer.FullName}";
@@ -9,58 +11,471 @@
     var hasActiveFestival = activeFestivals != null && activeFestivals.Any();
 }
 
-<div class="container mt-5">
-    <h2>Transaction for @Model.Customer.FullName</h2>
-    <hr />
+<style>
+    :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #34495e;
+        --success-color: #27ae60;
+        --warning-color: #f39c12;
+        --danger-color: #e74c3c;
+        --info-color: #3498db;
+        --light-bg: #ecf0f1;
+        --card-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
 
+    body {
+        background-color: #f5f6fa;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .page-header {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        color: white;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .page-header h2 {
+        margin: 0;
+        font-weight: 300;
+        font-size: 2rem;
+    }
+
+    .classic-card {
+        background: white;
+        border-radius: 8px;
+        box-shadow: var(--card-shadow);
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .classic-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+
+    .classic-card-header {
+        padding: 1rem 1.5rem;
+        font-weight: 600;
+        font-size: 1.1rem;
+        border-bottom: 2px solid var(--light-bg);
+        background: linear-gradient(to right, #fafafa, #f5f5f5);
+    }
+
+    .classic-card-header.primary {
+        background: var(--primary-color);
+        color: white;
+        border-bottom: none;
+    }
+
+    .classic-card-header.info {
+        background: var(--info-color);
+        color: white;
+        border-bottom: none;
+    }
+
+    .classic-card-header.success {
+        background: var(--success-color);
+        color: white;
+        border-bottom: none;
+    }
+
+    .classic-card-header.warning {
+        background: var(--warning-color);
+        color: white;
+        border-bottom: none;
+    }
+
+    .classic-card-body {
+        padding: 1.5rem;
+    }
+
+    .info-item {
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #f0f0f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+
+    .info-item:last-child {
+        border-bottom: none;
+    }
+
+    .info-label {
+        font-weight: 600;
+        color: var(--secondary-color);
+        min-width: 100px;
+    }
+
+    .info-value {
+        color: #555;
+        text-align: right;
+        flex: 1;
+    }
+
+    .balance-display {
+        background: linear-gradient(135deg, #fff5f5, #ffe0e0);
+        border-left: 4px solid var(--danger-color);
+        padding: 1rem;
+        margin: 1rem 0;
+        border-radius: 4px;
+    }
+
+    .balance-display .amount {
+        font-size: 1.5rem;
+        color: var(--danger-color);
+        font-weight: bold;
+    }
+
+    .classic-form .form-group {
+        margin-bottom: 1.25rem;
+    }
+
+    .classic-form label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: var(--secondary-color);
+        font-weight: 500;
+        font-size: 0.95rem;
+    }
+
+    .classic-form .form-control {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .classic-form .form-control:focus {
+        outline: none;
+        border-color: var(--info-color);
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    }
+
+    .classic-form select.form-control {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        padding-right: 2.5rem;
+    }
+
+    .classic-btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 4px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-size: 0.9rem;
+    }
+
+    .classic-btn-primary {
+        background: var(--primary-color);
+        color: white;
+    }
+
+    .classic-btn-primary:hover {
+        background: #1a252f;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(44, 62, 80, 0.3);
+    }
+
+    .classic-btn-success {
+        background: var(--success-color);
+        color: white;
+        width: 100%;
+    }
+
+    .classic-btn-success:hover {
+        background: #229954;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+    }
+
+    .classic-btn-warning {
+        background: var(--warning-color);
+        color: white;
+        width: 100%;
+    }
+
+    .classic-btn-warning:hover {
+        background: #e67e22;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
+    }
+
+    .classic-btn-outline-danger {
+        background: white;
+        color: var(--danger-color);
+        border: 2px solid var(--danger-color);
+        width: 100%;
+    }
+
+    .classic-btn-outline-danger:hover {
+        background: var(--danger-color);
+        color: white;
+    }
+
+    .classic-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    .classic-table thead {
+        background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+    }
+
+    .classic-table th {
+        padding: 1rem;
+        text-align: left;
+        font-weight: 600;
+        color: var(--secondary-color);
+        border-bottom: 2px solid #dee2e6;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .classic-table tbody tr {
+        transition: background-color 0.2s ease;
+    }
+
+    .classic-table tbody tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    .classic-table td {
+        padding: 0.875rem 1rem;
+        border-bottom: 1px solid #e9ecef;
+        color: #495057;
+    }
+
+    .classic-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .alert-classic {
+        padding: 1rem 1.25rem;
+        border-radius: 6px;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        animation: slideDown 0.3s ease;
+    }
+@@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@@media (max-width: 768px) {
+    .grid-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+
+
+    .alert-success-classic {
+        background: linear-gradient(135deg, #d4edda, #c3e6cb);
+        border-left: 4px solid var(--success-color);
+        color: #155724;
+    }
+
+    .alert-danger-classic {
+        background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+        border-left: 4px solid var(--danger-color);
+        color: #721c24;
+    }
+
+    .alert-info-classic {
+        background: linear-gradient(135deg, #d1ecf1, #bee5eb);
+        border-left: 4px solid var(--info-color);
+        color: #0c5460;
+    }
+
+    .discount-info-box {
+        background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+        border: 1px solid #90caf9;
+        border-radius: 6px;
+        padding: 1.25rem;
+        margin-top: 1rem;
+    }
+
+    .discount-info-box .info-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .discount-info-box .info-row:last-child {
+        border-bottom: none;
+        font-weight: bold;
+        color: var(--primary-color);
+        font-size: 1.1rem;
+    }
+
+    .checkbox-wrapper {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem;
+        background: #f8f9fa;
+        border-radius: 4px;
+        transition: background 0.2s ease;
+    }
+
+    .checkbox-wrapper:hover {
+        background: #e9ecef;
+    }
+
+    .checkbox-wrapper input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin-right: 0.75rem;
+        cursor: pointer;
+    }
+
+    .checkbox-wrapper label {
+        margin: 0;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: #6c757d;
+    }
+
+    .empty-state i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        opacity: 0.3;
+    }
+
+    .grid-container {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    @@media (max-width: 768px) {
+    .grid-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+    .close-btn {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        opacity: 0.5;
+        transition: opacity 0.2s;
+    }
+
+    .close-btn:hover {
+        opacity: 1;
+    }
+</style>
+
+<div class="page-header">
+    <div class="container">
+        <h2>Transaction for @Model.Customer.FullName</h2>
+    </div>
+</div>
+
+<div class="container">
     @if (TempData["SuccessMessage"] != null)
     {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            @TempData["SuccessMessage"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="alert-classic alert-success-classic" role="alert">
+            <span>@TempData["SuccessMessage"]</span>
+            <button type="button" class="close-btn" onclick="this.parentElement.style.display='none'">×</button>
         </div>
     }
     @if (TempData["ErrorMessage"] != null)
     {
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            @TempData["ErrorMessage"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="alert-classic alert-danger-classic" role="alert">
+            <span>@TempData["ErrorMessage"]</span>
+            <button type="button" class="close-btn" onclick="this.parentElement.style.display='none'">×</button>
         </div>
     }
 
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card shadow-sm mb-4">
-                <div class="card-header bg-info text-white">
-                    <h4>Customer Information</h4>
+    <div class="grid-container">
+        <!-- Customer Information -->
+        <div>
+            <div class="classic-card">
+                <div class="classic-card-header info">
+                    Customer Information
                 </div>
-                <div class="card-body">
-                    <p><strong>Name:</strong> @Model.Customer.FullName</p>
-                    <p><strong>Phone:</strong> @Model.Customer.PhoneNumber</p>
-                    <p><strong>Email:</strong> @Model.Customer.Email</p>
-                    <p><strong>Address:</strong> @Model.Customer.Address</p>
-                    <h5 class="text-danger"><strong>Current Balance:</strong> @Model.Customer.CurrentBalance.ToString("C", indiaCulture)</h5>
+                <div class="classic-card-body">
+                    <div class="info-item">
+                        <span class="info-label">Name:</span>
+                        <span class="info-value">@Model.Customer.FullName</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Phone:</span>
+                        <span class="info-value">@Model.Customer.PhoneNumber</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Email:</span>
+                        <span class="info-value">@Model.Customer.Email</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Address:</span>
+                        <span class="info-value">@Model.Customer.Address</span>
+                    </div>
+                    
+                    <div class="balance-display">
+                        <div style="font-size: 0.9rem; color: #666; margin-bottom: 0.25rem;">Current Balance</div>
+                        <div class="amount">@Model.Customer.CurrentBalance.ToString("C", indiaCulture)</div>
+                    </div>
+
                     @if (Model.Customer.CurrentBalance > 0)
                     {
-                        <form asp-controller="Transaction" asp-action="SendReminder" method="post" class="mt-3">
+                        <form asp-controller="Transaction" asp-action="SendReminder" method="post" style="margin-top: 1rem;">
                             <input type="hidden" name="customerId" value="@Model.Customer.Id" />
-                            <button type="submit" class="btn btn-outline-danger btn-sm w-100">Send Payment Reminder (Email)</button>
+                            <button type="submit" class="classic-btn classic-btn-outline-danger">
+                                Send Payment Reminder (Email)
+                            </button>
                         </form>
                     }
                 </div>
             </div>
         </div>
 
-        <div class="col-md-8">
-            <div class="card shadow-sm mb-4">
-                <div class="card-header bg-success text-white">
-                    <h4>Add Item to Transaction</h4>
+        <!-- Right Column - Forms -->
+        <div>
+            <!-- Add Item Form -->
+            <div class="classic-card">
+                <div class="classic-card-header success">
+                    Add Item to Transaction
                 </div>
-                <div class="card-body">
-                    <form id="addItemForm" asp-controller="Transaction" asp-action="AddItem" method="post">
+                <div class="classic-card-body">
+                    <form id="addItemForm" asp-controller="Transaction" asp-action="AddItem" method="post" class="classic-form">
                         <input type="hidden" name="customerId" id="customerId" value="@Model.Customer.Id" />
-                        <div class="form-group mb-3">
-                            <label for="productId" class="form-label">Select Product:</label>
+                        
+                        <div class="form-group">
+                            <label for="productId">Select Product:</label>
                             <select id="productId" name="productId" class="form-control">
                                 @if (Model.Products.Any())
                                 {
@@ -77,16 +492,21 @@
                                 }
                             </select>
                         </div>
-                        <div class="form-group mb-3">
-                            <label for="quantity" class="form-label">Quantity:</label>
+
+                        <div class="form-group">
+                            <label for="quantity">Quantity:</label>
                             <input type="number" id="quantity" name="quantity" class="form-control" value="1" min="1" />
                         </div>
-                        <div class="form-group form-check mb-3">
-                            <input type="checkbox" class="form-check-input" id="isCreditTransaction" name="isCreditTransaction" value="true" />
-                            <label class="form-check-label" for="isCreditTransaction">Add to Credit (Money Pending)</label>
+
+                        <div class="form-group">
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" id="isCreditTransaction" name="isCreditTransaction" value="true" />
+                                <label for="isCreditTransaction">Add to Credit (Money Pending)</label>
+                            </div>
                         </div>
-                        <div class="form-group mb-3" id="paymentModeForAddItemDiv">
-                            <label for="paymentMode" class="form-label">Payment Mode (if not credit):</label>
+
+                        <div class="form-group" id="paymentModeForAddItemDiv">
+                            <label for="paymentMode">Payment Mode (if not credit):</label>
                             <select id="paymentMode" name="paymentMode" class="form-control">
                                 <option value="Cash">Cash</option>
                                 <option value="UPI">UPI</option>
@@ -94,10 +514,11 @@
                                 <option value="Bank Transfer">Bank Transfer</option>
                             </select>
                         </div>
+
                         @if (hasActiveFestival)
                         {
-                            <div class="form-group mb-3">
-                                <label for="applyDiscountFestivalId" class="form-label">Apply Festival Discount?</label>
+                            <div class="form-group">
+                                <label for="applyDiscountFestivalId">Apply Festival Discount?</label>
                                 <select id="applyDiscountFestivalId" name="applyDiscountFestivalId" class="form-control">
                                     <option value="">No Discount</option>
                                     @foreach (var festival in activeFestivals)
@@ -108,35 +529,52 @@
                             </div>
                         }
                         
-                        <div class="alert alert-info mt-3" role="alert" id="discountInfo" style="display: none;">
-                            <span id="discountMessage"></span><br/>
-                            <strong>Original Amount:</strong> <span id="originalAmountSpan"></span><br/>
-                            <strong>Discount Applied:</strong> <span id="discountAmountSpan"></span> <br/>
-                            <strong>Final Amount:</strong> <span id="finalAmountSpan"></span>
+                        <div class="discount-info-box" id="discountInfo" style="display: none;">
+                            <div style="margin-bottom: 0.75rem; color: var(--info-color); font-weight: 500;">
+                                <span id="discountMessage"></span>
+                            </div>
+                            <div class="info-row">
+                                <span>Original Amount:</span>
+                                <span id="originalAmountSpan"></span>
+                            </div>
+                            <div class="info-row">
+                                <span>Discount Applied:</span>
+                                <span id="discountAmountSpan" style="color: var(--success-color);"></span>
+                            </div>
+                            <div class="info-row">
+                                <span>Final Amount:</span>
+                                <span id="finalAmountSpan"></span>
+                            </div>
                         </div>
                         
-                        <div class="form-group mb-3">
-                            <label for="notes" class="form-label">Notes (Optional):</label>
-                            <textarea id="notes" name="notes" class="form-control" rows="2"></textarea>
+                        <div class="form-group">
+                            <label for="notes">Notes (Optional):</label>
+                            <textarea id="notes" name="notes" class="form-control" rows="3" style="resize: vertical;"></textarea>
                         </div>
-                        <button type="submit" class="btn btn-success w-100">Record Sale</button>
+
+                        <button type="submit" class="classic-btn classic-btn-success">
+                            Record Sale
+                        </button>
                     </form>
                 </div>
             </div>
 
-            <div class="card shadow-sm mt-4">
-                <div class="card-header bg-warning text-dark">
-                    <h4>Record Payment</h4>
+            <!-- Record Payment Form -->
+            <div class="classic-card">
+                <div class="classic-card-header warning">
+                    Record Payment
                 </div>
-                <div class="card-body">
-                    <form id="addPaymentForm" asp-controller="Transaction" asp-action="AddPayment" method="post">
+                <div class="classic-card-body">
+                    <form id="addPaymentForm" asp-controller="Transaction" asp-action="AddPayment" method="post" class="classic-form">
                         <input type="hidden" name="customerId" value="@Model.Customer.Id" />
-                        <div class="form-group mb-3">
-                            <label for="amountPaid" class="form-label">Amount Paid:</label>
+                        
+                        <div class="form-group">
+                            <label for="amountPaid">Amount Paid:</label>
                             <input type="number" step="0.01" id="amountPaid" name="amountPaid" class="form-control" value="0.00" min="0.01" />
                         </div>
-                        <div class="form-group mb-3">
-                            <label for="paymentMode" class="form-label">Payment Mode:</label>
+
+                        <div class="form-group">
+                            <label for="paymentMode">Payment Mode:</label>
                             <select id="paymentMode" name="paymentMode" class="form-control">
                                 <option value="Cash">Cash</option>
                                 <option value="UPI">UPI</option>
@@ -144,97 +582,126 @@
                                 <option value="Bank Transfer">Bank Transfer</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-warning w-100">Record Payment</button>
+
+                        <button type="submit" class="classic-btn classic-btn-warning">
+                            Record Payment
+                        </button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="row mt-4">
-        <div class="col-md-12">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h4>Transaction History</h4>
-                </div>
-                <div class="card-body">
-                    @if (!Model.Transactions.Any())
-                    {
-                        <p class="text-muted">No transactions recorded for this customer yet.</p>
-                    }
-                    else
-                    {
-                        <table class="table table-striped table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Item</th>
-                                    <th>Qty</th>
-                                    <th>Price</th>
-                                    <th>Discount</th>
-                                    <th>Final</th>
-                                    <th>Credit?</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var transaction in Model.Transactions)
-                                {
-                                    <tr>
-                                        <td>@transaction.PurchaseDate.ToLocalTime().ToString("g")</td>
-                                        <td>@transaction.Product?.Name (@(transaction.Product?.QuantityValue)@(transaction.Product?.QuantityUnit))</td>
-                                        <td>@transaction.Quantity</td>
-                                        <td>@transaction.TotalAmount.ToString("C", indiaCulture)</td>
-                                        <td>@transaction.DiscountAmount.ToString("C", indiaCulture) (@transaction.DiscountPercentage.ToString("F2")%)</td>
-                                        <td>@transaction.FinalAmount.ToString("C", indiaCulture)</td>
-                                        <td>@(transaction.IsCreditTransaction ? "Yes" : "No")</td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    }
-                </div>
-            </div>
-        </div>
+    <!-- Transaction History -->
+<div class="classic-card">
+    <div class="classic-card-header primary">
+        Transaction History
     </div>
-
-    <div class="row mt-4">
-        <div class="col-md-12">
-            <div class="card shadow-sm">
-                <div class="card-header bg-secondary text-white">
-                    <h4>Payment History</h4>
-                </div>
-                <div class="card-body">
-                    @if (!Model.Payments.Any())
-                    {
-                        <p class="text-muted">No payments recorded for this customer yet.</p>
-                    }
-                    else
-                    {
-                        <table class="table table-striped table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Amount Paid</th>
-                                    <th>Mode</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var payment in Model.Payments)
-                                {
-                                    <tr>
-                                        <td>@payment.PaymentDate.ToLocalTime().ToString("g")</td>
-                                        <td>@payment.AmountPaid.ToString("C", indiaCulture)</td>
-                                        <td>@payment.PaymentMode</td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    }
-                </div>
+    <div class="classic-card-body">
+        @if (!Model.Transactions.Any())
+        {
+            <div class="empty-state">
+                <p>No transactions recorded for this customer yet.</p>
             </div>
-        </div>
+        }
+        else
+        {
+            <div style="overflow-x: auto;">
+                <table class="classic-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Item</th>
+                            <th>Qty</th>
+                            <th>Price</th>
+                            <th>Discount</th>
+                            <th>Final</th>
+                            <th>Credit?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var transaction in Model.Transactions)
+                        {
+                            <tr>
+                                <td>@transaction.PurchaseDate.ToLocalTime().ToString("g")</td>
+                                <td>@transaction.Product?.Name (@transaction.Product?.QuantityValue @transaction.Product?.QuantityUnit)</td>
+                                <td>@transaction.Quantity</td>
+                                <td>@transaction.TotalAmount.ToString("C", indiaCulture)</td>
+                                <td>@transaction.DiscountAmount.ToString("C", indiaCulture) (@transaction.DiscountPercentage.ToString("F2")%)</td>
+                                <td style="font-weight: 600;">@transaction.FinalAmount.ToString("C", indiaCulture)</td>
+                                <td>
+                                    @if(transaction.IsCreditTransaction)
+                                    {
+                                        <span style="color: var(--danger-color); font-weight: 500;">Yes</span>
+                                    }
+                                    else
+                                    {
+                                        <span style="color: var(--success-color);">No</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div style="margin-top:1rem;">
+                @Html.PagedListPager(
+                    Model.Transactions, 
+                    page => Url.Action("CustomerDetails", new { customerId = Model.Customer.Id, transactionPage = page, paymentPage = Model.Payments.PageNumber })
+                )
+            </div>
+        }
     </div>
 </div>
+
+<div class="classic-card">
+    <div class="classic-card-header" style="background: var(--secondary-color); color: white;">
+        Payment History
+    </div>
+    <div class="classic-card-body">
+        @if (!Model.Payments.Any())
+        {
+            <div class="empty-state">
+                <p>No payments recorded for this customer yet.</p>
+            </div>
+        }
+        else
+        {
+            <div style="overflow-x: auto;">
+                <table class="classic-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Amount Paid</th>
+                            <th>Payment Mode</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var payment in Model.Payments)
+                        {
+                            <tr>
+                                <td>@payment.PaymentDate.ToLocalTime().ToString("g")</td>
+                                <td style="font-weight: 600; color: var(--success-color);">@payment.AmountPaid.ToString("C", indiaCulture)</td>
+                                <td>@payment.PaymentMode</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div style="margin-top:1rem;">
+                @Html.PagedListPager(
+                    Model.Payments, 
+                    page => Url.Action("CustomerDetails", new { customerId = Model.Customer.Id, transactionPage = Model.Transactions.PageNumber, paymentPage = page })
+                )
+            </div>
+        }
+    </div>
+</div>
+
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
@@ -319,5 +786,14 @@
 
         // Initial fetch when the page loads if a product is already selected
         fetchDiscount();
+
+        // Toggle payment mode visibility based on credit checkbox
+        $('#isCreditTransaction').on('change', function() {
+            if ($(this).is(':checked')) {
+                $('#paymentModeForAddItemDiv').fadeOut(200);
+            } else {
+                $('#paymentModeForAddItemDiv').fadeIn(200);
+            }
+        });
     });
 </script>
