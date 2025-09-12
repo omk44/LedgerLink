@@ -99,7 +99,7 @@ namespace LedgerLink.Controllers
             {
                 return NotFound("Customer not found.");
             }
-            
+
             IEnumerable<Product> products = _productRepo.GetAllProducts();
 
             // CRITICAL FIX: Pass ALL active festivals to the view, not just one name
@@ -166,8 +166,8 @@ namespace LedgerLink.Controllers
                 {
                     DiscountRule? matchingRule = _discountRuleRepo.GetAllDiscountRules()
                                                                   .Where(r => r.FestivalId == activeFestival.Id)
-                                                                  .FirstOrDefault(r => 
-                                                                      customer.CurrentBalance >= r.MinCustomerCreditBalance && 
+                                                                  .FirstOrDefault(r =>
+                                                                      customer.CurrentBalance >= r.MinCustomerCreditBalance &&
                                                                       customer.CurrentBalance <= r.MaxCustomerCreditBalance &&
                                                                       totalAmount >= r.MinPurchaseAmount);
 
@@ -180,7 +180,7 @@ namespace LedgerLink.Controllers
                     }
                 }
             }
-            
+
             var newTransaction = new Transaction
             {
                 Id = 0,
@@ -229,7 +229,7 @@ namespace LedgerLink.Controllers
 
             return RedirectToAction("ShowReceipt", new { transactionId = newTransaction.Id, isTransaction = true });
         }
-        
+
         public IActionResult AddPayment(Guid customerId, decimal amountPaid, string paymentMode)
         {
             if (!IsAdminLoggedIn())
@@ -272,7 +272,7 @@ namespace LedgerLink.Controllers
             TempData["SuccessMessage"] = "Payment recorded successfully!";
             return RedirectToAction("ShowReceipt", new { paymentId = newPayment.Id, isTransaction = false });
         }
-        
+
         public IActionResult ShowReceipt(int? transactionId, Guid? paymentId, bool isTransaction)
         {
             if (!IsAdminLoggedIn())
@@ -335,6 +335,104 @@ namespace LedgerLink.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SendReminder(Guid customerId)
+        {
+            if (!IsAdminLoggedIn())
+            {
+                return Unauthorized();
+            }
+
+            Customer? customer = _customerRepo.GetCustomerById(customerId);
+            if (customer == null)
+            {
+                TempData["ErrorMessage"] = "Customer not found for reminder.";
+                return RedirectToAction("CustomerDetails", new { id = customerId });
+            }
+
+            System.Globalization.CultureInfo indiaCulture = new System.Globalization.CultureInfo("en-IN");
+            string formattedBalance = customer.CurrentBalance.ToString("C", indiaCulture);
+
+            string subject = $"Payment Reminder from {_shopSettings.ShopName} - Balance: {formattedBalance}";
+            string messageBody = $"Dear {customer.FullName},\n\nThis is a friendly reminder that your outstanding balance at {_shopSettings.ShopName} is {formattedBalance}.\n\nPlease settle your dues at your earliest convenience. Thank you for your business!\n\n{_shopSettings.ShopName} - Powered by {_shopSettings.AppName}";
+
+            bool emailSent = false;
+
+            if (!string.IsNullOrEmpty(customer.Email))
+            {
+                emailSent = await _emailSmsService.SendEmailAsync(customer.Email, subject, messageBody);
+            }
+
+            if (emailSent)
+            {
+                TempData["SuccessMessage"] = "Payment reminder email sent successfully!";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Failed to send payment reminder. Check logs for details and ensure Email is valid.";
+            }
+
+            return RedirectToAction("CustomerDetails", new { id = customerId });
+        }
+
+        [HttpPost]
+        //     public IActionResult CalculateDiscount([FromBody] CalculateDiscountRequestModel request)
+        //     {
+        //         decimal originalAmount = request.quantity * request.unitPrice;
+        //         decimal discountPercentage = 0.00m;
+        //         decimal discountAmount = 0.00m;
+        //         decimal finalAmount = originalAmount;
+        //         string? message = null;
+
+        //         Festival? activeFestival = _festivalRepo.GetAllFestivals()
+        //                                                .FirstOrDefault(f => f.IsActive && f.StartDate.Date <= DateTime.UtcNow.Date && f.EndDate.Date >= DateTime.UtcNow.Date);
+
+        //         if (activeFestival != null)
+        //         {
+        //             Customer? customer = _customerRepo.GetCustomerById(request.customerId);
+        //             if (customer != null)
+        //             {
+        //                 DiscountRule? matchingRule = _discountRuleRepo.GetAllDiscountRules()
+        //                                                               .Where(r => r.FestivalId == activeFestival.Id)
+        //                                                               .FirstOrDefault(r => 
+        //                                                                   customer.CurrentBalance >= r.MinCustomerCreditBalance && 
+        //                                                                   customer.CurrentBalance <= r.MaxCustomerCreditBalance &&
+        //                                                                   originalAmount >= r.MinPurchaseAmount);
+
+        //                 if (matchingRule != null)
+        //                 {
+        //                     discountPercentage = matchingRule.DiscountPercentage;
+        //                     discountAmount = originalAmount * (discountPercentage / 100);
+        //                     finalAmount = originalAmount - discountAmount;
+        //                     message = $"Festival offer applied! {discountPercentage}% discount on this item.";
+        //                 }
+        //                 else
+        //                 {
+        //                     message = "No matching discount rule found for this customer.";
+        //                 }
+        //             }
+        //             else
+        //             {
+        //                 message = "Customer not found for discount calculation.";
+        //             }
+        //         }
+        //         else
+        //         {
+        //             message = "No active festival offers.";
+        //         }
+
+        //         return Ok(new { discountPercentage, discountAmount, finalAmount, message });
+        //     }
+        // }
+
+        // public class CalculateDiscountRequestModel
+        // {
+        //     public Guid customerId { get; set; }
+        //     public int productId { get; set; }
+        //     public int quantity { get; set; }
+        //     public decimal unitPrice { get; set; }
+        // }
+        [HttpPost]
         public IActionResult CalculateDiscount([FromBody] CalculateDiscountRequestModel request)
         {
             decimal originalAmount = request.quantity * request.unitPrice;
@@ -343,52 +441,62 @@ namespace LedgerLink.Controllers
             decimal finalAmount = originalAmount;
             string? message = null;
 
-            Festival? activeFestival = _festivalRepo.GetAllFestivals()
-                                                   .FirstOrDefault(f => f.IsActive && f.StartDate.Date <= DateTime.UtcNow.Date && f.EndDate.Date >= DateTime.UtcNow.Date);
-
-            if (activeFestival != null)
+            if (request.applyDiscountFestivalId.HasValue)
             {
-                Customer? customer = _customerRepo.GetCustomerById(request.customerId);
-                if (customer != null)
-                {
-                    DiscountRule? matchingRule = _discountRuleRepo.GetAllDiscountRules()
-                                                                  .Where(r => r.FestivalId == activeFestival.Id)
-                                                                  .FirstOrDefault(r => 
-                                                                      customer.CurrentBalance >= r.MinCustomerCreditBalance && 
-                                                                      customer.CurrentBalance <= r.MaxCustomerCreditBalance &&
-                                                                      originalAmount >= r.MinPurchaseAmount);
+                Festival? selectedFestival = _festivalRepo.GetFestivalById(request.applyDiscountFestivalId.Value);
 
-                    if (matchingRule != null)
+                if (selectedFestival != null && selectedFestival.IsActive &&
+                    selectedFestival.StartDate.Date <= DateTime.UtcNow.Date &&
+                    selectedFestival.EndDate.Date >= DateTime.UtcNow.Date)
+                {
+                    Customer? customer = _customerRepo.GetCustomerById(request.customerId);
+                    if (customer != null)
                     {
-                        discountPercentage = matchingRule.DiscountPercentage;
-                        discountAmount = originalAmount * (discountPercentage / 100);
-                        finalAmount = originalAmount - discountAmount;
-                        message = $"Festival offer applied! {discountPercentage}% discount on this item.";
+                        DiscountRule? matchingRule = _discountRuleRepo.GetAllDiscountRules()
+                            .Where(r => r.FestivalId == selectedFestival.Id)
+                            .FirstOrDefault(r =>
+                                customer.CurrentBalance >= r.MinCustomerCreditBalance &&
+                                customer.CurrentBalance <= r.MaxCustomerCreditBalance &&
+                                originalAmount >= r.MinPurchaseAmount);
+
+                        if (matchingRule != null)
+                        {
+                            discountPercentage = matchingRule.DiscountPercentage;
+                            discountAmount = originalAmount * (discountPercentage / 100);
+                            finalAmount = originalAmount - discountAmount;
+                            message = $"Festival offer applied! {discountPercentage}% discount on this item.";
+                        }
+                        else
+                        {
+                            message = "No matching discount rule found for this customer.";
+                        }
                     }
                     else
                     {
-                        message = "No matching discount rule found for this customer.";
+                        message = "Customer not found for discount calculation.";
                     }
                 }
                 else
                 {
-                    message = "Customer not found for discount calculation.";
+                    message = "Selected festival is not active.";
                 }
             }
             else
             {
-                message = "No active festival offers.";
+                message = "No festival selected.";
             }
 
             return Ok(new { discountPercentage, discountAmount, finalAmount, message });
         }
+
+        public class CalculateDiscountRequestModel
+        {
+            public Guid customerId { get; set; }
+            public int productId { get; set; }
+            public int quantity { get; set; }
+            public decimal unitPrice { get; set; }
+            public int? applyDiscountFestivalId { get; set; } // ✅ added festival ID
+        }
+
     }
-    
-    public class CalculateDiscountRequestModel
-    {
-        public Guid customerId { get; set; }
-        public int productId { get; set; }
-        public int quantity { get; set; }
-        public decimal unitPrice { get; set; }
     }
-}

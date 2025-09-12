@@ -112,7 +112,7 @@
                         @foreach (var item in Model.TransactionItems)
                         {
                             <tr>
-                                <td>@item.Product?.Name (@item.QuantityUnit)</td>
+                                <td>@item.Product?.Name (@(item.Product?.QuantityValue)@(item.Product?.QuantityUnit))</td>
                                 <td>@item.Quantity</td>
                                 <td>@item.UnitPrice.ToString("C", indiaCulture)</td>
                                 <td>@item.TotalAmount.ToString("C", indiaCulture)</td>
