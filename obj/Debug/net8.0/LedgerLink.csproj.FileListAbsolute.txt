@@ -300,3 +300,6 @@ C:/Users/Dell/Desktop/LedgerLink/LedgerLink/obj/Debug/net8.0/ref/LedgerLink.dll
 /home/om/dotnet project/LedgerLink/obj/Debug/net8.0/LedgerLink.pdb
 /home/om/dotnet project/LedgerLink/obj/Debug/net8.0/LedgerLink.genruntimeconfig.cache
 /home/om/dotnet project/LedgerLink/obj/Debug/net8.0/ref/LedgerLink.dll
+/home/om/dotnet project/LedgerLink/obj/Debug/net8.0/LedgerLink.MvcApplicationPartsAssemblyInfo.cs
+/home/om/dotnet project/LedgerLink/bin/Debug/net8.0/X.PagedList.dll
+/home/om/dotnet project/LedgerLink/bin/Debug/net8.0/X.PagedList.Mvc.Core.dll

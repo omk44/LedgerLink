@@ -13,7 +13,9 @@
           "QRCoder": "1.6.0",
           "SendGrid": "9.29.3",
           "System.Drawing.Common": "9.0.8",
-          "Twilio": "7.12.0"
+          "Twilio": "7.12.0",
+          "X.PagedList": "10.5.9",
+          "X.PagedList.Mvc.Core": "10.5.9"
         },
         "runtime": {
           "LedgerLink.dll": {}
@@ -930,6 +932,25 @@
             "fileVersion": "7.12.0.0"
           }
         }
+      },
+      "X.PagedList/10.5.9": {
+        "runtime": {
+          "lib/net8.0/X.PagedList.dll": {
+            "assemblyVersion": "10.5.9.0",
+            "fileVersion": "10.5.9.0"
+          }
+        }
+      },
+      "X.PagedList.Mvc.Core/10.5.9": {
+        "dependencies": {
+          "X.PagedList": "10.5.9"
+        },
+        "runtime": {
+          "lib/net8.0/X.PagedList.Mvc.Core.dll": {
+            "assemblyVersion": "10.5.9.0",
+            "fileVersion": "10.5.9.0"
+          }
+        }
       }
     }
   },
@@ -1463,6 +1484,20 @@
       "sha512": "sha512-LbmLD/W6ivBOgtG5TB1iPT8hy8gFVVGRxxluW98dwFK5aCx0RZTwlbUX7fkjphDh//MOhj7P0Bwr3MvrGKxDfQ==",
       "path": "twilio/7.12.0",
       "hashPath": "twilio.7.12.0.nupkg.sha512"
+    },
+    "X.PagedList/10.5.9": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-iwrGkIQn/puv4kNe23GVSPtpvKf5bl1aSbhIoWAhrl5LnvEmTwkGftlxSEFlgInVmMx1cb8Q7ivJPqxJtw7TAg==",
+      "path": "x.pagedlist/10.5.9",
+      "hashPath": "x.pagedlist.10.5.9.nupkg.sha512"
+    },
+    "X.PagedList.Mvc.Core/10.5.9": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-LhZwvTyUtn+BYVVc4ERCfZeK+br76nPQy8GTXg4pL9jOazusAUNiGkKBRFL/owOgAdTRKPLtHj+pBfZup7weyg==",
+      "path": "x.pagedlist.mvc.core/10.5.9",
+      "hashPath": "x.pagedlist.mvc.core.10.5.9.nupkg.sha512"
     }
   }
 }
