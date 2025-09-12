@@ -6,72 +6,111 @@
 }
 
 <div class="container mt-5">
+    <!-- Header Section -->
     <div class="text-center mb-5">
-        <h1 class="display-4 text-primary">Welcome, @ViewBag.ShopName Admin!</h1>
-        <p class="lead text-muted">Your digital ledger, powered by <strong class="text-info">@ViewBag.AppName</strong>, is ready to help you manage your business efficiently.</p>
-        <hr class="my-4">
-        <p class="text-secondary">Quickly access your tools and insights below.</p>
+        <h1 class="display-4 fw-bold text-gradient">@ViewBag.ShopName Admin Dashboard</h1>
+        <p class="lead text-muted">
+            Your digital ledger, powered by 
+            <strong class="text-primary">@ViewBag.AppName</strong>, 
+            is here to simplify your business management.
+        </p>
+        <hr class="my-4 w-50 mx-auto">
+        <p class="text-secondary">Quick access to your essential tools below</p>
     </div>
 
+    <!-- Feature Cards -->
     <div class="row justify-content-center mb-5">
         <div class="col-md-4 mb-3">
-            <div class="card text-center shadow-sm h-100">
-                <div class="card-body">
+            <div class="card border-0 shadow h-100 hover-card">
+                <div class="card-body text-center">
+                    <div class="mb-3 text-success fs-2">
+                        <i class="bi bi-box-seam"></i>
+                    </div>
                     <h5 class="card-title text-success">Manage Products</h5>
                     <p class="card-text">Add, edit, or remove items you sell.</p>
-                    <a asp-controller="Product" asp-action="Index" class="btn btn-success mt-2">Go to Products</a>
+                    <a asp-controller="Product" asp-action="Index" class="btn btn-outline-success">Go to Products</a>
                 </div>
             </div>
         </div>
         <div class="col-md-4 mb-3">
-            <div class="card text-center shadow-sm h-100">
-                <div class="card-body">
+            <div class="card border-0 shadow h-100 hover-card">
+                <div class="card-body text-center">
+                    <div class="mb-3 text-info fs-2">
+                        <i class="bi bi-people"></i>
+                    </div>
                     <h5 class="card-title text-info">Manage Customers</h5>
                     <p class="card-text">View, add, or edit customer details and generate QR codes.</p>
-                    <a asp-controller="Customer" asp-action="Index" class="btn btn-info mt-2">Go to Customers</a>
+                    <a asp-controller="Customer" asp-action="Index" class="btn btn-outline-info">Go to Customers</a>
                 </div>
             </div>
         </div>
         <div class="col-md-4 mb-3">
-            <div class="card text-center shadow-sm h-100">
-                <div class="card-body">
+            <div class="card border-0 shadow h-100 hover-card">
+                <div class="card-body text-center">
+                    <div class="mb-3 text-warning fs-2">
+                        <i class="bi bi-qr-code-scan"></i>
+                    </div>
                     <h5 class="card-title text-warning">Process Transactions</h5>
                     <p class="card-text">Scan customer QR codes to record sales and payments.</p>
-                    <a asp-controller="Transaction" asp-action="Scan" class="btn btn-warning mt-2">Start Scanning</a>
+                    <a asp-controller="Transaction" asp-action="Scan" class="btn btn-outline-warning">Start Scanning</a>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Analytics & Insights Section -->
     <div class="row justify-content-center">
         <div class="col-md-10">
-            <div class="card shadow-lg p-4 bg-light">
-                <h3 class="text-center text-secondary mb-4">Future Analytics & Growth Insights</h3>
+            <div class="card shadow-lg border-0 p-4 bg-light">
+                <h3 class="text-center text-dark mb-4">
+                    Future <span class="text-primary">Analytics</span> & Growth Insights
+                </h3>
                 <p class="text-muted text-center">
-                    **@ViewBag.AppName** is continuously evolving to provide you with smarter ways to grow your business.
-                    Soon, you'll be able to generate advanced reports to identify key customer behaviors and optimize your sales strategies.
+                    <strong>@ViewBag.AppName</strong> is evolving to give 
+                    <strong>@ViewBag.ShopName</strong> smarter tools for growth. 
+                    Soon, you’ll generate detailed reports to track customer behaviors and optimize sales strategies.
                 </p>
                 <ul class="list-group list-group-flush mt-4">
                     <li class="list-group-item bg-light">
-                        <strong class="text-primary">Festival Discount Optimization:</strong> Identify customers with low credit and high purchase frequency (paid transactions) to offer targeted discounts during festive seasons, rewarding loyalty and encouraging more cash sales.
+                        <strong class="text-primary">🎉 Festival Discount Optimization:</strong>
+                        Target loyal customers with festive discounts to encourage more cash sales.
                     </li>
                     <li class="list-group-item bg-light">
-                        <strong class="text-primary">Credit Risk Analysis:</strong> Pinpoint customers with high outstanding credit and slow payment history, allowing for proactive follow-ups or adjusted credit limits.
+                        <strong class="text-primary">⚠ Credit Risk Analysis:</strong>
+                        Identify customers with high outstanding credit and slow payments.
                     </li>
                     <li class="list-group-item bg-light">
-                        <strong class="text-primary">Sales Trend Reporting:</strong> Analyze product sales over time, identify peak buying periods, and optimize inventory management.
+                        <strong class="text-primary">📊 Sales Trend Reporting:</strong>
+                        Track product sales, peak buying times, and improve inventory planning.
                     </li>
                     <li class="list-group-item bg-light">
-                        <strong class="text-primary">Customer Value Segmentation:</strong> Categorize customers based on their spending habits, credit usage, and payment reliability to tailor marketing efforts and special offers.
+                        <strong class="text-primary">👥 Customer Segmentation:</strong>
+                        Group customers by spending, credit, and payment reliability.
                     </li>
                     <li class="list-group-item bg-light">
-                        <strong class="text-primary">Payment Behavior Insights:</strong> Understand common payment modes and peak payment times to streamline your financial operations.
+                        <strong class="text-primary">💳 Payment Insights:</strong>
+                        Understand payment modes and timing to streamline financial operations.
                     </li>
                 </ul>
                 <p class="text-center mt-4 text-muted">
-                    Your data is your power. We're building the tools to unlock it for **@ViewBag.ShopName**!
+                    Your data is your power. Unlock growth with <strong>@ViewBag.AppName</strong>.
                 </p>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .text-gradient {
+        background: black;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .hover-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .hover-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+</style>
