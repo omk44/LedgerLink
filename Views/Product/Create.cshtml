@@ -6,60 +6,70 @@
 }
 
 <div class="container mt-5">
-    <h2>@ViewData["Title"]</h2>
-    <hr />
-    <div class="row">
-        <div class="col-md-6">
-            <form asp-action="Create">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                <!-- Product Name -->
-                <div class="form-group mb-3">
-                    <label asp-for="Name" class="control-label"></label>
-                    <input asp-for="Name" class="form-control" />
-                    <span asp-validation-for="Name" class="text-danger"></span>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3 class="mb-0 fw-bold">@ViewData["Title"]</h3>
                 </div>
+                <div class="card-body p-4">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
-                <!-- Price -->
-                <div class="form-group mb-3">
-                    <label asp-for="Price" class="control-label"></label>
-                    <input asp-for="Price" class="form-control" />
-                    <span asp-validation-for="Price" class="text-danger"></span>
-                </div>
+                        <!-- Product Name -->
+                        <div class="form-group mb-3">
+                            <label asp-for="Name" class="form-label fw-semibold"></label>
+                            <input asp-for="Name" class="form-control" placeholder="Enter product name" />
+                            <span asp-validation-for="Name" class="text-danger small"></span>
+                        </div>
 
-                <!-- Description -->
-                <div class="form-group mb-3">
-                    <label asp-for="Description" class="control-label"></label>
-                    <textarea asp-for="Description" class="form-control"></textarea>
-                    <span asp-validation-for="Description" class="text-danger"></span>
-                </div>
+                        <!-- Price -->
+                        <div class="form-group mb-3">
+                            <label asp-for="Price" class="form-label fw-semibold"></label>
+                            <input asp-for="Price" class="form-control" placeholder="Enter price in INR" />
+                            <span asp-validation-for="Price" class="text-danger small"></span>
+                        </div>
 
-                <!-- Quantity Value -->
-                <div class="form-group mb-3">
-                    <label asp-for="QuantityValue" class="control-label"></label>
-                    <input asp-for="QuantityValue" class="form-control" />
-                    <span asp-validation-for="QuantityValue" class="text-danger"></span>
-                </div>
+                        <!-- Description -->
+                        <div class="form-group mb-3">
+                            <label asp-for="Description" class="form-label fw-semibold"></label>
+                            <textarea asp-for="Description" class="form-control" rows="3" placeholder="Enter product description"></textarea>
+                            <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
 
-                <!-- Quantity Unit Dropdown -->
-                <div class="form-group mb-3">
-                    <label asp-for="QuantityUnit" class="control-label"></label>
-                    <select asp-for="QuantityUnit" class="form-control">
-                        <option value="pcs">pcs</option>
-                        <option value="ml">ml</option>
-                        <option value="gm">gm</option>
-                        <option value="kg">kg</option>
-                        <option value="ltr">ltr</option>
-                    </select>
-                    <span asp-validation-for="QuantityUnit" class="text-danger"></span>
-                </div>
+                        <!-- Quantity Value -->
+                        <div class="form-group mb-3">
+                            <label asp-for="QuantityValue" class="form-label fw-semibold"></label>
+                            <input asp-for="QuantityValue" class="form-control" placeholder="Enter quantity" />
+                            <span asp-validation-for="QuantityValue" class="text-danger small"></span>
+                        </div>
 
-                <!-- Submit Buttons -->
-                <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
-                    <a asp-action="Index" class="btn btn-secondary ml-2">Back to List</a>
+                        <!-- Quantity Unit Dropdown -->
+                        <div class="form-group mb-4">
+                            <label asp-for="QuantityUnit" class="form-label fw-semibold"></label>
+                            <select asp-for="QuantityUnit" class="form-select">
+                                <option value="">-- Select Unit --</option>
+                                <option value="pcs">pcs</option>
+                                <option value="ml">ml</option>
+                                <option value="gm">gm</option>
+                                <option value="kg">kg</option>
+                                <option value="ltr">ltr</option>
+                            </select>
+                            <span asp-validation-for="QuantityUnit" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Submit Buttons -->
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left"></i> Back to List
+                            </a>
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="bi bi-box-seam"></i> Create Product
+                            </button>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
