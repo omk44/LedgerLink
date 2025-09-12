@@ -21,7 +21,7 @@ namespace LedgerLink.Models
         // Scalar Property: Customer's phone number with Phone validation
         [Required(ErrorMessage = "Phone number is required.")]
         [Phone(ErrorMessage = "Invalid phone number format.")]
-        [StringLength(15, ErrorMessage = "Phone number cannot exceed 15 characters.")]
+        [StringLength(10, ErrorMessage = "Phone number cannot exceed 10 characters.")]
         public string PhoneNumber { get; set; } = string.Empty;
 
         // Scalar Property: Customer's email with EmailAddress validation

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "QiweL557qIooftG/jJR4cLtIvemRlPxZZayyBeYUEEuwUO//2E7t/TOsmVBftl3bdV74AjW5NWW82RXsGrFjGw==",
+  "dgSpecHash": "entag84bgzVLx9P5SN5DS7uLywCDoYsQbaQTKut/Ys/UdpsaKQurRbDJuEbilAMxX/LCzn+EtjkQynBplt416A==",
   "success": true,
   "projectFilePath": "/home/om/dotnet project/LedgerLink/LedgerLink.csproj",
   "expectedPackageFiles": [
@@ -78,7 +78,9 @@
     "/home/om/.nuget/packages/system.threading/4.3.0/system.threading.4.3.0.nupkg.sha512",
     "/home/om/.nuget/packages/system.threading.channels/7.0.0/system.threading.channels.7.0.0.nupkg.sha512",
     "/home/om/.nuget/packages/system.threading.tasks/4.3.0/system.threading.tasks.4.3.0.nupkg.sha512",
-    "/home/om/.nuget/packages/twilio/7.12.0/twilio.7.12.0.nupkg.sha512"
+    "/home/om/.nuget/packages/twilio/7.12.0/twilio.7.12.0.nupkg.sha512",
+    "/home/om/.nuget/packages/x.pagedlist/10.5.9/x.pagedlist.10.5.9.nupkg.sha512",
+    "/home/om/.nuget/packages/x.pagedlist.mvc.core/10.5.9/x.pagedlist.mvc.core.10.5.9.nupkg.sha512"
   ],
   "logs": []
 }

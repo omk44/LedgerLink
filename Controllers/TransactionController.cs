@@ -11,7 +11,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using System.Globalization;
-
+using X.PagedList;   // <-- important
+using System.Linq;
+using X.PagedList.Extensions;  // for LINQ methods
 namespace LedgerLink.Controllers
 {
     public class TransactionController : Controller
@@ -87,46 +89,50 @@ namespace LedgerLink.Controllers
             return Ok(new { customerId = customer.Id });
         }
 
-        public IActionResult CustomerDetails(Guid id)
-        {
-            if (!IsAdminLoggedIn())
-            {
-                return RedirectToAction("Login", "Account");
-            }
 
-            Customer? customer = _customerRepo.GetCustomerById(id);
-            if (customer == null)
-            {
-                return NotFound("Customer not found.");
-            }
 
-            IEnumerable<Product> products = _productRepo.GetAllProducts();
+public IActionResult CustomerDetails(Guid id, int transactionPage = 1, int paymentPage = 1)
+{
+    if (!IsAdminLoggedIn())
+    {
+        return RedirectToAction("Login", "Account");
+    }
 
-            // CRITICAL FIX: Pass ALL active festivals to the view, not just one name
-            IEnumerable<Festival> activeFestivals = _festivalRepo.GetAllFestivals()
-                                                   .Where(f => f.IsActive && f.StartDate.Date <= DateTime.UtcNow.Date && f.EndDate.Date >= DateTime.UtcNow.Date)
-                                                   .ToList();
-            ViewBag.ActiveFestivals = activeFestivals;
+    Customer? customer = _customerRepo.GetCustomerById(id);
+    if (customer == null)
+    {
+        return NotFound("Customer not found.");
+    }
 
-            IEnumerable<Transaction> customerTransactions = _transactionRepo.GetAllTransactions()
-                                                                            .Where(t => t.CustomerId == id)
-                                                                            .OrderByDescending(t => t.PurchaseDate)
-                                                                            .ToList();
-            IEnumerable<Payment> customerPayments = _paymentRepo.GetAllPayments()
-                                                                 .Where(p => p.CustomerId == id)
-                                                                 .OrderByDescending(p => p.PaymentDate)
-                                                                 .ToList();
+    var products = _productRepo.GetAllProducts();
 
-            var viewModel = new CustomerDetailsViewModel
-            {
-                Customer = customer,
-                Products = products,
-                Transactions = customerTransactions,
-                Payments = customerPayments
-            };
+    // Active festivals
+    var activeFestivals = _festivalRepo.GetAllFestivals()
+        .Where(f => f.IsActive && f.StartDate.Date <= DateTime.UtcNow.Date && f.EndDate.Date >= DateTime.UtcNow.Date)
+        .ToList();
+    ViewBag.ActiveFestivals = activeFestivals;
 
-            return View(viewModel);
-        }
+    // Transactions & payments for this customer
+    var customerTransactions = _transactionRepo.GetAllTransactions()
+        .Where(t => t.CustomerId == id)
+        .OrderByDescending(t => t.PurchaseDate);
+
+    var customerPayments = _paymentRepo.GetAllPayments()
+        .Where(p => p.CustomerId == id)
+        .OrderByDescending(p => p.PaymentDate);
+
+    var viewModel = new CustomerDetailsViewModel
+    {
+        Customer = customer,
+        Products = products,
+        Transactions = customerTransactions.ToPagedList(transactionPage, 10),
+        Payments = customerPayments.ToPagedList(paymentPage, 10)
+    };
+
+    return View(viewModel);
+}
+
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
