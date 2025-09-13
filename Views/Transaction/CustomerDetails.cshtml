@@ -1,4 +1,3 @@
-@* Path: LedgerLink/Views/Transaction/CustomerDetails.cshtml *@
 @model LedgerLink.ViewModels.CustomerDetailsViewModel
 @using System.Globalization;
 @using X.PagedList.Mvc.Core
@@ -7,9 +6,52 @@
 @{
     ViewData["Title"] = $"Transaction for {Model.Customer.FullName}";
     var indiaCulture = new CultureInfo("en-IN");
-    var activeFestivals = ViewBag.ActiveFestivals as IEnumerable<LedgerLink.Models.Festival>;
+
+    // ✅ Use Model instead of ViewBag
+    var activeFestivals = Model.ActiveFestivals;
     var hasActiveFestival = activeFestivals != null && activeFestivals.Any();
 }
+@if (Model.ActiveFestivals.Any())
+{
+    <div class="alert alert-success shadow-sm">
+        <h5>🎉 Active Festival Offers 🎉</h5>
+
+        <ul>
+            @foreach (var fest in Model.ActiveFestivals)
+            {
+                <li>
+                    <strong>@fest.Name</strong> 
+                    (@fest.StartDate.ToShortDateString() - @fest.EndDate.ToShortDateString())
+                </li>
+            }
+        </ul>
+
+        <h6>Available Offers:</h6>
+        <ul>
+            @foreach (var rule in Model.ActiveDiscountRules)
+            {
+                var festName = Model.ActiveFestivals.FirstOrDefault(f => f.Id == rule.FestivalId)?.Name ?? "Festival";
+
+                <li>
+                    🎁 <strong>@rule.DiscountPercentage %</strong> discount 
+                    during <strong>@festName</strong> 
+                    (Min purchase: @rule.MinPurchaseAmount.ToString("C", indiaCulture))
+                </li>
+            }
+        </ul>
+    </div>
+}
+else
+{
+    <div class="alert alert-info shadow-sm">
+        No active festival offers right now.
+    </div>
+}
+
+
+
+
+
 
 <style>
     :root {

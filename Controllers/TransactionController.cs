@@ -90,7 +90,6 @@ namespace LedgerLink.Controllers
         }
 
 
-
 public IActionResult CustomerDetails(Guid id, int transactionPage = 1, int paymentPage = 1)
 {
     if (!IsAdminLoggedIn())
@@ -98,7 +97,7 @@ public IActionResult CustomerDetails(Guid id, int transactionPage = 1, int payme
         return RedirectToAction("Login", "Account");
     }
 
-    Customer? customer = _customerRepo.GetCustomerById(id);
+    var customer = _customerRepo.GetCustomerById(id);
     if (customer == null)
     {
         return NotFound("Customer not found.");
@@ -106,31 +105,40 @@ public IActionResult CustomerDetails(Guid id, int transactionPage = 1, int payme
 
     var products = _productRepo.GetAllProducts();
 
-    // Active festivals
+    // ✅ Get active festivals
     var activeFestivals = _festivalRepo.GetAllFestivals()
         .Where(f => f.IsActive && f.StartDate.Date <= DateTime.UtcNow.Date && f.EndDate.Date >= DateTime.UtcNow.Date)
         .ToList();
-    ViewBag.ActiveFestivals = activeFestivals;
 
-    // Transactions & payments for this customer
-    var customerTransactions = _transactionRepo.GetAllTransactions()
+    var transactions = _transactionRepo.GetAllTransactions()
         .Where(t => t.CustomerId == id)
-        .OrderByDescending(t => t.PurchaseDate);
+        .OrderByDescending(t => t.PurchaseDate)
+        .ToPagedList(transactionPage, 10);
 
-    var customerPayments = _paymentRepo.GetAllPayments()
+    var payments = _paymentRepo.GetAllPayments()
         .Where(p => p.CustomerId == id)
-        .OrderByDescending(p => p.PaymentDate);
+        .OrderByDescending(p => p.PaymentDate)
+        .ToPagedList(paymentPage, 10);
+
+    // ✅ Get discount rules for these active festivals
+    var activeRules = _discountRuleRepo.GetAllDiscountRules()
+        .Where(r => activeFestivals.Select(f => f.Id).Contains(r.FestivalId))
+        .ToList();
 
     var viewModel = new CustomerDetailsViewModel
     {
         Customer = customer,
         Products = products,
-        Transactions = customerTransactions.ToPagedList(transactionPage, 10),
-        Payments = customerPayments.ToPagedList(paymentPage, 10)
+        Transactions = transactions,
+        Payments = payments,
+        ActiveFestivals = activeFestivals,
+        ActiveDiscountRules = activeRules
     };
 
     return View(viewModel);
 }
+
+
 
 
 
