@@ -149,11 +149,9 @@ C:/Users/Dell/Desktop/LedgerLink/LedgerLink/obj/Debug/net8.0/refint/LedgerLink.d
 C:/Users/Dell/Desktop/LedgerLink/LedgerLink/obj/Debug/net8.0/LedgerLink.pdb
 C:/Users/Dell/Desktop/LedgerLink/LedgerLink/obj/Debug/net8.0/LedgerLink.genruntimeconfig.cache
 C:/Users/Dell/Desktop/LedgerLink/LedgerLink/obj/Debug/net8.0/ref/LedgerLink.dll
-/home/om/dotnet project/LedgerLink/bin/Debug/net8.0/appsetting.json
 /home/om/dotnet project/LedgerLink/bin/Debug/net8.0/LedgerLink.staticwebassets.runtime.json
 /home/om/dotnet project/LedgerLink/bin/Debug/net8.0/LedgerLink
 /home/om/dotnet project/LedgerLink/bin/Debug/net8.0/appsettings.Development.json
-/home/om/dotnet project/LedgerLink/bin/Debug/net8.0/appsettings.json
 /home/om/dotnet project/LedgerLink/bin/Debug/net8.0/LedgerLink.deps.json
 /home/om/dotnet project/LedgerLink/bin/Debug/net8.0/LedgerLink.runtimeconfig.json
 /home/om/dotnet project/LedgerLink/bin/Debug/net8.0/LedgerLink.dll
@@ -303,3 +301,4 @@ C:/Users/Dell/Desktop/LedgerLink/LedgerLink/obj/Debug/net8.0/ref/LedgerLink.dll
 /home/om/dotnet project/LedgerLink/obj/Debug/net8.0/LedgerLink.MvcApplicationPartsAssemblyInfo.cs
 /home/om/dotnet project/LedgerLink/bin/Debug/net8.0/X.PagedList.dll
 /home/om/dotnet project/LedgerLink/bin/Debug/net8.0/X.PagedList.Mvc.Core.dll
+/home/om/dotnet project/LedgerLink/bin/Debug/net8.0/appsettings.json
