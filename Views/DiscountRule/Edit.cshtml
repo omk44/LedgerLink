@@ -6,46 +6,67 @@
 }
 
 <div class="container mt-5">
-    <h2>@ViewData["Title"]</h2>
-    <hr />
-    <div class="row">
-        <div class="col-md-6">
-            <form asp-action="Edit">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="Id" />
-                <input type="hidden" asp-for="FestivalId" />
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-header bg-warning text-dark text-center">
+                    <h3 class="mb-0 fw-bold">
+                        <i class="bi bi-pencil-square me-2"></i> @ViewData["Title"]
+                    </h3>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="FestivalId" />
 
-                <div class="form-group mb-3">
-                    <label asp-for="DiscountPercentage" class="control-label"></label>
-                    <input asp-for="DiscountPercentage" class="form-control" />
-                    <span asp-validation-for="DiscountPercentage" class="text-danger"></span>
-                </div>
-                <div class="form-group mb-3">
-                    <label asp-for="MinCustomerCreditBalance" class="control-label"></label>
-                    <input asp-for="MinCustomerCreditBalance" class="form-control" />
-                    <span asp-validation-for="MinCustomerCreditBalance" class="text-danger"></span>
-                </div>
-                <div class="form-group mb-3">
-                    <label asp-for="MaxCustomerCreditBalance" class="control-label"></label>
-                    <input asp-for="MaxCustomerCreditBalance" class="form-control" />
-                    <span asp-validation-for="MaxCustomerCreditBalance" class="text-danger"></span>
-                </div>
-                <div class="form-group mb-3">
-                    <label asp-for="MinPurchaseAmount" class="control-label"></label>
-                    <input asp-for="MinPurchaseAmount" class="form-control" />
-                    <span asp-validation-for="MinPurchaseAmount" class="text-danger"></span>
-                </div>
-                <div class="form-group mb-3">
-                    <label asp-for="Description" class="control-label"></label>
-                    <textarea asp-for="Description" class="form-control"></textarea>
-                    <span asp-validation-for="Description" class="text-danger"></span>
-                </div>
+                        <!-- Discount % -->
+                        <div class="form-group mb-3">
+                            <label asp-for="DiscountPercentage" class="form-label fw-semibold"></label>
+                            <input asp-for="DiscountPercentage" class="form-control" type="number" step="0.01" placeholder="Enter discount percentage" />
+                            <span asp-validation-for="DiscountPercentage" class="text-danger small"></span>
+                        </div>
 
-                <div class="form-group">
-                    <input type="submit" value="Save" class="btn btn-primary" />
-                    <a asp-action="Index" asp-route-festivalId="@ViewBag.FestivalId" class="btn btn-secondary ml-2">Back to Rules</a>
+                        <!-- Min Credit -->
+                        <div class="form-group mb-3">
+                            <label asp-for="MinCustomerCreditBalance" class="form-label fw-semibold"></label>
+                            <input asp-for="MinCustomerCreditBalance" class="form-control" type="number" step="0.01" placeholder="Enter minimum credit balance" />
+                            <span asp-validation-for="MinCustomerCreditBalance" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Max Credit -->
+                        <div class="form-group mb-3">
+                            <label asp-for="MaxCustomerCreditBalance" class="form-label fw-semibold"></label>
+                            <input asp-for="MaxCustomerCreditBalance" class="form-control" type="number" step="0.01" placeholder="Enter maximum credit balance" />
+                            <span asp-validation-for="MaxCustomerCreditBalance" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Min Purchase -->
+                        <div class="form-group mb-3">
+                            <label asp-for="MinPurchaseAmount" class="form-label fw-semibold"></label>
+                            <input asp-for="MinPurchaseAmount" class="form-control" type="number" step="0.01" placeholder="Enter minimum purchase amount" />
+                            <span asp-validation-for="MinPurchaseAmount" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="form-group mb-4">
+                            <label asp-for="Description" class="form-label fw-semibold"></label>
+                            <textarea asp-for="Description" class="form-control" rows="3" placeholder="Enter description"></textarea>
+                            <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Submit Buttons -->
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" asp-route-festivalId="@ViewBag.FestivalId" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left"></i> Back to Rules
+                            </a>
+                            <button type="submit" class="btn btn-warning text-dark px-4">
+                                <i class="bi bi-check-circle"></i> Save Changes
+                            </button>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
