@@ -121,24 +121,35 @@ namespace LedgerLink.Controllers
             return View(customer);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(Customer customer)
+[HttpPost]
+[ValidateAntiForgeryToken]
+public IActionResult Edit(Customer customer)
+{
+    if (!IsAdminLoggedIn())
+    {
+        return RedirectToAction("Login", "Account");
+    }
+
+    if (ModelState.IsValid)
+    {
+        // ✅ Fetch the existing customer first
+        var existingCustomer = _customerRepo.GetCustomerById(customer.Id);
+        if (existingCustomer == null)
         {
-            if (!IsAdminLoggedIn())
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
-
-
-            if (ModelState.IsValid)
-            {
-                _customerRepo.UpdateCustomer(customer);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(customer);
+            return NotFound();
         }
+
+        // ✅ Preserve CurrentBalance (don’t reset it to 0)
+        customer.CurrentBalance = existingCustomer.CurrentBalance;
+
+        // ✅ Now update with other changes
+        _customerRepo.UpdateCustomer(customer);
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    return View(customer);
+}
 
         public IActionResult Delete(Guid id)
         {

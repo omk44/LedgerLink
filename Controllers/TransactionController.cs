@@ -22,7 +22,7 @@ namespace LedgerLink.Controllers
         private readonly IProductRepo _productRepo;
         private readonly ITransactionRepo _transactionRepo;
         private readonly IPaymentRepo _paymentRepo;
-        private readonly IEmailService _emailSmsService;
+        private readonly IEmailService _emailService;
         private readonly ShopSettings _shopSettings;
         private readonly IFestivalRepo _festivalRepo;
         private readonly IDiscountRuleRepo _discountRuleRepo;
@@ -32,7 +32,7 @@ namespace LedgerLink.Controllers
             IProductRepo productRepo,
             ITransactionRepo transactionRepo,
             IPaymentRepo paymentRepo,
-            IEmailService emailSmsService,
+            IEmailService emailService,
             IOptions<ShopSettings> shopSettingsOptions,
             IFestivalRepo festivalRepo,
             IDiscountRuleRepo discountRuleRepo)
@@ -41,7 +41,7 @@ namespace LedgerLink.Controllers
             _productRepo = productRepo;
             _transactionRepo = transactionRepo;
             _paymentRepo = paymentRepo;
-            _emailSmsService = emailSmsService;
+            _emailService = emailService;
             _shopSettings = shopSettingsOptions.Value;
             _festivalRepo = festivalRepo;
             _discountRuleRepo = discountRuleRepo;
@@ -366,7 +366,7 @@ public IActionResult CustomerDetails(Guid id, int transactionPage = 1, int payme
 
             if (!string.IsNullOrEmpty(customer.Email))
             {
-                emailSent = await _emailSmsService.SendEmailAsync(customer.Email, subject, messageBody);
+                emailSent = await _emailService.SendEmailAsync(customer.Email, subject, messageBody);
             }
 
             if (emailSent)
