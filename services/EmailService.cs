@@ -20,8 +20,6 @@ namespace LedgerLink.Services
         // Twilio SMS Settings (if still using SMS)
         private readonly string _twilioAccountSid;
         private readonly string _twilioAuthToken;
-        private readonly string _twilioPhoneNumber;
-
         public EmailService(IConfiguration configuration)
         {
             _configuration = configuration;
