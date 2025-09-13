@@ -340,48 +340,54 @@ public IActionResult CustomerDetails(Guid id, int transactionPage = 1, int payme
             return View(viewModel);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SendReminder(Guid customerId)
-        {
-            if (!IsAdminLoggedIn())
-            {
-                return Unauthorized();
-            }
+       // In TransactionController.cs
+[HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> SendReminder(Guid customerId)
+{
+    if (!IsAdminLoggedIn())
+    {
+        return Unauthorized();
+    }
 
-            Customer? customer = _customerRepo.GetCustomerById(customerId);
-            if (customer == null)
-            {
-                TempData["ErrorMessage"] = "Customer not found for reminder.";
-                return RedirectToAction("CustomerDetails", new { id = customerId });
-            }
+    Customer? customer = _customerRepo.GetCustomerById(customerId);
+    if (customer == null)
+    {
+        TempData["ErrorMessage"] = "Customer not found.";
+        return RedirectToAction("Index", "Customer"); // Redirect to list if customer is gone
+    }
 
-            System.Globalization.CultureInfo indiaCulture = new System.Globalization.CultureInfo("en-IN");
-            string formattedBalance = customer.CurrentBalance.ToString("C", indiaCulture);
+    // 🐛 BUG FIX 1: Add a specific check for a missing email address.
+    if (string.IsNullOrEmpty(customer.Email))
+    {
+        TempData["ErrorMessage"] = "Cannot send reminder: This customer does not have an email address on file.";
+        return RedirectToAction("CustomerDetails", new { id = customerId });
+    }
 
-            string subject = $"Payment Reminder from {_shopSettings.ShopName} - Balance: {formattedBalance}";
-            string messageBody = $"Dear {customer.FullName},\n\nThis is a friendly reminder that your outstanding balance at {_shopSettings.ShopName} is {formattedBalance}.\n\nPlease settle your dues at your earliest convenience. Thank you for your business!\n\n{_shopSettings.ShopName} - Powered by {_shopSettings.AppName}";
+    var indiaCulture = new System.Globalization.CultureInfo("en-IN");
+    string formattedBalance = customer.CurrentBalance.ToString("C", indiaCulture);
 
-            bool emailSent = false;
+    string subject = $"Payment Reminder from {_shopSettings.ShopName}";
+    string messageBody = $"Dear {customer.FullName},\n\nThis is a friendly reminder that your outstanding balance at {_shopSettings.ShopName} is {formattedBalance}.\n\nPlease settle your dues at your earliest convenience.\n\nThank you,\n{_shopSettings.ShopName}";
 
-            if (!string.IsNullOrEmpty(customer.Email))
-            {
-                emailSent = await _emailService.SendEmailAsync(customer.Email, subject, messageBody);
-            }
+    // Now this call uses the robust service
+    bool emailSent = await _emailService.SendEmailAsync(customer.Email, subject, messageBody);
 
-            if (emailSent)
-            {
-                TempData["SuccessMessage"] = "Payment reminder email sent successfully!";
-            }
-            else
-            {
-                TempData["ErrorMessage"] = "Failed to send payment reminder. Check logs for details and ensure Email is valid.";
-            }
+    if (emailSent)
+    {
+        TempData["SuccessMessage"] = "Payment reminder email sent successfully!";
+    }
+    else
+    {
+        // This message is now truly helpful because the real error is in your logs
+        TempData["ErrorMessage"] = "Failed to send payment reminder. Please check the system logs for details.";
+    }
 
+            // 🐛 BUG FIX 2: Use the correct parameter name 'customerId' for the redirect.
             return RedirectToAction("CustomerDetails", new { id = customerId });
-        }
+}
 
-        [HttpPost]
+        // [HttpPost]
         //     public IActionResult CalculateDiscount([FromBody] CalculateDiscountRequestModel request)
         //     {
         //         decimal originalAmount = request.quantity * request.unitPrice;
