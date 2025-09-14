@@ -7,10 +7,6 @@
     var appName = ShopSettingsOptions.Value.AppName;
     var shopEmail = ShopSettingsOptions.Value.ShopEmail; // Get shop email
     var shopPhoneNumber = ShopSettingsOptions.Value.ShopPhoneNumber; // Get shop phone number
-                                                                     // Social media URLs are no longer needed in the layout for display
-                                                                     // var instagramUrl = ShopSettingsOptions.Value.InstagramUrl;
-                                                                     // var twitterUrl = ShopSettingsOptions.Value.TwitterUrl;
-                                                                     // var linkedInUrl = ShopSettingsOptions.Value.LinkedInUrl;
 
     ViewData["Title"] ??= appName; // Set default title if not already set by a view
 }
@@ -25,98 +21,228 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/LedgerLink.styles.css" asp-append-version="true" />
-    <!-- REMOVED: Tailwind CSS CDN and inline <style> for SVG icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
 </head>
 
 <body>
+    <!-- Top Header Bar -->
+    <div class="top-header bg-light border-bottom">
+        <div class="container-fluid">
+            <div class="row align-items-center py-2">
+                <div class="col-md-8">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-store text-primary me-2"></i>
+                        <span class="fw-bold text-dark">@shopName</span>
+                        <span class="text-muted ms-2">- Advanced Credit Management System</span>
+                    </div>
+                </div>
+                <div class="col-md-4 text-end">
+                    <div class="contact-info">
+                        @if (!string.IsNullOrEmpty(shopEmail))
+                        {
+                            <a href="mailto:@shopEmail" class="text-muted me-3 text-decoration-none">
+                                <i class="fas fa-envelope me-1"></i>@shopEmail
+                            </a>
+                        }
+                        @if (!string.IsNullOrEmpty(shopPhoneNumber))
+                        {
+                            <a href="tel:@shopPhoneNumber" class="text-muted text-decoration-none">
+                                <i class="fas fa-phone me-1"></i>@shopPhoneNumber
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navigation -->
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm border-bottom">
             <div class="container-fluid">
-                <!-- Brand -->
-                <a class="navbar-brand fw-bold" asp-area="" asp-controller="Home" asp-action="Index">
-                    @appName
+                <!-- Brand with Logo -->
+                <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
+                    <div class="brand-logo me-3">
+                        <i class="fas fa-qrcode"></i>
+                    </div>
+                    <div class="brand-text">
+                        <div class="brand-name">@appName</div>
+                        <div class="brand-subtitle">Digital Khata Solution</div>
+                    </div>
                 </a>
 
                 <!-- Toggler -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <!-- Links -->
+                <!-- Navigation Links -->
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto"> <!-- Right aligned -->
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
+                                <i class="fas fa-home me-1"></i>Home
+                            </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-
+                        
                         @if (Context.Session.GetString("IsAdminLoggedIn") == "true")
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
+                                <a class="nav-link" asp-area="" asp-controller="Dashboard" asp-action="Index">
+                                    <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-cogs me-1"></i>Management
+                                </a>
+                                <ul class="dropdown-menu shadow-lg border-0">
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Customer" asp-action="Index">
+                                            <i class="fas fa-users me-2 text-primary"></i>Customers
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Product" asp-action="Index">
+                                            <i class="fas fa-box me-2 text-success"></i>Products
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Festival" asp-action="Index">
+                                            <i class="fas fa-percentage me-2 text-warning"></i>Festivals & Discounts
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Festival" asp-action="Index">Festivals</a>
+                                <a class="nav-link btn-scan" asp-area="" asp-controller="Transaction" asp-action="Scan">
+                                    <i class="fas fa-qrcode me-1"></i>Scan & Transact
+                                </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Product" asp-action="Index">Products</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Customer" asp-action="Index">Customers</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Transaction" asp-action="Scan">Scan &
-                                    Transact</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-danger fw-bold" asp-area="" asp-controller="Account"
-                                    asp-action="Logout">Logout</a>
+                        }
+                    </ul>
+
+                    <!-- Right side navigation -->
+                    <ul class="navbar-nav">
+                        @if (Context.Session.GetString("IsAdminLoggedIn") == "true")
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <div class="user-avatar me-2">
+                                        <i class="fas fa-user-shield"></i>
+                                    </div>
+                                    Admin
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0">
+                                    <li>
+                                        <h6 class="dropdown-header">
+                                            <i class="fas fa-user-circle me-2"></i>Account
+                                        </h6>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <a class="dropdown-item text-danger" asp-area="" asp-controller="Account" asp-action="Logout">
+                                            <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                                <a class="nav-link btn-login" asp-area="" asp-controller="Account" asp-action="Login">
+                                    <i class="fas fa-sign-in-alt me-1"></i>Login
+                                </a>
                             </li>
                         }
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">
+                                <i class="fas fa-shield-alt me-1"></i>Privacy
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
 
-    <div class="container">
+    <div class="container-fluid">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container py-3 text-center"> @* Centered text for contact info *@
-            <div class="mb-2">
-                <strong>@shopName</strong> &copy; @DateTime.Now.Year - @appName. All rights reserved.
+    <footer class="footer bg-light border-top mt-5">
+        <div class="container-fluid py-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="footer-brand mb-3">
+                        <h5 class="text-dark mb-2">
+                            <i class="fas fa-qrcode me-2 text-primary"></i>@appName
+                        </h5>
+                        <p class="text-muted mb-0">Advanced Customer Credit Amount Management System</p>
+                        <p class="text-muted">Digital solution for traditional shops and wholesale businesses</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="text-dark mb-3">Contact Information</h6>
+                    <div class="footer-contact">
+                        <p class="mb-2">
+                            <strong class="text-dark">@shopName</strong>
+                        </p>
+                        @if (!string.IsNullOrEmpty(shopEmail))
+                        {
+                            <p class="mb-1">
+                                <i class="fas fa-envelope me-2 text-primary"></i>
+                                <a href="mailto:@shopEmail" class="text-muted text-decoration-none">@shopEmail</a>
+                            </p>
+                        }
+                        @if (!string.IsNullOrEmpty(shopPhoneNumber))
+                        {
+                            <p class="mb-1">
+                                <i class="fas fa-phone me-2 text-primary"></i>
+                                <a href="tel:@shopPhoneNumber" class="text-muted text-decoration-none">@shopPhoneNumber</a>
+                            </p>
+                        }
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="text-dark mb-3">Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-muted text-decoration-none">
+                                <i class="fas fa-chevron-right me-2"></i>Privacy Policy
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#" class="text-muted text-decoration-none">
+                                <i class="fas fa-chevron-right me-2"></i>Terms of Service
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#" class="text-muted text-decoration-none">
+                                <i class="fas fa-chevron-right me-2"></i>Support
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <div class="mb-2">
-                <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy Policy</a>
+            <hr class="my-4">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-0 text-muted">
+                        &copy; @DateTime.Now.Year @shopName - @appName. All rights reserved.
+                        <span class="ms-3">
+                            <i class="fas fa-code me-1"></i>Built with ASP.NET Core
+                        </span>
+                    </p>
+                </div>
             </div>
-            <div class="mb-2">
-                <strong>Contact Us:</strong>
-                @if (!string.IsNullOrEmpty(shopEmail))
-                {
-                    <a href="mailto:@shopEmail" class="text-muted ml-2">@shopEmail</a>
-                }
-                @if (!string.IsNullOrEmpty(shopPhoneNumber))
-                {
-                    <span class="text-muted ml-2">|</span>
-                    <a href="tel:@shopPhoneNumber" class="text-muted ml-2">@shopPhoneNumber</a>
-                }
-            </div>
-            @* REMOVED: The entire div containing SVG social media icons *@
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

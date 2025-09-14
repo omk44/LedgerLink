@@ -4861,11 +4861,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/om/dotnet project/LedgerLink/LedgerLink.csproj",
+      "projectUniqueName": "/home/om/dotnet/LedgerLink/LedgerLink.csproj",
       "projectName": "LedgerLink",
-      "projectPath": "/home/om/dotnet project/LedgerLink/LedgerLink.csproj",
+      "projectPath": "/home/om/dotnet/LedgerLink/LedgerLink.csproj",
       "packagesPath": "/home/om/.nuget/packages/",
-      "outputPath": "/home/om/dotnet project/LedgerLink/obj/",
+      "outputPath": "/home/om/dotnet/LedgerLink/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/om/.nuget/NuGet/NuGet.Config"

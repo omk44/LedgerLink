@@ -17,127 +17,127 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = LedgerLink
 build_property.RootNamespace = LedgerLink
-build_property.ProjectDir = /home/om/dotnet project/LedgerLink/
+build_property.ProjectDir = /home/om/dotnet/LedgerLink/
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = /home/om/dotnet project/LedgerLink
+build_property.MSBuildProjectDirectory = /home/om/dotnet/LedgerLink
 build_property._RazorSourceGeneratorDebug = 
 
-[/home/om/dotnet project/LedgerLink/Views/Account/Login.cshtml]
+[/home/om/dotnet/LedgerLink/Views/Account/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9Mb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/om/dotnet project/LedgerLink/Views/Customer/Create.cshtml]
+[/home/om/dotnet/LedgerLink/Views/Customer/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ3VzdG9tZXIvQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/om/dotnet project/LedgerLink/Views/Customer/Delete.cshtml]
+[/home/om/dotnet/LedgerLink/Views/Customer/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ3VzdG9tZXIvRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/om/dotnet project/LedgerLink/Views/Customer/Edit.cshtml]
+[/home/om/dotnet/LedgerLink/Views/Customer/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ3VzdG9tZXIvRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/om/dotnet project/LedgerLink/Views/Customer/Index.cshtml]
+[/home/om/dotnet/LedgerLink/Views/Customer/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ3VzdG9tZXIvSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/om/dotnet project/LedgerLink/Views/Customer/ShowQrCode.cshtml]
+[/home/om/dotnet/LedgerLink/Views/Customer/ShowQrCode.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ3VzdG9tZXIvU2hvd1FyQ29kZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/om/dotnet project/LedgerLink/Views/Dashboard/Index.cshtml]
+[/home/om/dotnet/LedgerLink/Views/Dashboard/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRGFzaGJvYXJkL0luZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/om/dotnet project/LedgerLink/Views/DiscountRule/Create.cshtml]
+[/home/om/dotnet/LedgerLink/Views/DiscountRule/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRGlzY291bnRSdWxlL0NyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/om/dotnet project/LedgerLink/Views/DiscountRule/Delete.cshtml]
+[/home/om/dotnet/LedgerLink/Views/DiscountRule/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRGlzY291bnRSdWxlL0RlbGV0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/om/dotnet project/LedgerLink/Views/DiscountRule/Edit.cshtml]
+[/home/om/dotnet/LedgerLink/Views/DiscountRule/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRGlzY291bnRSdWxlL0VkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/om/dotnet project/LedgerLink/Views/DiscountRule/Index.cshtml]
+[/home/om/dotnet/LedgerLink/Views/DiscountRule/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRGlzY291bnRSdWxlL0luZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/om/dotnet project/LedgerLink/Views/Festival/Create.cshtml]
+[/home/om/dotnet/LedgerLink/Views/Festival/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRmVzdGl2YWwvQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/om/dotnet project/LedgerLink/Views/Festival/Delete.cshtml]
+[/home/om/dotnet/LedgerLink/Views/Festival/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRmVzdGl2YWwvRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/om/dotnet project/LedgerLink/Views/Festival/Edit.cshtml]
+[/home/om/dotnet/LedgerLink/Views/Festival/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRmVzdGl2YWwvRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/om/dotnet project/LedgerLink/Views/Festival/Index.cshtml]
+[/home/om/dotnet/LedgerLink/Views/Festival/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRmVzdGl2YWwvSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/om/dotnet project/LedgerLink/Views/Home/Index.cshtml]
+[/home/om/dotnet/LedgerLink/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/om/dotnet project/LedgerLink/Views/Home/Privacy.cshtml]
+[/home/om/dotnet/LedgerLink/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/om/dotnet project/LedgerLink/Views/Product/Create.cshtml]
+[/home/om/dotnet/LedgerLink/Views/Product/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvZHVjdC9DcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/om/dotnet project/LedgerLink/Views/Product/Delete.cshtml]
+[/home/om/dotnet/LedgerLink/Views/Product/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvZHVjdC9EZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/om/dotnet project/LedgerLink/Views/Product/Edit.cshtml]
+[/home/om/dotnet/LedgerLink/Views/Product/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvZHVjdC9FZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/om/dotnet project/LedgerLink/Views/Product/Index.cshtml]
+[/home/om/dotnet/LedgerLink/Views/Product/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvZHVjdC9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/om/dotnet project/LedgerLink/Views/Shared/Error.cshtml]
+[/home/om/dotnet/LedgerLink/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/om/dotnet project/LedgerLink/Views/Shared/_ValidationScriptsPartial.cshtml]
+[/home/om/dotnet/LedgerLink/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/om/dotnet project/LedgerLink/Views/Transaction/CustomerDetails.cshtml]
+[/home/om/dotnet/LedgerLink/Views/Transaction/CustomerDetails.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVHJhbnNhY3Rpb24vQ3VzdG9tZXJEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/om/dotnet project/LedgerLink/Views/Transaction/Scan.cshtml]
+[/home/om/dotnet/LedgerLink/Views/Transaction/Scan.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVHJhbnNhY3Rpb24vU2Nhbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/om/dotnet project/LedgerLink/Views/Transaction/ShowReceipt.cshtml]
+[/home/om/dotnet/LedgerLink/Views/Transaction/ShowReceipt.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVHJhbnNhY3Rpb24vU2hvd1JlY2VpcHQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/om/dotnet project/LedgerLink/Views/_ViewImports.cshtml]
+[/home/om/dotnet/LedgerLink/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/om/dotnet project/LedgerLink/Views/_ViewStart.cshtml]
+[/home/om/dotnet/LedgerLink/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/om/dotnet project/LedgerLink/Views/Shared/_Layout.cshtml]
+[/home/om/dotnet/LedgerLink/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-y535oqqwaz
