@@ -18,7 +18,7 @@ namespace LedgerLink.Controllers
             _productRepo = productRepo;
         }
 
-        // --- Improved Session Security ---
+        // --- Enhanced Session Security ---
         // More secure session validation with multiple checks
         private bool IsAdminLoggedIn()
         {

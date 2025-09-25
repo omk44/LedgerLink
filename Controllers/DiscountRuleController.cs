@@ -21,10 +21,37 @@ namespace LedgerLink.Controllers
             _festivalRepo = festivalRepo;
         }
 
-        // --- Manual Session Check for Protection ---
+        // --- Enhanced Session Security ---
+        // More secure session validation with multiple checks
         private bool IsAdminLoggedIn()
         {
-            return HttpContext.Session.GetString("IsAdminLoggedIn") == "true";
+            var sessionToken = HttpContext.Session.GetString("AdminToken");
+            var sessionExpiry = HttpContext.Session.GetString("SessionExpiry");
+            var sessionUserId = HttpContext.Session.GetString("UserId");
+            
+            // Basic validation
+            if (string.IsNullOrEmpty(sessionToken) || 
+                string.IsNullOrEmpty(sessionExpiry) ||
+                string.IsNullOrEmpty(sessionUserId))
+                return false;
+            
+            // Check session expiry
+            if (DateTime.TryParse(sessionExpiry, out var expiry) && expiry < DateTime.UtcNow)
+            {
+                // Clear expired session
+                HttpContext.Session.Clear();
+                return false;
+            }
+            
+            // Additional security: validate token format/content
+            return IsValidAdminToken(sessionToken);
+        }
+        
+        private bool IsValidAdminToken(string token)
+        {
+            // Add token validation logic here
+            // Could include encryption validation, database lookup, etc.
+            return !string.IsNullOrEmpty(token) && token.StartsWith("ADMIN_");
         }
 
         // GET: DiscountRule/Index/{festivalId} - Displays all rules for a specific festival

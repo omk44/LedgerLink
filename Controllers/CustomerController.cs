@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http; // Required for HttpContext.Session
 using LedgerLink.Interface; // For ICustomerRepo
 using LedgerLink.Models;   // For Customer model
 using LedgerLink.Services; // For QrCodeService
-using System; // For Guid
+using System; // For Guid and DateTime
 using System.Collections.Generic; // For IEnumerable
 using System.Linq; // For LINQ methods like FirstOrDefault
 using System.ComponentModel.DataAnnotations; // For model validation attributes
@@ -21,9 +21,37 @@ namespace LedgerLink.Controllers
             _qrCodeService = qrCodeService;
         }
 
+        // --- Enhanced Session Security ---
+        // More secure session validation with multiple checks
         private bool IsAdminLoggedIn()
         {
-            return HttpContext.Session.GetString("IsAdminLoggedIn") == "true";
+            var sessionToken = HttpContext.Session.GetString("AdminToken");
+            var sessionExpiry = HttpContext.Session.GetString("SessionExpiry");
+            var sessionUserId = HttpContext.Session.GetString("UserId");
+            
+            // Basic validation
+            if (string.IsNullOrEmpty(sessionToken) || 
+                string.IsNullOrEmpty(sessionExpiry) ||
+                string.IsNullOrEmpty(sessionUserId))
+                return false;
+            
+            // Check session expiry
+            if (DateTime.TryParse(sessionExpiry, out var expiry) && expiry < DateTime.UtcNow)
+            {
+                // Clear expired session
+                HttpContext.Session.Clear();
+                return false;
+            }
+            
+            // Additional security: validate token format/content
+            return IsValidAdminToken(sessionToken);
+        }
+        
+        private bool IsValidAdminToken(string token)
+        {
+            // Add token validation logic here
+            // Could include encryption validation, database lookup, etc.
+            return !string.IsNullOrEmpty(token) && token.StartsWith("ADMIN_");
         }
 
         public IActionResult Index()
