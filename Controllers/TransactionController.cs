@@ -1,4 +1,3 @@
-// Path: LedgerLink/Controllers/TransactionController.cs
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using LedgerLink.Interface;
@@ -6,14 +5,12 @@ using LedgerLink.Models;
 using LedgerLink.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using System.Globalization;
-using X.PagedList;   // <-- important
 using System.Linq;
-using X.PagedList.Extensions;  // for LINQ methods
+using X.PagedList.Extensions;
+
 namespace LedgerLink.Controllers
 {
     public class TransactionController : Controller
@@ -105,7 +102,6 @@ public IActionResult CustomerDetails(Guid id, int transactionPage = 1, int payme
 
     var products = _productRepo.GetAllProducts();
 
-    // ✅ Get active festivals
     var activeFestivals = _festivalRepo.GetAllFestivals()
         .Where(f => f.IsActive && f.StartDate.Date <= DateTime.UtcNow.Date && f.EndDate.Date >= DateTime.UtcNow.Date)
         .ToList();
@@ -120,7 +116,6 @@ public IActionResult CustomerDetails(Guid id, int transactionPage = 1, int payme
         .OrderByDescending(p => p.PaymentDate)
         .ToPagedList(paymentPage, 10);
 
-    // ✅ Get discount rules for these active festivals
     var activeRules = _discountRuleRepo.GetAllDiscountRules()
         .Where(r => activeFestivals.Select(f => f.Id).Contains(r.FestivalId))
         .ToList();
@@ -348,7 +343,6 @@ public IActionResult CustomerDetails(Guid id, int transactionPage = 1, int payme
             return View(viewModel);
         }
 
-       // In TransactionController.cs
 [HttpPost]
 [ValidateAntiForgeryToken]
 public async Task<IActionResult> SendReminder(Guid customerId)
@@ -362,23 +356,21 @@ public async Task<IActionResult> SendReminder(Guid customerId)
     if (customer == null)
     {
         TempData["ErrorMessage"] = "Customer not found.";
-        return RedirectToAction("Index", "Customer"); // Redirect to list if customer is gone
+        return RedirectToAction("Index", "Customer");
     }
 
-    // 🐛 BUG FIX 1: Add a specific check for a missing email address.
     if (string.IsNullOrEmpty(customer.Email))
     {
         TempData["ErrorMessage"] = "Cannot send reminder: This customer does not have an email address on file.";
         return RedirectToAction("CustomerDetails", new { id = customerId });
     }
 
-    var indiaCulture = new System.Globalization.CultureInfo("en-IN");
+    var indiaCulture = new CultureInfo("en-IN");
     string formattedBalance = customer.CurrentBalance.ToString("C", indiaCulture);
 
     string subject = $"Payment Reminder from {_shopSettings.ShopName}";
     string messageBody = $"Dear {customer.FullName},\n\nThis is a friendly reminder that your outstanding balance at {_shopSettings.ShopName} is {formattedBalance}.\n\nPlease settle your dues at your earliest convenience.\n\nThank you,\n{_shopSettings.ShopName}";
 
-    // Now this call uses the robust service
     bool emailSent = await _emailService.SendEmailAsync(customer.Email, subject, messageBody);
 
     if (emailSent)
@@ -387,71 +379,13 @@ public async Task<IActionResult> SendReminder(Guid customerId)
     }
     else
     {
-        // This message is now truly helpful because the real error is in your logs
         TempData["ErrorMessage"] = "Failed to send payment reminder. Please check the system logs for details.";
     }
 
-            // 🐛 BUG FIX 2: Use the correct parameter name 'customerId' for the redirect.
-            return RedirectToAction("CustomerDetails", new { id = customerId });
+    return RedirectToAction("CustomerDetails", new { id = customerId });
 }
 
-        // [HttpPost]
-        //     public IActionResult CalculateDiscount([FromBody] CalculateDiscountRequestModel request)
-        //     {
-        //         decimal originalAmount = request.quantity * request.unitPrice;
-        //         decimal discountPercentage = 0.00m;
-        //         decimal discountAmount = 0.00m;
-        //         decimal finalAmount = originalAmount;
-        //         string? message = null;
 
-        //         Festival? activeFestival = _festivalRepo.GetAllFestivals()
-        //                                                .FirstOrDefault(f => f.IsActive && f.StartDate.Date <= DateTime.UtcNow.Date && f.EndDate.Date >= DateTime.UtcNow.Date);
-
-        //         if (activeFestival != null)
-        //         {
-        //             Customer? customer = _customerRepo.GetCustomerById(request.customerId);
-        //             if (customer != null)
-        //             {
-        //                 DiscountRule? matchingRule = _discountRuleRepo.GetAllDiscountRules()
-        //                                                               .Where(r => r.FestivalId == activeFestival.Id)
-        //                                                               .FirstOrDefault(r => 
-        //                                                                   customer.CurrentBalance >= r.MinCustomerCreditBalance && 
-        //                                                                   customer.CurrentBalance <= r.MaxCustomerCreditBalance &&
-        //                                                                   originalAmount >= r.MinPurchaseAmount);
-
-        //                 if (matchingRule != null)
-        //                 {
-        //                     discountPercentage = matchingRule.DiscountPercentage;
-        //                     discountAmount = originalAmount * (discountPercentage / 100);
-        //                     finalAmount = originalAmount - discountAmount;
-        //                     message = $"Festival offer applied! {discountPercentage}% discount on this item.";
-        //                 }
-        //                 else
-        //                 {
-        //                     message = "No matching discount rule found for this customer.";
-        //                 }
-        //             }
-        //             else
-        //             {
-        //                 message = "Customer not found for discount calculation.";
-        //             }
-        //         }
-        //         else
-        //         {
-        //             message = "No active festival offers.";
-        //         }
-
-        //         return Ok(new { discountPercentage, discountAmount, finalAmount, message });
-        //     }
-        // }
-
-        // public class CalculateDiscountRequestModel
-        // {
-        //     public Guid customerId { get; set; }
-        //     public int productId { get; set; }
-        //     public int quantity { get; set; }
-        //     public decimal unitPrice { get; set; }
-        // }
         [HttpPost]
         public IActionResult CalculateDiscount([FromBody] CalculateDiscountRequestModel request)
         {
@@ -508,15 +442,5 @@ public async Task<IActionResult> SendReminder(Guid customerId)
 
             return Ok(new { discountPercentage, discountAmount, finalAmount, message });
         }
-
-        public class CalculateDiscountRequestModel
-        {
-            public Guid customerId { get; set; }
-            public int productId { get; set; }
-            public int quantity { get; set; }
-            public decimal unitPrice { get; set; }
-            public int? applyDiscountFestivalId { get; set; } // ✅ added festival ID
-        }
-
     }
-    }
+}

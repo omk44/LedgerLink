@@ -7,7 +7,7 @@
     ViewData["Title"] = $"Transaction for {Model.Customer.FullName}";
     var indiaCulture = new CultureInfo("en-IN");
 
-    // ✅ Use Model instead of ViewBag
+    // Use Model instead of ViewBag because of CustomerDetailsViewModel used for strongly typed
     var activeFestivals = Model.ActiveFestivals;
     var hasActiveFestival = activeFestivals != null && activeFestivals.Any();
 }

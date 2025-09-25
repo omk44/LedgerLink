@@ -1,7 +1,6 @@
 // Path: LedgerLink/Models/Transaction.cs
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Collections.Generic;
 
 namespace LedgerLink.Models
 {
@@ -13,10 +12,10 @@ namespace LedgerLink.Models
         public Guid CustomerId { get; set; }
         public Customer Customer { get; set; } = null!;
 
-        // The foreign key is now nullable. It can be null if the Product is deleted.
+        //It can be null if the Product is deleted.
         public int? ProductId { get; set; }
         
-        // CRITICAL FIX: The navigation property MUST be nullable to match the FK.
+        // The navigation property MUST be nullable to match the FK.
         public Product? Product { get; set; }
 
         [Required(ErrorMessage = "Quantity is required.")]

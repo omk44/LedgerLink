@@ -32,7 +32,6 @@
             scanErrorDiv.style.display = 'none';
             scanAgainButton.style.display = 'none'; // Hide scan again button
 
-            // CRITICAL FIX: Stop and clear the scanner immediately after a successful decode.
             // This prevents re-scanning the same code repeatedly.
             if (html5QrcodeScanner.isScanning) {
                 await html5QrcodeScanner.stop().then(() => {
@@ -73,7 +72,6 @@
                 scanErrorDiv.style.display = 'block';
                 scanStatusP.textContent = 'Scan failed.';
 
-                // CRITICAL FIX: Fully clear the scanner on error.
                 // This stops the camera and prevents continuous re-scanning of the invalid code.
                 if (html5QrcodeScanner) {
                     html5QrcodeScanner.clear().then(() => {

@@ -20,8 +20,7 @@ namespace LedgerLink.Models
 
         // Scalar Property: Product description (optional)
         [StringLength(500, ErrorMessage = "Description cannot exceed 500 characters.")]
-        public string? Description { get; set; } // Nullable
-
+        public string? Description { get; set; } 
         // ✅ Numeric value of quantity (e.g., 500, 2)
         [Required(ErrorMessage = "Quantity is required.")]
         public decimal QuantityValue { get; set; }

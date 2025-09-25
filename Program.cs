@@ -1,23 +1,17 @@
-// Path: LedgerLink/Program.cs
-using Microsoft.EntityFrameworkCore;
-using LedgerLink.Data; // Your DbContext namespace
-using Npgsql.EntityFrameworkCore.PostgreSQL;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using LedgerLink.Data;
 using LedgerLink.ViewModels;
-using LedgerLink.Interface; // Your interfaces
-using LedgerLink.Services; // Your service implementations
+using LedgerLink.Interface;
+using LedgerLink.Services;
 using System;
-using System.Globalization; // Required for CultureInfo
-using Microsoft.AspNetCore.Localization; // Required for RequestLocalizationOptions
-using Microsoft.Extensions.Options; // Required for IOptions (for ShopSettings)
-// REMOVED: using Microsoft.Extensions.Configuration; // No longer explicitly needed here
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// --- CRITICAL FIX: REMOVE these explicit configuration loading lines ---
-// WebApplication.CreateBuilder(args) already loads appsettings.json by default.
-// builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-//                      .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
 
 
 // Configure Application Culture for India (en-IN)
