@@ -37,16 +37,22 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Add Session Services
+// Add Session Services with enhanced security
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
+    options.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.Always;
+    options.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict;
+    options.Cookie.Name = "LedgerLink.Session";
 });
 
 // Register ShopSettings from configuration
 builder.Services.Configure<ShopSettings>(builder.Configuration.GetSection("ShopSettings"));
+
+// Register AdminSettings from configuration
+builder.Services.Configure<AdminSettings>(builder.Configuration.GetSection("AdminSettings"));
 
 // Register your custom repositories and services
 builder.Services.AddScoped<ICustomerRepo, CustomerRepo>();
