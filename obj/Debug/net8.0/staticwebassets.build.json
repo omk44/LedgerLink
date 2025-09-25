@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "kC48egSmdPfsvD66kenDekeLaJ3nbys4hWE82B+yduA=",
+  "Hash": "B/4BC3c3vfxztzZMPfttl34PiOd1LBX1rO3tDuAdNUI=",
   "Source": "LedgerLink",
   "BasePath": "_content/LedgerLink",
   "Mode": "Default",
@@ -53,6 +53,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "/home/om/dotnet/LedgerLink/obj/Debug/net8.0/scopedcss/projectbundle/LedgerLink.bundle.scp.css"
+    },
+    {
+      "Identity": "/home/om/dotnet/LedgerLink/wwwroot/css/dashboard-modern.css",
+      "SourceId": "LedgerLink",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/om/dotnet/LedgerLink/wwwroot/",
+      "BasePath": "_content/LedgerLink",
+      "RelativePath": "css/dashboard-modern.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/css/dashboard-modern.css"
     },
     {
       "Identity": "/home/om/dotnet/LedgerLink/wwwroot/css/site.css",

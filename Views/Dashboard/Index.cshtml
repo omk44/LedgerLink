@@ -7,62 +7,97 @@
     var indiaCulture = new CultureInfo("en-IN"); 
 }
 
-<div class="container mt-5">
-    <h2>@ViewData["Title"]</h2>
-    <hr />
+<div class="dashboard-container">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-primary mb-3">
+            <i class="fas fa-tachometer-alt me-3"></i>
+            @ViewData["Title"]
+        </h1>
+        <p class="lead text-muted">Comprehensive business insights and management tools</p>
+    </div>
 
     <!-- ===================== Section 1: Date Filter ===================== -->
-    <h3 class="mt-4 mb-3 text-primary">📅 Date Filter</h3>
-    <form asp-controller="Dashboard" asp-action="Index" method="get" class="mb-4">
-        <div class="row">
-            <div class="col-md-4">
-                <label for="startDate" class="form-label">Start Date:</label>
-                <input type="date" id="startDate" name="startDate" class="form-control"
-                       value="@Model.StartDate.ToString("yyyy-MM-dd")" />
+    <div class="section-header">
+        <h3><span class="emoji">📅</span> Date Filter</h3>
+    </div>
+    <div class="date-filter-form">
+        <form asp-controller="Dashboard" asp-action="Index" method="get">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <label for="startDate" class="form-label">
+                        <i class="fas fa-calendar-alt me-2 text-primary"></i>Start Date
+                    </label>
+                    <input type="date" id="startDate" name="startDate" class="form-control"
+                           value="@Model.StartDate.ToString("yyyy-MM-dd")" />
+                </div>
+                <div class="col-md-4">
+                    <label for="endDate" class="form-label">
+                        <i class="fas fa-calendar-check me-2 text-primary"></i>End Date
+                    </label>
+                    <input type="date" id="endDate" name="endDate" class="form-control"
+                           value="@Model.EndDate.ToString("yyyy-MM-dd")" />
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100 btn-lg">
+                        <i class="fas fa-filter me-2"></i>Apply Filter
+                    </button>
+                </div>
             </div>
-            <div class="col-md-4">
-                <label for="endDate" class="form-label">End Date:</label>
-                <input type="date" id="endDate" name="endDate" class="form-control"
-                       value="@Model.EndDate.ToString("yyyy-MM-dd")" />
-            </div>
-            <div class="col-md-4 d-flex align-items-end">
-                <button type="submit" class="btn btn-primary w-100">Apply Filter</button>
-            </div>
-        </div>
-    </form>
+        </form>
+    </div>
     <!-- ===================== END Section 1 ===================== -->
 
 
     <!-- ===================== Section 2: Overall Summary ===================== -->
-    <h3 class="mt-4 mb-3 text-primary">📊 Overall Summary</h3>
-    <div class="row mb-4">
+    <div class="section-header">
+        <h3><span class="emoji">📊</span> Overall Summary</h3>
+    </div>
+    <div class="row g-4 mb-5">
         <!-- Card 1 -->
-        <div class="col-md-4">
-            <div class="card text-white bg-danger mb-3 shadow-sm">
-                <div class="card-header">Total Outstanding Credit (Overall)</div>
+        <div class="col-lg-4">
+            <div class="card dashboard-card text-white bg-danger h-100">
+                <div class="card-header d-flex align-items-center">
+                    <i class="fas fa-exclamation-triangle me-3 fs-4"></i>
+                    <span>Total Outstanding Credit</span>
+                </div>
                 <div class="card-body">
                     <h5 class="card-title">@Model.TotalOutstandingCredit.ToString("C", indiaCulture)</h5>
-                    <p class="card-text">Money pending from all customers.</p>
+                    <p class="card-text">Money pending from all customers</p>
+                    <div class="progress mt-3" style="height: 6px;">
+                        <div class="progress-bar bg-white" role="progressbar" style="width: 75%"></div>
+                    </div>
                 </div>
             </div>
         </div>
         <!-- Card 2 -->
-        <div class="col-md-4">
-            <div class="card text-white bg-info mb-3 shadow-sm">
-                <div class="card-header">Total Customers (Overall)</div>
+        <div class="col-lg-4">
+            <div class="card dashboard-card text-white bg-info h-100">
+                <div class="card-header d-flex align-items-center">
+                    <i class="fas fa-users me-3 fs-4"></i>
+                    <span>Total Customers</span>
+                </div>
                 <div class="card-body">
                     <h5 class="card-title">@Model.TotalCustomers</h5>
-                    <p class="card-text">Number of registered customers.</p>
+                    <p class="card-text">Registered customers in system</p>
+                    <div class="progress mt-3" style="height: 6px;">
+                        <div class="progress-bar bg-white" role="progressbar" style="width: 85%"></div>
+                    </div>
                 </div>
             </div>
         </div>
         <!-- Card 3 -->
-        <div class="col-md-4">
-            <div class="card text-white bg-success mb-3 shadow-sm">
-                <div class="card-header">Total Products (Overall)</div>
+        <div class="col-lg-4">
+            <div class="card dashboard-card text-white bg-success h-100">
+                <div class="card-header d-flex align-items-center">
+                    <i class="fas fa-box me-3 fs-4"></i>
+                    <span>Total Products</span>
+                </div>
                 <div class="card-body">
                     <h5 class="card-title">@Model.TotalProducts</h5>
-                    <p class="card-text">Items available in your shop.</p>
+                    <p class="card-text">Items available in your shop</p>
+                    <div class="progress mt-3" style="height: 6px;">
+                        <div class="progress-bar bg-white" role="progressbar" style="width: 95%"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -71,23 +106,37 @@
 
 
     <!-- ===================== Section 3: Period Summary ===================== -->
-    <h3 class="mt-4 mb-3 text-primary">📈 Period Summary (@Model.StartDate.ToShortDateString() → @Model.EndDate.ToShortDateString())</h3>
-    <div class="row mb-4">
-        <!-- Card 4 -->
-        <div class="col-md-6">
-            <div class="card text-dark bg-light mb-3 shadow-sm">
-                <div class="card-header">Total Sales in Period</div>
-                <div class="card-body">
-                    <h5 class="card-title">@Model.TotalSalesInPeriod.ToString("C", indiaCulture)</h5>
+    <div class="section-header">
+        <h3><span class="emoji">📈</span> Period Summary 
+            <small class="text-muted fs-6">(@Model.StartDate.ToShortDateString() → @Model.EndDate.ToShortDateString())</small>
+        </h3>
+    </div>
+    <div class="period-summary">
+        <div class="row g-4 mb-5">
+            <!-- Card 4 -->
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header d-flex align-items-center">
+                        <i class="fas fa-chart-line me-3 text-primary fs-4"></i>
+                        <span>Total Sales in Period</span>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">@Model.TotalSalesInPeriod.ToString("C", indiaCulture)</h5>
+                        <p class="text-muted mb-0">Revenue generated in selected period</p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <!-- Card 5 -->
-        <div class="col-md-6">
-            <div class="card text-dark bg-light mb-3 shadow-sm">
-                <div class="card-header">Total Payments in Period</div>
-                <div class="card-body">
-                    <h5 class="card-title">@Model.TotalPaymentsInPeriod.ToString("C", indiaCulture)</h5>
+            <!-- Card 5 -->
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header d-flex align-items-center">
+                        <i class="fas fa-money-bill-wave me-3 text-success fs-4"></i>
+                        <span>Total Payments in Period</span>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">@Model.TotalPaymentsInPeriod.ToString("C", indiaCulture)</h5>
+                        <p class="text-muted mb-0">Payments received in selected period</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -96,63 +145,87 @@
 
 
     <!-- ===================== Section 4: Customer Insights ===================== -->
-    <h3 class="mt-4 mb-3 text-primary">👥 Customer Insights</h3>
-    <div class="row mt-4">
+    <div class="section-header">
+        <h3><span class="emoji">👥</span> Customer Insights</h3>
+    </div>
+    <div class="row g-4 mb-5">
         <!-- Top Customers -->
-        <div class="col-md-6">
-            <div class="card shadow-sm">
-                <div class="card-header bg-danger text-white">
-                    <h4>Top Customers by Credit (Overall)</h4>
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-header bg-danger text-white d-flex align-items-center">
+                    <i class="fas fa-crown me-3 fs-4"></i>
+                    <h4 class="mb-0">Top Customers by Credit</h4>
                 </div>
                 <div class="card-body">
                     @if (!Model.TopCustomersByCredit.Any())
                     {
-                        <p class="text-muted">No customers with outstanding credit.</p>
+                        <div class="text-center py-5">
+                            <i class="fas fa-smile-beam text-success fs-1 mb-3"></i>
+                            <p class="text-muted">No customers with outstanding credit</p>
+                        </div>
                     }
                     else
                     {
-                        <table class="table table-striped table-sm">
-                            <thead><tr><th>Name</th><th>Balance</th></tr></thead>
-                            <tbody>
-                                @foreach (var customer in Model.TopCustomersByCredit)
-                                {
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover mb-0">
+                                <thead>
                                     <tr>
-                                        <td>@customer.FullName</td>
-                                        <td>@customer.CurrentBalance.ToString("C", indiaCulture)</td>
+                                        <th><i class="fas fa-user me-2"></i>Name</th>
+                                        <th><i class="fas fa-rupee-sign me-2"></i>Balance</th>
                                     </tr>
-                                }
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach (var customer in Model.TopCustomersByCredit)
+                                    {
+                                        <tr>
+                                            <td class="fw-semibold">@customer.FullName</td>
+                                            <td class="text-danger fw-bold">@customer.CurrentBalance.ToString("C", indiaCulture)</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     }
                 </div>
             </div>
         </div>
 
         <!-- Customers with Activity -->
-        <div class="col-md-6">
-            <div class="card shadow-sm">
-                <div class="card-header bg-info text-white">
-                    <h4>Customers with Activity in Period</h4>
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-header bg-info text-white d-flex align-items-center">
+                    <i class="fas fa-chart-bar me-3 fs-4"></i>
+                    <h4 class="mb-0">Active Customers in Period</h4>
                 </div>
                 <div class="card-body">
                     @if (!Model.CustomersWithActivityInPeriod.Any())
                     {
-                        <p class="text-muted">No customer activity in the selected period.</p>
+                        <div class="text-center py-5">
+                            <i class="fas fa-bed text-muted fs-1 mb-3"></i>
+                            <p class="text-muted">No customer activity in selected period</p>
+                        </div>
                     }
                     else
                     {
-                        <table class="table table-striped table-sm">
-                            <thead><tr><th>Name</th><th>Phone</th></tr></thead>
-                            <tbody>
-                                @foreach (var customer in Model.CustomersWithActivityInPeriod)
-                                {
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover mb-0">
+                                <thead>
                                     <tr>
-                                        <td>@customer.FullName</td>
-                                        <td>@customer.PhoneNumber</td>
+                                        <th><i class="fas fa-user me-2"></i>Name</th>
+                                        <th><i class="fas fa-phone me-2"></i>Phone</th>
                                     </tr>
-                                }
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach (var customer in Model.CustomersWithActivityInPeriod)
+                                    {
+                                        <tr>
+                                            <td class="fw-semibold">@customer.FullName</td>
+                                            <td class="text-muted">@customer.PhoneNumber</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     }
                 </div>
             </div>
@@ -162,48 +235,67 @@
 
 
     <!-- ===================== Section 5: Overall Customer Credit Totals ===================== -->
-    <h3 class="mt-4 mb-3 text-primary">💰 Overall Customer Credit Totals</h3>
-    <div class="row mt-4">
-        <div class="col-md-12">
-            <div class="card shadow-sm">
-                <div class="card-header bg-warning text-dark">
-                    <h4>Customer Balances</h4>
+    <div class="section-header">
+        <h3><span class="emoji">💰</span> Customer Credit Management</h3>
+    </div>
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-warning text-dark d-flex align-items-center">
+                    <i class="fas fa-balance-scale me-3 fs-4"></i>
+                    <h4 class="mb-0">Customer Balances</h4>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-0">
                     @if (!Model.AllCustomersWithCredit.Any())
                     {
-                        <p class="text-muted">No customers found.</p>
+                        <div class="text-center py-5">
+                            <i class="fas fa-user-slash text-muted fs-1 mb-3"></i>
+                            <p class="text-muted">No customers found</p>
+                        </div>
                     }
                     else
                     {
-                        <table class="table table-striped table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Customer Name</th>
-                                    <th>Current Balance</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var customer in Model.AllCustomersWithCredit)
-                                {
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover mb-0">
+                                <thead>
                                     <tr>
-                                        <td>@customer.FullName</td>
-                                        <td>@customer.CurrentBalance.ToString("C", indiaCulture)</td>
-                                        <td>
-                                            @if (customer.CurrentBalance > 0)
-                                            {
-                                                <form asp-controller="Transaction" asp-action="SendReminder" method="post" class="d-inline">
-                                                    <input type="hidden" name="customerId" value="@customer.Id" />
-                                                    <button type="submit" class="btn btn-outline-danger btn-sm">Send Reminder</button>
-                                                </form>
-                                            }
-                                            <a asp-controller="Transaction" asp-action="CustomerDetails" asp-route-id="@customer.Id" class="btn btn-outline-info btn-sm ml-2">Details</a>
-                                        </td>
+                                        <th><i class="fas fa-user me-2"></i>Customer Name</th>
+                                        <th><i class="fas fa-rupee-sign me-2"></i>Current Balance</th>
+                                        <th><i class="fas fa-cogs me-2"></i>Actions</th>
                                     </tr>
-                                }
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach (var customer in Model.AllCustomersWithCredit)
+                                    {
+                                        <tr>
+                                            <td class="fw-semibold align-middle">@customer.FullName</td>
+                                            <td class="align-middle">
+                                                <span class="@(customer.CurrentBalance > 0 ? "text-danger fw-bold" : "text-success")">
+                                                    @customer.CurrentBalance.ToString("C", indiaCulture)
+                                                </span>
+                                            </td>
+                                            <td class="align-middle">
+                                                <div class="btn-group" role="group">
+                                                    @if (customer.CurrentBalance > 0)
+                                                    {
+                                                        <form asp-controller="Transaction" asp-action="SendReminder" method="post" class="d-inline">
+                                                            <input type="hidden" name="customerId" value="@customer.Id" />
+                                                            <button type="submit" class="btn btn-outline-danger btn-sm">
+                                                                <i class="fas fa-bell me-1"></i>Send Reminder
+                                                            </button>
+                                                        </form>
+                                                    }
+                                                    <a asp-controller="Transaction" asp-action="CustomerDetails" asp-route-id="@customer.Id" 
+                                                       class="btn btn-outline-info btn-sm">
+                                                        <i class="fas fa-eye me-1"></i>Details
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     }
                 </div>
             </div>
@@ -213,67 +305,127 @@
 
 
     <!-- ===================== Section 6: Transactions & Payments ===================== -->
-    <h3 class="mt-4 mb-3 text-primary">💳 Transactions & Payments</h3>
-    <div class="row mt-4">
+    <div class="section-header">
+        <h3><span class="emoji">💳</span> Recent Activity</h3>
+    </div>
+    <div class="row g-4 mb-5">
         <!-- Transactions -->
-        <div class="col-md-6">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h4>Recent Transactions in Period</h4>
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-header bg-primary text-white d-flex align-items-center">
+                    <i class="fas fa-shopping-cart me-3 fs-4"></i>
+                    <h4 class="mb-0">Recent Transactions</h4>
                 </div>
                 <div class="card-body">
                     @if (!Model.TransactionsInPeriod.Any())
                     {
-                        <p class="text-muted">No transactions in the selected period.</p>
+                        <div class="text-center py-5">
+                            <i class="fas fa-receipt text-muted fs-1 mb-3"></i>
+                            <p class="text-muted">No transactions in selected period</p>
+                        </div>
                     }
                     else
                     {
-                        <table class="table table-striped table-sm">
-                            <thead><tr><th>Date</th><th>Customer</th><th>Total</th><th>Credit?</th></tr></thead>
-                            <tbody>
-                                @foreach (var transaction in Model.TransactionsInPeriod)
-                                {
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover mb-0">
+                                <thead>
                                     <tr>
-                                        <td>@transaction.PurchaseDate.ToLocalTime().ToString("g")</td>
-                                        <td>@transaction.Customer?.FullName</td>
-                                        <td>@transaction.TotalAmount.ToString("C", indiaCulture)</td>
-                                        <td>@(transaction.IsCreditTransaction ? "Yes" : "No")</td>
+                                        <th><i class="fas fa-calendar me-2"></i>Date</th>
+                                        <th><i class="fas fa-user me-2"></i>Customer</th>
+                                        <th><i class="fas fa-rupee-sign me-2"></i>Total</th>
+                                        <th><i class="fas fa-credit-card me-2"></i>Credit</th>
                                     </tr>
-                                }
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach (var transaction in Model.TransactionsInPeriod)
+                                    {
+                                        <tr>
+                                            <td class="text-muted small">@transaction.PurchaseDate.ToLocalTime().ToString("MMM dd, HH:mm")</td>
+                                            <td class="fw-semibold">@transaction.Customer?.FullName</td>
+                                            <td class="fw-bold">@transaction.TotalAmount.ToString("C", indiaCulture)</td>
+                                            <td>
+                                                @if (transaction.IsCreditTransaction)
+                                                {
+                                                    <span class="badge bg-warning text-dark">
+                                                        <i class="fas fa-clock me-1"></i>Credit
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-success">
+                                                        <i class="fas fa-check me-1"></i>Paid
+                                                    </span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     }
                 </div>
             </div>
         </div>
 
         <!-- Payments -->
-        <div class="col-md-6">
-            <div class="card shadow-sm">
-                <div class="card-header bg-secondary text-white">
-                    <h4>Recent Payments in Period</h4>
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-header bg-secondary text-white d-flex align-items-center">
+                    <i class="fas fa-hand-holding-usd me-3 fs-4"></i>
+                    <h4 class="mb-0">Recent Payments</h4>
                 </div>
                 <div class="card-body">
                     @if (!Model.PaymentsInPeriod.Any())
                     {
-                        <p class="text-muted">No payments in the selected period.</p>
+                        <div class="text-center py-5">
+                            <i class="fas fa-money-check text-muted fs-1 mb-3"></i>
+                            <p class="text-muted">No payments in selected period</p>
+                        </div>
                     }
                     else
                     {
-                        <table class="table table-striped table-sm">
-                            <thead><tr><th>Date</th><th>Customer</th><th>Amount</th><th>Mode</th></tr></thead>
-                            <tbody>
-                                @foreach (var payment in Model.PaymentsInPeriod)
-                                {
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover mb-0">
+                                <thead>
                                     <tr>
-                                        <td>@payment.PaymentDate.ToLocalTime().ToString("g")</td>
-                                        <td>@payment.Customer?.FullName</td>
-                                        <td>@payment.AmountPaid.ToString("C", indiaCulture)</td>
-                                        <td>@payment.PaymentMode</td>
+                                        <th><i class="fas fa-calendar me-2"></i>Date</th>
+                                        <th><i class="fas fa-user me-2"></i>Customer</th>
+                                        <th><i class="fas fa-rupee-sign me-2"></i>Amount</th>
+                                        <th><i class="fas fa-credit-card me-2"></i>Mode</th>
                                     </tr>
-                                }
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach (var payment in Model.PaymentsInPeriod)
+                                    {
+                                        <tr>
+                                            <td class="text-muted small">@payment.PaymentDate.ToLocalTime().ToString("MMM dd, HH:mm")</td>
+                                            <td class="fw-semibold">@payment.Customer?.FullName</td>
+                                            <td class="fw-bold text-success">@payment.AmountPaid.ToString("C", indiaCulture)</td>
+                                            <td>
+                                                <span class="badge bg-info">
+                                                    @switch(payment.PaymentMode.ToLower())
+                                                    {
+                                                        case "cash":
+                                                            <i class="fas fa-money-bill me-1"></i>
+                                                            break;
+                                                        case "card":
+                                                            <i class="fas fa-credit-card me-1"></i>
+                                                            break;
+                                                        case "upi":
+                                                            <i class="fas fa-mobile-alt me-1"></i>
+                                                            break;
+                                                        default:
+                                                            <i class="fas fa-wallet me-1"></i>
+                                                            break;
+                                                    }
+                                                    @payment.PaymentMode
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     }
                 </div>
             </div>

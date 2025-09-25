@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets/LedgerLink.bundle.scp.css"
     },
     {
+      "Id": "/home/om/dotnet/LedgerLink/wwwroot/css/dashboard-modern.css",
+      "PackagePath": "staticwebassets/css/dashboard-modern.css"
+    },
+    {
       "Id": "/home/om/dotnet/LedgerLink/wwwroot/css/site.css",
       "PackagePath": "staticwebassets/css/site.css"
     },
