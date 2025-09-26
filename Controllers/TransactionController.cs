@@ -1,14 +1,14 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 using LedgerLink.Interface;
 using LedgerLink.Models;
 using LedgerLink.ViewModels;
-using System;
-using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using System.Threading.Tasks;
-using System.Globalization;
-using System.Linq;
 using X.PagedList.Extensions;
 
 namespace LedgerLink.Controllers
@@ -300,10 +300,11 @@ public IActionResult CustomerDetails(Guid id, int transactionPage = 1, int payme
             _paymentRepo.AddPayment(newPayment);
 
             customer.CurrentBalance -= amountPaid;
-            if (customer.CurrentBalance < 0)
-            {
-                customer.CurrentBalance = 0;
-            }
+            // if (customer.CurrentBalance < 0)
+            // {
+            //     customer.CurrentBalance = 0;
+            // }
+
             _customerRepo.UpdateCustomer(customer);
 
             TempData["SuccessMessage"] = "Payment recorded successfully!";
