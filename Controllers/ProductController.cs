@@ -1,10 +1,10 @@
 // Path: LedgerLink/Controllers/ProductController.cs
-using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
 using LedgerLink.Interface; 
 using LedgerLink.Models;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 
 
 namespace LedgerLink.Controllers

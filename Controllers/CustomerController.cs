@@ -1,12 +1,11 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http; // Required for HttpContext.Session
+using System; // For Guid and DateTime
+using System.Collections.Generic; // For IEnumerable
 using LedgerLink.Interface; // For ICustomerRepo
 using LedgerLink.Models;   // For Customer model
 using LedgerLink.Services; // For QrCodeService
-using System; // For Guid and DateTime
-using System.Collections.Generic; // For IEnumerable
-using System.Linq; // For LINQ methods like FirstOrDefault
-using System.ComponentModel.DataAnnotations; // For model validation attributes
+using Microsoft.AspNetCore.Http; // Required for HttpContext.Session
+using Microsoft.AspNetCore.Mvc;
+
 
 namespace LedgerLink.Controllers
 {

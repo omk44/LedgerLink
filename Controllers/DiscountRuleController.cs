@@ -1,12 +1,11 @@
 // Path: LedgerLink/Controllers/DiscountRuleController.cs
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http; // For HttpContext.Session
-using LedgerLink.Interface; // For IFestivalRepo, IDiscountRuleRepo
-using LedgerLink.Models;   // For Festival, DiscountRule models
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
+using LedgerLink.Interface; // For IFestivalRepo, IDiscountRuleRepo
+using LedgerLink.Models;   // For Festival, DiscountRule models
+using Microsoft.AspNetCore.Http; // For HttpContext.Session
+using Microsoft.AspNetCore.Mvc;
 
 namespace LedgerLink.Controllers
 {

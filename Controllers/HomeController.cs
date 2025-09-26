@@ -1,12 +1,12 @@
 // Path: LedgerLink/Controllers/HomeController.cs
+using System; // Required for DateTime
 using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using LedgerLink.Models;
 using LedgerLink.ViewModels;
-using Microsoft.Extensions.Options; // Required for IOptions
 using Microsoft.AspNetCore.Http; // Required for HttpContext.Session
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging; // Required for ILogger
-using System; // Required for DateTime
+using Microsoft.Extensions.Options; // Required for IOptions
 
 namespace LedgerLink.Controllers
 {

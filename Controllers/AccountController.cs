@@ -1,10 +1,10 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http; // Required for HttpContext.Session
-using LedgerLink.ViewModels; // Required for LoginViewModel
-using Microsoft.Extensions.Options;
 using System;
 using System.Security.Cryptography;
 using System.Text;
+using LedgerLink.ViewModels; // Required for LoginViewModel
+using Microsoft.AspNetCore.Http; // Required for HttpContext.Session
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 
 namespace LedgerLink.Controllers
