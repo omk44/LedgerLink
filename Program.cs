@@ -1,15 +1,15 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
-using LedgerLink.Data;
-using LedgerLink.ViewModels;
-using LedgerLink.Interface;
-using LedgerLink.Services;
 using System;
 using System.Globalization;
+using LedgerLink.Data;
+using LedgerLink.Interface;
+using LedgerLink.Services;
+using LedgerLink.ViewModels;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
