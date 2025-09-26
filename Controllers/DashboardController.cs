@@ -1,10 +1,10 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
+using System;
+using System.Linq;
 using LedgerLink.Interface;
 using LedgerLink.ViewModels;
-using System.Linq;
-using System;
-using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using X.PagedList.Extensions;
 
 namespace LedgerLink.Controllers
 {
@@ -60,8 +60,8 @@ namespace LedgerLink.Controllers
             return !string.IsNullOrEmpty(token) && token.StartsWith("ADMIN_");
         }
 
-        // GET: Dashboard/Index - Displays the main dashboard with optional date filtering
-        public IActionResult Index(DateTime? startDate, DateTime? endDate)
+        // GET: Dashboard/Index - Displays the main dashboard with optional date filtering and pagination
+        public IActionResult Index(DateTime? startDate, DateTime? endDate, int transactionPage = 1, int paymentPage = 1)
         {
             if (!IsAdminLoggedIn())
             {
@@ -116,6 +116,19 @@ namespace LedgerLink.Controllers
                 .OrderByDescending(c => c.CurrentBalance)
                 .ToList();
 
+            // --- NEW: Create paginated collections for all transactions and payments ---
+            var allTransactionsPaged = allTransactions
+                .OrderByDescending(t => t.PurchaseDate)
+                .ToPagedList(transactionPage, 10);
+
+            var allPaymentsPaged = allPayments
+                .OrderByDescending(p => p.PaymentDate)
+                .ToPagedList(paymentPage, 10);
+
+            // Set ViewBag for pagination
+            ViewBag.TransactionPage = transactionPage;
+            ViewBag.PaymentPage = paymentPage;
+
             // Populate ViewModel
             var viewModel = new DashboardViewModel
             {
@@ -130,7 +143,9 @@ namespace LedgerLink.Controllers
                 TransactionsInPeriod = transactionsInPeriod.OrderByDescending(t => t.PurchaseDate).Take(10), // Limit for display
                 PaymentsInPeriod = paymentsInPeriod.OrderByDescending(p => p.PaymentDate).Take(10), // Limit for display
                 CustomersWithActivityInPeriod = customersWithActivityInPeriod.OrderBy(c => c.FullName),
-                AllCustomersWithCredit = allCustomersWithCredit 
+                AllCustomersWithCredit = allCustomersWithCredit,
+                AllTransactionsPaged = allTransactionsPaged,
+                AllPaymentsPaged = allPaymentsPaged
             };
 
             return View(viewModel);
