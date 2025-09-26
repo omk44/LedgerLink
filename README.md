@@ -2,8 +2,8 @@
 
 ## Demo
 
-DEMO VIDEO: https://youtu.be/7z4iqupO4BA?si=ftecDmpzImNlgg2I
-github Repo: https://github.com/omk44/LedgerLink
+- DEMO VIDEO: https://youtu.be/7z4iqupO4BA?si=ftecDmpzImNlgg2I
+- github Repo: https://github.com/omk44/LedgerLink
 
 ## Overview
 
