@@ -3,7 +3,7 @@
 ## Demo
 
 DEMO VIDEO: https://youtu.be/7z4iqupO4BA?si=ftecDmpzImNlgg2I
-github Repo: 
+github Repo: https://github.com/omk44/LedgerLink
 
 ## Overview
 
