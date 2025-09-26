@@ -1,11 +1,10 @@
 // Path: LedgerLink/Controllers/FestivalController.cs
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using LedgerLink.Interface;
-using LedgerLink.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using LedgerLink.Interface;
+using LedgerLink.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LedgerLink.Controllers
 {
@@ -48,9 +47,36 @@ namespace LedgerLink.Controllers
         
         private bool IsValidAdminToken(string token)
         {
-            // Add token validation logic here
-            // Could include encryption validation, database lookup, etc.
-            return !string.IsNullOrEmpty(token) && token.StartsWith("ADMIN_");
+            // Enhanced token validation
+            if (string.IsNullOrEmpty(token) || !token.StartsWith("ADMIN_"))
+                return false;
+
+            try
+            {
+                var parts = token.Split('_');
+                if (parts.Length < 4)
+                    return false;
+
+                // Validate timestamp part
+                if (long.TryParse(parts[2], out long timestamp))
+                {
+                    var tokenTime = DateTimeOffset.FromUnixTimeSeconds(timestamp).DateTime;
+                    var maxAge = TimeSpan.FromHours(24); // Token max age
+                    
+                    if (DateTime.UtcNow - tokenTime > maxAge)
+                        return false; // Token too old
+                }
+                else
+                {
+                    return false; // Invalid timestamp
+                }
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         // GET: Festival/Index
@@ -84,6 +110,18 @@ namespace LedgerLink.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
+            // Custom validation: Start date cannot be in the past
+            if (festival.StartDate.Date < DateTime.UtcNow.Date)
+            {
+                ModelState.AddModelError("StartDate", "Festival start date cannot be in the past.");
+            }
+
+            // Custom validation: End date must be after start date
+            if (festival.EndDate.Date < festival.StartDate.Date)
+            {
+                ModelState.AddModelError("EndDate", "Festival end date must be after the start date.");
+            }
+
             if (ModelState.IsValid)
             {
                 // CRITICAL FIX: Convert StartDate and EndDate to UTC before saving.
@@ -92,6 +130,7 @@ namespace LedgerLink.Controllers
                 festival.EndDate = DateTime.SpecifyKind(festival.EndDate, DateTimeKind.Utc);
 
                 _festivalRepo.AddFestival(festival);
+                TempData["SuccessMessage"] = $"Festival '{festival.Name}' created successfully!";
                 return RedirectToAction(nameof(Index));
             }
             return View(festival);
@@ -123,6 +162,31 @@ namespace LedgerLink.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
+            // Get the existing festival to check if it has already started
+            var existingFestival = _festivalRepo.GetFestivalById(festival.Id);
+            if (existingFestival == null)
+            {
+                return NotFound();
+            }
+
+            // Custom validation: If festival hasn't started yet, don't allow past start dates
+            if (existingFestival.StartDate.Date > DateTime.UtcNow.Date && festival.StartDate.Date < DateTime.UtcNow.Date)
+            {
+                ModelState.AddModelError("StartDate", "Cannot change festival start date to a past date.");
+            }
+
+            // Custom validation: End date must be after start date
+            if (festival.EndDate.Date < festival.StartDate.Date)
+            {
+                ModelState.AddModelError("EndDate", "Festival end date must be after the start date.");
+            }
+
+            // Custom validation: Cannot move start date to past if festival is currently active
+            if (existingFestival.StartDate.Date <= DateTime.UtcNow.Date && festival.StartDate.Date != existingFestival.StartDate.Date)
+            {
+                ModelState.AddModelError("StartDate", "Cannot modify start date of an active or completed festival.");
+            }
+
             if (ModelState.IsValid)
             {
                 // CRITICAL FIX: Convert StartDate and EndDate to UTC before saving.
@@ -130,6 +194,7 @@ namespace LedgerLink.Controllers
                 festival.EndDate = DateTime.SpecifyKind(festival.EndDate, DateTimeKind.Utc);
 
                 _festivalRepo.UpdateFestival(festival);
+                TempData["SuccessMessage"] = $"Festival '{festival.Name}' updated successfully!";
                 return RedirectToAction(nameof(Index));
             }
             return View(festival);
