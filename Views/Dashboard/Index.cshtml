@@ -16,6 +16,25 @@
         <p class="lead text-muted">Comprehensive business insights and management tools</p>
     </div>
 
+    <!-- ===================== Error/Success Messages ===================== -->
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            <strong>Date Range Error!</strong> @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    <!-- ===================== END Messages ===================== -->
+
     <!-- ===================== Section 1: Date Filter ===================== -->
     <div class="section-header">
         <h3><span class="emoji">📅</span> Date Filter</h3>
@@ -27,15 +46,29 @@
                     <label for="startDate" class="form-label">
                         <i class="fas fa-calendar-alt me-2 text-primary"></i>Start Date
                     </label>
-                    <input type="date" id="startDate" name="startDate" class="form-control"
-                           value="@Model.StartDate.ToString("yyyy-MM-dd")" />
+                    <input type="date" id="startDate" name="startDate" 
+                           class="form-control @(ViewBag.HasDateError == true ? "is-invalid" : "")"
+                           value="@ViewBag.OriginalStartDate" placeholder="Select start date" />
+                    @if (ViewBag.HasDateError == true)
+                    {
+                        <div class="invalid-feedback">
+                            Please select a valid start date.
+                        </div>
+                    }
                 </div>
                 <div class="col-md-4">
                     <label for="endDate" class="form-label">
                         <i class="fas fa-calendar-check me-2 text-primary"></i>End Date
                     </label>
-                    <input type="date" id="endDate" name="endDate" class="form-control"
-                           value="@Model.EndDate.ToString("yyyy-MM-dd")" />
+                    <input type="date" id="endDate" name="endDate" 
+                           class="form-control @(ViewBag.HasDateError == true ? "is-invalid" : "")"
+                           value="@ViewBag.OriginalEndDate" placeholder="Select end date" />
+                    @if (ViewBag.HasDateError == true)
+                    {
+                        <div class="invalid-feedback">
+                            End date must be after start date.
+                        </div>
+                    }
                 </div>
                 <div class="col-md-4 d-flex align-items-end">
                     <button type="submit" class="btn btn-primary w-100 btn-lg">

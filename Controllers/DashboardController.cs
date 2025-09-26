@@ -55,9 +55,36 @@ namespace LedgerLink.Controllers
         
         private bool IsValidAdminToken(string token)
         {
-            // Add token validation logic here
-            // Could include encryption validation, database lookup, etc.
-            return !string.IsNullOrEmpty(token) && token.StartsWith("ADMIN_");
+            // Enhanced token validation
+            if (string.IsNullOrEmpty(token) || !token.StartsWith("ADMIN_"))
+                return false;
+
+            try
+            {
+                var parts = token.Split('_');
+                if (parts.Length < 4)
+                    return false;
+
+                // Validate timestamp part
+                if (long.TryParse(parts[2], out long timestamp))
+                {
+                    var tokenTime = DateTimeOffset.FromUnixTimeSeconds(timestamp).DateTime;
+                    var maxAge = TimeSpan.FromHours(24); // Token max age
+                    
+                    if (DateTime.UtcNow - tokenTime > maxAge)
+                        return false; // Token too old
+                }
+                else
+                {
+                    return false; // Invalid timestamp
+                }
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         // GET: Dashboard/Index - Displays the main dashboard with optional date filtering and pagination
@@ -68,7 +95,23 @@ namespace LedgerLink.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            // Set default date range if not provided
+            //  ENHANCED: Validate date range FIRST - End date cannot be older than start date
+            if (startDate.HasValue && endDate.HasValue && endDate.Value.Date < startDate.Value.Date)
+            {
+                // Add error message for user feedback
+                TempData["ErrorMessage"] = $"Invalid date range! End date ({endDate.Value:MMM dd, yyyy}) cannot be earlier than start date ({startDate.Value:MMM dd, yyyy}). Please select a valid date range.";
+                
+                // Don't reset dates - let user see what they selected and fix it
+                ViewBag.HasDateError = true;
+                ViewBag.OriginalStartDate = startDate.Value.ToString("yyyy-MM-dd");
+                ViewBag.OriginalEndDate = endDate.Value.ToString("yyyy-MM-dd");
+                
+                // Use default dates for data processing but show error
+                startDate = DateTime.UtcNow.Date.AddDays(-30);
+                endDate = DateTime.UtcNow.Date;
+            }
+
+            // Set date range with validated or default values
             DateTime periodStartDate = startDate?.Date ?? DateTime.UtcNow.Date.AddDays(-30); // Default to last 30 days
             DateTime periodEndDate = endDate?.Date ?? DateTime.UtcNow.Date; // Default to today
 
