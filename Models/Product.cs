@@ -15,7 +15,7 @@ namespace LedgerLink.Models
 
         // Scalar Property: Price of the product with range validation
         [Required(ErrorMessage = "Price is required.")]
-        [Range(0.01, 100000.00, ErrorMessage = "Price must be between 0.01 and 100000.")]
+        [Range(0.01, 10000000.00, ErrorMessage = "Price must be between 0.01 and 100000.")]
         public decimal Price { get; set; }
 
         // Scalar Property: Product description (optional)

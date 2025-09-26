@@ -17,10 +17,10 @@ namespace LedgerLink.Models
         [StringLength(100, ErrorMessage = "Full Name cannot exceed 100 characters.")]
         public string FullName { get; set; } = string.Empty;
 
-        // Scalar Property: Customer's phone number with Phone validation
+        // Scalar Property: Customer's phone number with exact 10 digit validation
         [Required(ErrorMessage = "Phone number is required.")]
-        [Phone(ErrorMessage = "Invalid phone number format.")]
-        [StringLength(10, ErrorMessage = "Phone number cannot exceed 10 characters.")]
+        [RegularExpression(@"^\d{10}$", ErrorMessage = "Phone number must be exactly 10 digits.")]
+        [StringLength(10, MinimumLength = 10, ErrorMessage = "Phone number must be exactly 10 digits.")]
         public string PhoneNumber { get; set; } = string.Empty;
 
         // Scalar Property: Customer's email with EmailAddress validation
