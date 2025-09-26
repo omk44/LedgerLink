@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using LedgerLink.Models;
-
+using X.PagedList;
 
 namespace LedgerLink.ViewModels
 {
@@ -29,5 +29,9 @@ namespace LedgerLink.ViewModels
 
         // --- NEW: All Customers with their Current Balances ---
         public IEnumerable<Customer> AllCustomersWithCredit { get; set; } = new List<Customer>();
+
+        // --- NEW: Paginated Collections for All Transactions and Payments ---
+        public IPagedList<Transaction>? AllTransactionsPaged { get; set; }
+        public IPagedList<Payment>? AllPaymentsPaged { get; set; }
     }
 }
