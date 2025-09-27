@@ -48,52 +48,15 @@ LedgerLink is a comprehensive digital ledger management system designed for smal
 
 This LedgerLink project was collaboratively developed by a dedicated team of three developers, each bringing specialized expertise to create a comprehensive digital ledger management system.
 
-### 👨‍💻 **Team Members**
+### 👨‍💻 **Contributors**
 
-#### **Om** - *Lead Developer & Business Logic Architect*
-- **Role**: Backend Controller Development & System Integration
-- **Responsibilities**:
-  - Designed and implemented all MVC Controllers (Customer, Transaction, Payment, Dashboard, Festival, DiscountRule)
-  - Created business logic and workflow orchestration
-  - Developed ViewModel to Controller data flow and mapping
-  - Implemented authentication and session management system
-  - Created API endpoints and request/response handling
-  - Coordinated data flow between frontend and backend systems
-  - Integrated all components into a cohesive application architecture
+- **Om**: Festival management, Discount rules, Transaction controller, Email sender process
+- **Meet**: Customer CRUD operations, Authentication system,Scanner process,
+- **Jewel**: Product management, UI/UX design
 
-#### **Meet** - *Database Architect & Service Layer Developer*
-- **Role**: Backend Services & Data Access Layer
-- **Responsibilities**:
-  - Designed and implemented the complete database schema using Entity Framework Core
-  - Created Repository pattern interfaces (ICustomerRepo, IPaymentRepo, ITransactionRepo, etc.)
-  - Developed service layer implementations (EmailService, QrCodeService)
-  - Configured database relationships and migrations
-  - Implemented data access layer with PostgreSQL integration
-  - Created data validation and business rules enforcement
-  - Optimized database queries and performance tuning
+### 🏗️ **Project Development**
 
-#### **Jewel** - *Frontend Developer & UI/UX Designer*
-- **Role**: Frontend Development & User Experience
-- **Responsibilities**:
-  - Designed and developed all Razor Pages and Views
-  - Created responsive UI components using Bootstrap and custom CSS
-  - Developed model binding and validation for forms
-  - Implemented user-friendly interfaces for all CRUD operations
-  - Created dashboard visualizations and reporting views
-  - Designed modern, dark-themed UI with gradient styling
-  - Ensured cross-browser compatibility and mobile responsiveness
-  - Developed the QR code display and customer interaction flows
-
-### 🏗️ **Project Architecture & Collaboration**
-
-**Collaborative Planning**: The entire team collaborated on the initial project structure, technology stack selection, and architectural decisions, ensuring a solid foundation for development.
-
-**Development Approach**: 
-- **Om** focused on the MVC controller layer, creating seamless data flow from ViewModels to Controllers
-- **Meet** built the robust backend infrastructure with databases, repositories, and services
-- **Jewel** crafted the user-facing components with Razor pages, models, and modern UI design
-
-**Integration**: The team worked closely to integrate all layers, ensuring proper data binding, validation, and user experience across the entire application.
+**Team Collaboration**: The LedgerLink project was developed by a team of three contributors, each focusing on specific modules and functionality to create a comprehensive digital ledger management system.
 
 ### 🛠️ **Technology Stack Used**
 - **Backend**: ASP.NET Core MVC, Entity Framework Core
