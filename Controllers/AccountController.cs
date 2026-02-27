@@ -1,25 +1,25 @@
 using System;
 using System.Security.Cryptography;
 using System.Text;
-using LedgerLink.ViewModels; // Required for LoginViewModel
-using Microsoft.AspNetCore.Http; // Required for HttpContext.Session
+using System.Threading.Tasks;
+using LedgerLink.Interface;
+using LedgerLink.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-
 
 namespace LedgerLink.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly AdminSettings _adminSettings;
+        private readonly IAdminRepo _adminRepo;
         
-        public AccountController(IOptions<AdminSettings> adminSettings)
+        public AccountController(IAdminRepo adminRepo)
         {
-            _adminSettings = adminSettings.Value;
+            _adminRepo = adminRepo;
         }
 
         // Generate secure admin token
-        private string GenerateSecureToken(string username)
+        private string GenerateSecureToken(string adminId)
         {
             var timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
             var randomBytes = new byte[32];
@@ -28,7 +28,7 @@ namespace LedgerLink.Controllers
                 rng.GetBytes(randomBytes);
             }
             var randomString = Convert.ToBase64String(randomBytes);
-            return $"ADMIN_{username}_{timestamp}_{randomString}";
+            return $"ADMIN_{adminId}_{timestamp}_{randomString}";
         }
 
         // Validate admin token format and expiry
@@ -46,7 +46,7 @@ namespace LedgerLink.Controllers
             if (long.TryParse(parts[2], out long timestamp))
             {
                 var tokenTime = DateTimeOffset.FromUnixTimeSeconds(timestamp);
-                var expiry = tokenTime.AddMinutes(_adminSettings.SessionTimeoutMinutes);
+                var expiry = tokenTime.AddMinutes(30); // 30 minute session
                 
                 if (DateTime.UtcNow > expiry)
                 {
@@ -55,49 +55,7 @@ namespace LedgerLink.Controllers
                 }
             }
 
-            return parts[1] == _adminSettings.Username;
-        }
-
-        // Check login attempts and lockout
-        private bool IsAccountLocked()
-        {
-            var lockoutEnd = HttpContext.Session.GetString("LockoutEnd");
-            if (!string.IsNullOrEmpty(lockoutEnd))
-            {
-                if (DateTime.TryParse(lockoutEnd, out DateTime lockoutEndTime) && 
-                    DateTime.UtcNow < lockoutEndTime)
-                {
-                    return true;
-                }
-                else
-                {
-                    // Lockout period has ended, clear lockout data
-                    HttpContext.Session.Remove("LockoutEnd");
-                    HttpContext.Session.Remove("LoginAttempts");
-                }
-            }
-            return false;
-        }
-
-        // Handle failed login attempts
-        private void HandleFailedLogin()
-        {
-            var attempts = HttpContext.Session.GetInt32("LoginAttempts") ?? 0;
-            attempts++;
-            HttpContext.Session.SetInt32("LoginAttempts", attempts);
-
-            if (attempts >= _adminSettings.MaxLoginAttempts)
-            {
-                var lockoutEnd = DateTime.UtcNow.AddMinutes(_adminSettings.LockoutDurationMinutes);
-                HttpContext.Session.SetString("LockoutEnd", lockoutEnd.ToString());
-            }
-        }
-
-        // Clear login attempts on successful login
-        private void ClearLoginAttempts()
-        {
-            HttpContext.Session.Remove("LoginAttempts");
-            HttpContext.Session.Remove("LockoutEnd");
+            return true;
         }
 
         // Enhanced session validation
@@ -142,27 +100,23 @@ namespace LedgerLink.Controllers
             HttpContext.Session.Remove("SessionExpiry");
             HttpContext.Session.Remove("UserId");
             HttpContext.Session.Remove("IsAdminLoggedIn");
+            HttpContext.Session.Remove("AdminEmail");
+            HttpContext.Session.Remove("AdminName");
         }
 
         // GET: /Account/Login - Displays the login form
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
+            // Check if need to create first admin
+            if (!await _adminRepo.HasAnyAdminAsync())
+            {
+                return RedirectToAction("Register", "AdminManagement");
+            }
+
             // If the admin is already logged in, redirect them to the home page.
             if (IsAdminLoggedIn())
             {
                 return RedirectToAction("Index", "Home");
-            }
-
-            // Check if account is locked
-            if (IsAccountLocked())
-            {
-                var lockoutEnd = HttpContext.Session.GetString("LockoutEnd");
-                if (DateTime.TryParse(lockoutEnd, out DateTime lockoutEndTime))
-                {
-                    var remainingMinutes = (int)(lockoutEndTime - DateTime.UtcNow).TotalMinutes;
-                    ModelState.AddModelError(string.Empty, 
-                        $"Account is locked due to too many failed attempts. Try again in {remainingMinutes} minutes.");
-                }
             }
 
             return View(); // Return the Login view
@@ -170,61 +124,83 @@ namespace LedgerLink.Controllers
 
         // POST: /Account/Login - Handles login form submission
         [HttpPost]
-        [ValidateAntiForgeryToken] // Protects against Cross-Site Request Forgery (CSRF) attacks
-        public IActionResult Login(LoginViewModel model)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
-            // Check if account is locked
-            if (IsAccountLocked())
+            // Check if need to create first admin
+            if (!await _adminRepo.HasAnyAdminAsync())
             {
-                var lockoutEnd = HttpContext.Session.GetString("LockoutEnd");
-                if (DateTime.TryParse(lockoutEnd, out DateTime lockoutEndTime))
-                {
-                    var remainingMinutes = (int)(lockoutEndTime - DateTime.UtcNow).TotalMinutes;
-                    ModelState.AddModelError(string.Empty, 
-                        $"Account is locked due to too many failed attempts. Try again in {remainingMinutes} minutes.");
-                }
-                return View(model);
+                TempData["Info"] = "No admin account exists. Please register first.";
+                return RedirectToAction("Register", "AdminManagement");
             }
 
             // Check if the submitted model data is valid based on data annotations
             if (ModelState.IsValid)
             {
-                // Validate credentials against configuration values
-                if (model.Username == _adminSettings.Username && model.Password == _adminSettings.Password)
+                var admin = await _adminRepo.GetByEmailAsync(model.Username);
+
+                if (admin == null)
                 {
-                    // Clear any previous failed login attempts
-                    ClearLoginAttempts();
+                    ModelState.AddModelError(string.Empty, "Invalid email or password.");
+                    return View(model);
+                }
+
+                // Check if account is locked
+                if (admin.IsLockedOut)
+                {
+                    var remainingMinutes = (int)(admin.LockoutEnd!.Value - DateTime.UtcNow).TotalMinutes;
+                    ModelState.AddModelError(string.Empty, 
+                        $"Account is locked due to too many failed attempts. Try again in {remainingMinutes} minutes.");
+                    return View(model);
+                }
+
+                // Check if account is active
+                if (!admin.IsActive)
+                {
+                    ModelState.AddModelError(string.Empty, "This account has been deactivated.");
+                    return View(model);
+                }
+
+                // Validate password
+                if (BCrypt.Net.BCrypt.Verify(model.Password, admin.PasswordHash))
+                {
+                    // Successful login - Reset failed attempts
+                    await _adminRepo.ResetFailedLoginAsync(admin);
 
                     // Generate secure session data
-                    var adminToken = GenerateSecureToken(_adminSettings.Username);
-                    var sessionExpiry = DateTime.UtcNow.AddMinutes(_adminSettings.SessionTimeoutMinutes);
+                    var adminToken = GenerateSecureToken(admin.Id.ToString());
+                    var sessionExpiry = DateTime.UtcNow.AddMinutes(30);
 
                     // Set secure session variables
                     HttpContext.Session.SetString("AdminToken", adminToken);
                     HttpContext.Session.SetString("SessionExpiry", sessionExpiry.ToString());
-                    HttpContext.Session.SetString("UserId", _adminSettings.Username);
+                    HttpContext.Session.SetString("UserId", admin.Id.ToString());
+                    HttpContext.Session.SetString("AdminEmail", admin.Email);
+                    HttpContext.Session.SetString("AdminName", admin.FullName);
                     HttpContext.Session.SetString("IsAdminLoggedIn", "true");
 
-                    return RedirectToAction("Index", "Home"); // Redirect to your main application page
-                }
-                
-                // Handle failed login
-                HandleFailedLogin();
-                
-                var attempts = HttpContext.Session.GetInt32("LoginAttempts") ?? 0;
-                var remainingAttempts = _adminSettings.MaxLoginAttempts - attempts;
-                
-                if (remainingAttempts > 0)
-                {
-                    ModelState.AddModelError(string.Empty, 
-                        $"Invalid username or password. {remainingAttempts} attempts remaining.");
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, 
-                        $"Too many failed attempts. Account locked for {_adminSettings.LockoutDurationMinutes} minutes.");
+                    // Failed login - Increment failed attempts
+                    await _adminRepo.IncrementFailedLoginAsync(admin);
+
+                    var remainingAttempts = 5 - admin.FailedLoginAttempts - 1;
+                    
+                    if (remainingAttempts > 0)
+                    {
+                        ModelState.AddModelError(string.Empty, 
+                            $"Invalid email or password. {remainingAttempts} attempts remaining.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, 
+                            "Too many failed attempts. Account locked for 15 minutes.");
+                    }
                 }
             }
+
             // If model state is invalid or login failed, return to the login view with errors
             return View(model);
         }
@@ -234,9 +210,8 @@ namespace LedgerLink.Controllers
         {
             // Clear all session data to "log out" the admin
             ClearSession();
-            ClearLoginAttempts();
             
-            return RedirectToAction("Login", "Account"); // Redirect back to the login page
+            return RedirectToAction("Login", "Account");
         }
     }
 }

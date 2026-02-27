@@ -311,6 +311,12 @@
                             <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
 
+                        <div class="text-end mb-3">
+                            <a href="@Url.Action("ForgotPassword", "AdminManagement")" style="color: #3498db; text-decoration: none; font-size: 0.9rem;">
+                                <i class="fas fa-key"></i> Forgot Password?
+                            </a>
+                        </div>
+
                         <button type="submit" class="btn login-btn">
                             <i class="fas fa-sign-in-alt me-2"></i>
                             Login to Dashboard

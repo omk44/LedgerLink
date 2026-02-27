@@ -166,78 +166,151 @@ This LedgerLink project was collaboratively developed by a dedicated team of thr
 - **Backend**: ASP.NET Core 8.0
 - **Database**: PostgreSQL with Entity Framework Core
 - **Frontend**: Bootstrap, jQuery, HTML5, CSS3
-- **Authentication**: Session-based authentication
-- **Email Service**: SendGrid integration
+- **Authentication**: Session-based authentication with BCrypt password hashing
+- **Email Service**: Gmail SMTP via MailKit/MimeKit
 - **QR Code Generation**: QRCoder library
 - **Pagination**: X.PagedList
+- **Deployment**: Docker & Docker Compose
 
-## Getting Started
+## 🚀 Quick Start (Docker - Recommended)
+
+### Prerequisites
+- Docker & Docker Compose installed
+- Gmail account with App Password enabled
+
+### Setup
+
+1. Clone the repository
+```bash
+git clone https://github.com/yourusername/LedgerLink.git
+cd LedgerLink
+```
+
+2. Navigate to docker folder
+```bash
+cd docker
+```
+
+3. Review the `.env` file (pre-configured)
+```bash
+cat .env  # Your Gmail SMTP is already configured
+```
+
+4. Start with Docker
+```bash
+docker-compose up -d
+```
+
+5. Access the application
+```
+http://localhost:8080
+```
+
+6. Create your first admin account through the web interface
+
+### View Logs
+```bash
+cd docker
+docker-compose logs -f app
+```
+
+### Stop Services
+```bash
+cd docker
+docker-compose down
+```
+
+**📚 Detailed Docker Guide**: See [docker/README.md](docker/README.md)
+
+---
+
+## Getting Started (Traditional Installation)
 
 ### Prerequisites
 - .NET 8.0 SDK or later
 - PostgreSQL database server
 - Visual Studio 2022 or any compatible IDE
 
-### Installation
+### Prerequisites (Traditional)
+- .NET 8.0 SDK or later
+- PostgreSQL database server
+- Visual Studio 2022 or any compatible IDE
+- Gmail account with App Password
+
+### Installation Steps
 
 1. Clone the repository
 ```bash
 git clone https://github.com/yourusername/LedgerLink.git
-```
-
-2. Navigate to the project directory
-```bash
 cd LedgerLink
 ```
 
-3. Update the connection string in `appsettings.json` to point to your PostgreSQL database
+2. Update `appsettings.json` with your database and email settings
 ```json
-"ConnectionStrings": {
-  "DefaultConnection": "Host=localhost;Database=ledgerlink;Username=yourusername;Password=yourpassword"
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=localhost;Database=ledgerlink;Username=yourusername;Password=yourpassword"
+  },
+  "EmailSettings": {
+    "SmtpHost": "smtp.gmail.com",
+    "SmtpPort": "587",
+    "SmtpUsername": "your-email@gmail.com",
+    "SmtpPassword": "your-gmail-app-password"
+  }
 }
 ```
 
-4. Apply database migrations
+3. Apply database migrations
 ```bash
 dotnet ef database update
 ```
 
-5. Run the application
+4. Run the application
 ```bash
 dotnet run
 ```
 
-6. Access the application at `https://localhost:5001`
+5. Access the application at `https://localhost:5001`
 
-### Default Login
-- Username: admin
-- Password: password
+6. Create admin account through web interface
 
-**Note**: Please change the default credentials in production.
+**Note**: Admin credentials are now stored securely in the database with BCrypt hashing.
 
 ## Configuration
 
-The application can be configured through the `appsettings.json` file:
+The application can be configured through `appsettings.json` or environment variables:
 
 ```json
 {
   "ShopSettings": {
     "ShopName": "Your Shop Name",
     "AppName": "LedgerLink",
-    "Currency": "₹"
+    "ShopEmail": "info@yourshop.com",
+    "ShopPhoneNumber": "+1234567890"
   },
   "EmailSettings": {
-    "SendGridApiKey": "YOUR_SENDGRID_API_KEY",
-    "SenderEmail": "your-email@example.com",
+    "SmtpHost": "smtp.gmail.com",
+    "SmtpPort": "587",
+    "SmtpUsername": "your-email@gmail.com",
+    "SmtpPassword": "your-gmail-app-password",
+    "SenderEmail": "your-email@gmail.com",
     "SenderName": "Your Shop Name"
   }
 }
 ```
 
+**For Docker**: Use the `.env` file in the `docker` folder instead.
+
 
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 📦 Deployment Options
+
+- **Docker** (Recommended): See [docker/README.md](docker/README.md)
+- **Cloud Platforms**: See [RENDER-DEPLOYMENT.md](RENDER-DEPLOYMENT.md)
+- **Traditional**: Follow "Getting Started (Traditional Installation)" above
 
 ## Acknowledgements
 
@@ -245,5 +318,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/)
 - [Bootstrap](https://getbootstrap.com/)
 - [QRCoder](https://github.com/codebude/QRCoder)
-- [SendGrid](https://sendgrid.com/)
+- [MailKit](https://github.com/jstedfast/MailKit) & [MimeKit](https://github.com/jstedfast/MimeKit)
+- [BCrypt.Net-Next](https://github.com/BcryptNet/bcrypt.net)
 - [X.PagedList](https://github.com/dncuug/X.PagedList)
+- [Docker](https://www.docker.com/)

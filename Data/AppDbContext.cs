@@ -8,6 +8,7 @@ namespace LedgerLink.Data
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
+        public DbSet<Admin> Admins { get; set; } = null!;
         public DbSet<Customer> Customers { get; set; } = null!;
         public DbSet<Product> Products { get; set; } = null!;
         public DbSet<Transaction> Transactions { get; set; } = null!;

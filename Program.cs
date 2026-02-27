@@ -43,8 +43,11 @@ builder.Services.AddSession(options =>
     options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
-    options.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.Always;
-    options.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict;
+    // Only require HTTPS in production when not in Docker
+    options.Cookie.SecurePolicy = builder.Environment.IsProduction() && Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") != "true"
+        ? Microsoft.AspNetCore.Http.CookieSecurePolicy.Always
+        : Microsoft.AspNetCore.Http.CookieSecurePolicy.SameAsRequest;
+    options.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Lax;
     options.Cookie.Name = "LedgerLink.Session";
 });
 
@@ -55,6 +58,7 @@ builder.Services.Configure<ShopSettings>(builder.Configuration.GetSection("ShopS
 builder.Services.Configure<AdminSettings>(builder.Configuration.GetSection("AdminSettings"));
 
 // Register your custom repositories and services
+builder.Services.AddScoped<IAdminRepo, AdminRepo>();
 builder.Services.AddScoped<ICustomerRepo, CustomerRepo>();
 builder.Services.AddScoped<IPaymentRepo, PaymentRepo>(); // Corrected from IPaymentRepo
 builder.Services.AddScoped<IProductRepo, ProductRepo>();
@@ -79,7 +83,12 @@ else
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+// Only redirect to HTTPS in production when not in Docker
+if (app.Environment.IsProduction() && Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") != "true")
+{
+    app.UseHttpsRedirection();
+}
+
 app.UseStaticFiles();
 
 app.UseRouting();

@@ -1,0 +1,67 @@
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: ledgerlink-postgres
+    environment:
+      POSTGRES_DB: LedgerLink
+      POSTGRES_USER: ledgerlink_user
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-SecurePassword123!}
+    ports:
+      - "5433:5432"  # Using 5433 to avoid conflict with local PostgreSQL
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - ledgerlink-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ledgerlink_user -d LedgerLink"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # LedgerLink Application
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: ledgerlink-app
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8080
+      - AllowedHosts=*
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=LedgerLink;Username=ledgerlink_user;Password=${DB_PASSWORD:-SecurePassword123!}
+      - EmailSettings__SmtpHost=${SMTP_HOST:-smtp.gmail.com}
+      - EmailSettings__SmtpPort=${SMTP_PORT:-587}
+      - EmailSettings__SmtpUsername=${SMTP_USERNAME}
+      - EmailSettings__SmtpPassword=${SMTP_PASSWORD}
+      - EmailSettings__SenderEmail=${SENDER_EMAIL:-info@ledgerlink.com}
+      - EmailSettings__SenderName=${SENDER_NAME:-LedgerLink}
+      - ShopSettings__ShopName=${SHOP_NAME:-Miracle Technoz}
+      - ShopSettings__AppName=LedgerLink
+      - ShopSettings__ShopEmail=${SHOP_EMAIL:-info@miracletechnoz.com}
+      - ShopSettings__ShopPhoneNumber=${SHOP_PHONE:-+919876543210}
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - ledgerlink-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    volumes:
+      - ../logs:/app/logs
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  ledgerlink-network:
+    driver: bridge

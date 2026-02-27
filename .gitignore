@@ -45,6 +45,11 @@ appsettings.Test.json
 # Otherwise, appsettings.json is usually tracked.
 # appsettings.json
 
+# Environment files (Docker)
+.env
+docker/.env
+*.env
+
 # Other common ignore patterns
 *.DS_Store
 *.localized
