@@ -53,6 +53,16 @@ namespace LedgerLink.Controllers
             return !string.IsNullOrEmpty(token) && token.StartsWith("ADMIN_");
         }
 
+        private Guid GetShopId()
+        {
+            var shopId = HttpContext.Session.GetString("ShopId");
+            if (string.IsNullOrEmpty(shopId) || !Guid.TryParse(shopId, out var parsedShopId))
+            {
+                throw new InvalidOperationException("ShopId not found in session");
+            }
+            return parsedShopId;
+        }
+
         // GET: DiscountRule/Index/{festivalId} - Displays all rules for a specific festival
         public IActionResult Index(int festivalId)
         {
@@ -61,7 +71,8 @@ namespace LedgerLink.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            Festival? festival = _festivalRepo.GetAllFestivals().FirstOrDefault(f => f.Id == festivalId);
+            var shopId = GetShopId();
+            Festival? festival = _festivalRepo.GetAllFestivals(shopId).FirstOrDefault(f => f.Id == festivalId);
             if (festival == null)
             {
                 return NotFound("Festival not found.");
@@ -70,7 +81,7 @@ namespace LedgerLink.Controllers
             ViewBag.FestivalName = festival.Name;
             ViewBag.FestivalId = festival.Id;
 
-            IEnumerable<DiscountRule> rules = _discountRuleRepo.GetAllDiscountRules()
+            IEnumerable<DiscountRule> rules = _discountRuleRepo.GetAllDiscountRules(shopId)
                                                                .Where(r => r.FestivalId == festivalId)
                                                                .OrderBy(r => r.MinCustomerCreditBalance)
                                                                .ToList();
@@ -85,7 +96,8 @@ namespace LedgerLink.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            ViewBag.FestivalName = _festivalRepo.GetFestivalById(festivalId)?.Name;
+            var shopId = GetShopId();
+            ViewBag.FestivalName = _festivalRepo.GetFestivalById(festivalId, shopId)?.Name;
             ViewBag.FestivalId = festivalId;
             return View();
         }
@@ -102,11 +114,13 @@ namespace LedgerLink.Controllers
 
             if (ModelState.IsValid)
             {
+                rule.ShopId = GetShopId();
                 _discountRuleRepo.AddDiscountRule(rule);
                 return RedirectToAction(nameof(Index), new { festivalId = rule.FestivalId });
             }
 
-            ViewBag.FestivalName = _festivalRepo.GetFestivalById(rule.FestivalId)?.Name;
+            var shopId = GetShopId();
+            ViewBag.FestivalName = _festivalRepo.GetFestivalById(rule.FestivalId, shopId)?.Name;
             ViewBag.FestivalId = rule.FestivalId;
             return View(rule);
         }
@@ -119,13 +133,14 @@ namespace LedgerLink.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            DiscountRule? rule = _discountRuleRepo.GetDiscountRuleById(id);
+            var shopId = GetShopId();
+            DiscountRule? rule = _discountRuleRepo.GetDiscountRuleById(id, shopId);
             if (rule == null)
             {
                 return NotFound();
             }
 
-            ViewBag.FestivalName = _festivalRepo.GetFestivalById(rule.FestivalId)?.Name;
+            ViewBag.FestivalName = _festivalRepo.GetFestivalById(rule.FestivalId, shopId)?.Name;
             ViewBag.FestivalId = rule.FestivalId;
             return View(rule);
         }
@@ -142,11 +157,18 @@ namespace LedgerLink.Controllers
 
             if (ModelState.IsValid)
             {
+                // Preserve ShopId
+                var existingRule = _discountRuleRepo.GetDiscountRuleById(rule.Id, GetShopId());
+                if (existingRule != null)
+                {
+                    rule.ShopId = existingRule.ShopId;
+                }
                 _discountRuleRepo.UpdateDiscountRule(rule);
                 return RedirectToAction(nameof(Index), new { festivalId = rule.FestivalId });
             }
 
-            ViewBag.FestivalName = _festivalRepo.GetFestivalById(rule.FestivalId)?.Name;
+            var shopId = GetShopId();
+            ViewBag.FestivalName = _festivalRepo.GetFestivalById(rule.FestivalId, shopId)?.Name;
             ViewBag.FestivalId = rule.FestivalId;
             return View(rule);
         }
@@ -159,13 +181,14 @@ namespace LedgerLink.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            DiscountRule? rule = _discountRuleRepo.GetDiscountRuleById(id);
+            var shopId = GetShopId();
+            DiscountRule? rule = _discountRuleRepo.GetDiscountRuleById(id, shopId);
             if (rule == null)
             {
                 return NotFound();
             }
 
-            ViewBag.FestivalName = _festivalRepo.GetFestivalById(rule.FestivalId)?.Name;
+            ViewBag.FestivalName = _festivalRepo.GetFestivalById(rule.FestivalId, shopId)?.Name;
             ViewBag.FestivalId = rule.FestivalId;
             return View(rule);
         }
@@ -180,10 +203,11 @@ namespace LedgerLink.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            DiscountRule? rule = _discountRuleRepo.GetDiscountRuleById(id);
+            var shopId = GetShopId();
+            DiscountRule? rule = _discountRuleRepo.GetDiscountRuleById(id, shopId);
             if (rule != null)
             {
-                _discountRuleRepo.DeleteDiscountRule(id);
+                _discountRuleRepo.DeleteDiscountRule(id, shopId);
                 return RedirectToAction(nameof(Index), new { festivalId = rule.FestivalId });
             }
 

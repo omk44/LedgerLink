@@ -12,10 +12,12 @@ namespace LedgerLink.Controllers
     public class AccountController : Controller
     {
         private readonly IAdminRepo _adminRepo;
+        private readonly IShopRepo _shopRepo;
         
-        public AccountController(IAdminRepo adminRepo)
+        public AccountController(IAdminRepo adminRepo, IShopRepo shopRepo)
         {
             _adminRepo = adminRepo;
+            _shopRepo = shopRepo;
         }
 
         // Generate secure admin token
@@ -99,6 +101,7 @@ namespace LedgerLink.Controllers
             HttpContext.Session.Remove("AdminToken");
             HttpContext.Session.Remove("SessionExpiry");
             HttpContext.Session.Remove("UserId");
+            HttpContext.Session.Remove("ShopId");
             HttpContext.Session.Remove("IsAdminLoggedIn");
             HttpContext.Session.Remove("AdminEmail");
             HttpContext.Session.Remove("AdminName");
@@ -171,12 +174,18 @@ namespace LedgerLink.Controllers
                     var adminToken = GenerateSecureToken(admin.Id.ToString());
                     var sessionExpiry = DateTime.UtcNow.AddMinutes(30);
 
+                    // Fetch shop details for session
+                    var shop = await _shopRepo.GetByIdAsync(admin.ShopId);
+
                     // Set secure session variables
                     HttpContext.Session.SetString("AdminToken", adminToken);
                     HttpContext.Session.SetString("SessionExpiry", sessionExpiry.ToString());
                     HttpContext.Session.SetString("UserId", admin.Id.ToString());
+                    HttpContext.Session.SetString("ShopId", admin.ShopId.ToString());
                     HttpContext.Session.SetString("AdminEmail", admin.Email);
                     HttpContext.Session.SetString("AdminName", admin.FullName);
+                    HttpContext.Session.SetString("ShopName", shop?.ShopName ?? "LedgerLink");
+                    HttpContext.Session.SetString("ShopPhoneNumber", shop?.PhoneNumber ?? "");
                     HttpContext.Session.SetString("IsAdminLoggedIn", "true");
 
                     return RedirectToAction("Index", "Home");

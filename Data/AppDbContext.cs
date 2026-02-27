@@ -8,6 +8,7 @@ namespace LedgerLink.Data
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
+        public DbSet<Shop> Shops { get; set; } = null!;
         public DbSet<Admin> Admins { get; set; } = null!;
         public DbSet<Customer> Customers { get; set; } = null!;
         public DbSet<Product> Products { get; set; } = null!;
@@ -82,6 +83,56 @@ namespace LedgerLink.Data
                 .WithOne(t => t.Festival)
                 .HasForeignKey(t => t.FestivalId)
                 .OnDelete(DeleteBehavior.SetNull); // <-- ADDED this rule
+
+            // --- Multi-Tenant Shop Relationships ---
+            // Shop -> Admins (Cascade: deleting shop deletes all admins)
+            modelBuilder.Entity<Shop>()
+                .HasMany(s => s.Admins)
+                .WithOne(a => a.Shop)
+                .HasForeignKey(a => a.ShopId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Shop -> Customers (Cascade: deleting shop deletes all customers)
+            modelBuilder.Entity<Shop>()
+                .HasMany(s => s.Customers)
+                .WithOne(c => c.Shop)
+                .HasForeignKey(c => c.ShopId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Shop -> Products (Cascade: deleting shop deletes all products)
+            modelBuilder.Entity<Shop>()
+                .HasMany(s => s.Products)
+                .WithOne(p => p.Shop)
+                .HasForeignKey(p => p.ShopId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Shop -> Transactions (Cascade: deleting shop deletes all transactions)
+            modelBuilder.Entity<Shop>()
+                .HasMany(s => s.Transactions)
+                .WithOne(t => t.Shop)
+                .HasForeignKey(t => t.ShopId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Shop -> Payments (Cascade: deleting shop deletes all payments)
+            modelBuilder.Entity<Shop>()
+                .HasMany(s => s.Payments)
+                .WithOne(p => p.Shop)
+                .HasForeignKey(p => p.ShopId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Shop -> Festivals (Cascade: deleting shop deletes all festivals)
+            modelBuilder.Entity<Shop>()
+                .HasMany(s => s.Festivals)
+                .WithOne(f => f.Shop)
+                .HasForeignKey(f => f.ShopId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Shop -> DiscountRules (Cascade: deleting shop deletes all discount rules)
+            modelBuilder.Entity<Shop>()
+                .HasMany(s => s.DiscountRules)
+                .WithOne(r => r.Shop)
+                .HasForeignKey(r => r.ShopId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

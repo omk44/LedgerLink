@@ -51,13 +51,8 @@ builder.Services.AddSession(options =>
     options.Cookie.Name = "LedgerLink.Session";
 });
 
-// Register ShopSettings from configuration
-builder.Services.Configure<ShopSettings>(builder.Configuration.GetSection("ShopSettings"));
-
-// Register AdminSettings from configuration
-builder.Services.Configure<AdminSettings>(builder.Configuration.GetSection("AdminSettings"));
-
 // Register your custom repositories and services
+builder.Services.AddScoped<IShopRepo, ShopRepo>();
 builder.Services.AddScoped<IAdminRepo, AdminRepo>();
 builder.Services.AddScoped<ICustomerRepo, CustomerRepo>();
 builder.Services.AddScoped<IPaymentRepo, PaymentRepo>(); // Corrected from IPaymentRepo

@@ -51,6 +51,16 @@ namespace LedgerLink.Controllers
             return !string.IsNullOrEmpty(token) && token.StartsWith("ADMIN_");
         }
 
+        private Guid GetShopId()
+        {
+            var shopId = HttpContext.Session.GetString("ShopId");
+            if (string.IsNullOrEmpty(shopId) || !Guid.TryParse(shopId, out var parsedShopId))
+            {
+                throw new InvalidOperationException("ShopId not found in session");
+            }
+            return parsedShopId;
+        }
+
         // GET: Product/Index - Displays a list of all products
         public IActionResult Index()
         {
@@ -58,7 +68,8 @@ namespace LedgerLink.Controllers
             {
                 return RedirectToAction("Login", "Account"); // Redirect to login if not authenticated
             }
-            IEnumerable<Product> products = _productRepo.GetAllProducts();
+            var shopId = GetShopId();
+            IEnumerable<Product> products = _productRepo.GetAllProducts(shopId);
             return View(products);
         }
 
@@ -84,6 +95,7 @@ namespace LedgerLink.Controllers
 
             if (ModelState.IsValid)
             {
+                product.ShopId = GetShopId();
                 _productRepo.AddProduct(product);
                 return RedirectToAction(nameof(Index)); // Redirect back to the product list
             }
@@ -98,7 +110,8 @@ namespace LedgerLink.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            Product? product = _productRepo.GetProductById(id);
+            var shopId = GetShopId();
+            Product? product = _productRepo.GetProductById(id, shopId);
             if (product == null)
             {
                 return NotFound(); // Return 404 if product not found
@@ -118,6 +131,9 @@ namespace LedgerLink.Controllers
 
             if (ModelState.IsValid)
             {
+                // Preserve ShopId from existing product
+                var shopId = GetShopId();
+                product.ShopId = shopId;
                 _productRepo.UpdateProduct(product);
                 return RedirectToAction(nameof(Index));
             }
@@ -132,7 +148,8 @@ namespace LedgerLink.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            Product? product = _productRepo.GetProductById(id);
+            var shopId = GetShopId();
+            Product? product = _productRepo.GetProductById(id, shopId);
             if (product == null)
             {
                 return NotFound();
@@ -150,7 +167,8 @@ namespace LedgerLink.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            _productRepo.DeleteProduct(id);
+            var shopId = GetShopId();
+            _productRepo.DeleteProduct(id, shopId);
             return RedirectToAction(nameof(Index));
         }
     }

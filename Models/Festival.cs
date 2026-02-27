@@ -12,6 +12,10 @@ namespace LedgerLink.Models
     {
         public int Id { get; set; } // Primary Key
 
+        // Foreign Key: Shop
+        [Required]
+        public Guid ShopId { get; set; }
+
         [Required(ErrorMessage = "Festival name is required.")]
         [StringLength(100)]
         public string Name { get; set; } = string.Empty;
@@ -29,5 +33,8 @@ namespace LedgerLink.Models
 
         // Collection Navigation Property to link to DiscountRules
         public ICollection<DiscountRule>? DiscountRules { get; set; }
+
+        // Navigation property: The shop this festival belongs to
+        public Shop? Shop { get; set; }
     }
 }

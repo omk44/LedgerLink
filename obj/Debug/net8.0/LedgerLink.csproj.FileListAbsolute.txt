@@ -40,8 +40,6 @@
 /home/om/dotnet/LedgerLink/bin/Debug/net8.0/Npgsql.dll
 /home/om/dotnet/LedgerLink/bin/Debug/net8.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll
 /home/om/dotnet/LedgerLink/bin/Debug/net8.0/QRCoder.dll
-/home/om/dotnet/LedgerLink/bin/Debug/net8.0/SendGrid.dll
-/home/om/dotnet/LedgerLink/bin/Debug/net8.0/StarkbankEcdsa.dll
 /home/om/dotnet/LedgerLink/bin/Debug/net8.0/System.CodeDom.dll
 /home/om/dotnet/LedgerLink/bin/Debug/net8.0/System.Composition.AttributedModel.dll
 /home/om/dotnet/LedgerLink/bin/Debug/net8.0/System.Composition.Convention.dll
@@ -151,3 +149,8 @@
 /home/om/dotnet/LedgerLink/obj/Debug/net8.0/ref/LedgerLink.dll
 /home/om/dotnet/LedgerLink/obj/Debug/net8.0/LedgerLink.AssemblyInfoInputs.cache
 /home/om/dotnet/LedgerLink/obj/Debug/net8.0/LedgerLink.AssemblyInfo.cs
+/home/om/dotnet/LedgerLink/bin/Debug/net8.0/appsettings.Production.json
+/home/om/dotnet/LedgerLink/bin/Debug/net8.0/BCrypt.Net-Next.dll
+/home/om/dotnet/LedgerLink/bin/Debug/net8.0/BouncyCastle.Cryptography.dll
+/home/om/dotnet/LedgerLink/bin/Debug/net8.0/MailKit.dll
+/home/om/dotnet/LedgerLink/bin/Debug/net8.0/MimeKit.dll

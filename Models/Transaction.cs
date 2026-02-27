@@ -8,6 +8,10 @@ namespace LedgerLink.Models
     {
         public int Id { get; set; }
 
+        // Foreign Key: Shop
+        [Required]
+        public Guid ShopId { get; set; }
+
         [Required]
         public Guid CustomerId { get; set; }
         public Customer Customer { get; set; } = null!;
@@ -54,5 +58,8 @@ namespace LedgerLink.Models
         [Required]
         [StringLength(20)]
         public string QuantityUnit { get; set; } = string.Empty;
+
+        // Navigation property: The shop this transaction belongs to
+        public Shop? Shop { get; set; }
     }
 }

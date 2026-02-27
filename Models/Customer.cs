@@ -12,6 +12,10 @@ namespace LedgerLink.Models
         [Required(ErrorMessage = "Customer ID is required.")]
         public Guid Id { get; set; }
 
+        // Foreign Key: Shop
+        [Required]
+        public Guid ShopId { get; set; }
+
         // Scalar Property: Customer's full name with strict validation
         [Required(ErrorMessage = "Customer name is required.")]
         [StringLength(100, ErrorMessage = "Full Name cannot exceed 100 characters.")]
@@ -42,5 +46,8 @@ namespace LedgerLink.Models
 
         // Collection Navigation Property: All payments made by this customer
         public ICollection<Payment>? Payments { get; set; }
+
+        // Navigation property: The shop this customer belongs to
+        public Shop? Shop { get; set; }
     }
 }

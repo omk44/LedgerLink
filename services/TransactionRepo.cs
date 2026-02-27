@@ -2,6 +2,7 @@
 using LedgerLink.Models;
 using LedgerLink.Data;
 using LedgerLink.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore; // Required for Include()
@@ -17,22 +18,23 @@ namespace LedgerLink.Services
             _context = context;
         }
 
-        public IEnumerable<Transaction> GetAllTransactions()
+        public IEnumerable<Transaction> GetAllTransactions(Guid shopId)
         {
             // CRITICAL FIX: Eager load Customer and Product for display in CustomerDetails view
             return _context.Transactions
+                           .Where(t => t.ShopId == shopId)
                            .Include(t => t.Customer) // Load related Customer data
                            .Include(t => t.Product)  // Load related Product data
                            .ToList();
         }
 
-        public Transaction? GetTransactionById(int id)
+        public Transaction? GetTransactionById(int id, Guid shopId)
         {
             // CRITICAL FIX: Eager load Customer and Product for single transaction lookup
             return _context.Transactions
                            .Include(t => t.Customer)
                            .Include(t => t.Product)
-                           .FirstOrDefault(t => t.Id == id);
+                           .FirstOrDefault(t => t.Id == id && t.ShopId == shopId);
         }
 
         public Transaction AddTransaction(Transaction transaction)
@@ -53,9 +55,9 @@ namespace LedgerLink.Services
             return existingTransaction;
         }
 
-        public Transaction? DeleteTransaction(int id)
+        public Transaction? DeleteTransaction(int id, Guid shopId)
         {
-            var transaction = _context.Transactions.Find(id);
+            var transaction = _context.Transactions.FirstOrDefault(t => t.Id == id && t.ShopId == shopId);
             if (transaction != null)
             {
                 _context.Transactions.Remove(transaction);

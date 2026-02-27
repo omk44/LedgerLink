@@ -2,6 +2,7 @@
 using LedgerLink.Data;
 using LedgerLink.Interface;
 using LedgerLink.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,14 +17,14 @@ namespace LedgerLink.Services
             _context = context;
         }
 
-        public IEnumerable<Festival> GetAllFestivals()
+        public IEnumerable<Festival> GetAllFestivals(Guid shopId)
         {
-            return _context.Festivals.ToList();
+            return _context.Festivals.Where(f => f.ShopId == shopId).ToList();
         }
 
-        public Festival? GetFestivalById(int id)
+        public Festival? GetFestivalById(int id, Guid shopId)
         {
-            return _context.Festivals.Find(id);
+            return _context.Festivals.FirstOrDefault(f => f.Id == id && f.ShopId == shopId);
         }
 
         public Festival AddFestival(Festival festival)
@@ -44,9 +45,9 @@ namespace LedgerLink.Services
             return existingFestival;
         }
 
-        public Festival? DeleteFestival(int id)
+        public Festival? DeleteFestival(int id, Guid shopId)
         {
-            var festival = _context.Festivals.Find(id);
+            var festival = _context.Festivals.FirstOrDefault(f => f.Id == id && f.ShopId == shopId);
             if (festival != null)
             {
                 _context.Festivals.Remove(festival);

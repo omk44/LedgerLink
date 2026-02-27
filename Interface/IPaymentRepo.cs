@@ -6,10 +6,10 @@ namespace LedgerLink.Interface
 {
     public interface IPaymentRepo
     {
-        IEnumerable<Payment> GetAllPayments();
-        Payment? GetPaymentById(Guid id);
+        IEnumerable<Payment> GetAllPayments(Guid shopId);
+        Payment? GetPaymentById(Guid id, Guid shopId);
         Payment AddPayment(Payment payment);
         Payment UpdatePayment(Payment payment);
-        Payment DeletePayment(Guid id);
+        Payment DeletePayment(Guid id, Guid shopId);
     }
 }

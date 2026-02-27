@@ -17,14 +17,14 @@ namespace LedgerLink.Services
             _context = context;
         }
 
-        public IEnumerable<Customer> GetAllCustomers()
+        public IEnumerable<Customer> GetAllCustomers(Guid shopId)
         {
-            return _context.Customers.ToList();
+            return _context.Customers.Where(c => c.ShopId == shopId).ToList();
         }
 
-        public Customer? GetCustomerById(Guid id)
+        public Customer? GetCustomerById(Guid id, Guid shopId)
         {
-            return _context.Customers.Find(id);
+            return _context.Customers.FirstOrDefault(c => c.Id == id && c.ShopId == shopId);
         }
 
          public Customer AddCustomer(Customer customer)
@@ -50,9 +50,9 @@ namespace LedgerLink.Services
             return existingCustomer;
         }
 
-        public Customer? DeleteCustomer(Guid id)
+        public Customer? DeleteCustomer(Guid id, Guid shopId)
         {
-            var customer = _context.Customers.Find(id);
+            var customer = _context.Customers.FirstOrDefault(c => c.Id == id && c.ShopId == shopId);
             if (customer != null)
             {
                 _context.Customers.Remove(customer);

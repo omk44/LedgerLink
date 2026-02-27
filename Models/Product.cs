@@ -1,4 +1,5 @@
 // Path: LedgerLink/Models/Product.cs
+using System;
 using System.ComponentModel.DataAnnotations; // For data annotations
 
 namespace LedgerLink.Models
@@ -7,6 +8,10 @@ namespace LedgerLink.Models
     {
         // Scalar Property: Primary Key
         public int Id { get; set; }
+
+        // Foreign Key: Shop
+        [Required]
+        public Guid ShopId { get; set; }
 
         // Scalar Property: Product name with strict validation
         [Required(ErrorMessage = "Product name is required.")]
@@ -28,6 +33,9 @@ namespace LedgerLink.Models
         // ✅ Unit type (e.g., "pcs", "ml", "gm", "kg", "ltr")
         [Required(ErrorMessage = "Unit is required.")]
         [StringLength(20)]
-        public string QuantityUnit { get; set; } = "pcs"; 
+        public string QuantityUnit { get; set; } = "pcs";
+
+        // Navigation property: The shop this product belongs to
+        public Shop? Shop { get; set; }
     }
 }

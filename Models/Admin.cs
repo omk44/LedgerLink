@@ -8,6 +8,10 @@ namespace LedgerLink.Models
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
 
+        // Multi-tenancy: Link to Shop
+        [Required]
+        public Guid ShopId { get; set; }
+
         [Required(ErrorMessage = "Email is required.")]
         [EmailAddress(ErrorMessage = "Invalid email address format.")]
         [StringLength(100, ErrorMessage = "Email cannot exceed 100 characters.")]
@@ -41,5 +45,8 @@ namespace LedgerLink.Models
         // Optional: Role-based access (for future expansion)
         [StringLength(50)]
         public string Role { get; set; } = "Admin";
+
+        // Navigation property
+        public Shop? Shop { get; set; }
     }
 }

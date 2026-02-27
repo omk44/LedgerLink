@@ -10,8 +10,9 @@ namespace LedgerLink.ViewModels
     public class ReceiptViewModel
     {
         // General Receipt Information
-        public string ShopName { get; set; } = string.Empty; // Will be set from ShopSettings
-        public string AppName { get; set; } = string.Empty; // Will be set from ShopSettings
+        public string ShopName { get; set; } = string.Empty;
+        public string AdminName { get; set; } = string.Empty;
+        public string AdminEmail { get; set; } = string.Empty;
         public DateTime ReceiptDate { get; set; } = DateTime.UtcNow;
 
         // Customer Information

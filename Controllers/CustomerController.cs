@@ -53,13 +53,24 @@ namespace LedgerLink.Controllers
             return !string.IsNullOrEmpty(token) && token.StartsWith("ADMIN_");
         }
 
+        private Guid GetShopId()
+        {
+            var shopId = HttpContext.Session.GetString("ShopId");
+            if (string.IsNullOrEmpty(shopId) || !Guid.TryParse(shopId, out var parsedShopId))
+            {
+                throw new InvalidOperationException("ShopId not found in session");
+            }
+            return parsedShopId;
+        }
+
         public IActionResult Index()
         {
             if (!IsAdminLoggedIn())
             {
                 return RedirectToAction("Login", "Account");
             }
-            IEnumerable<Customer> customers = _customerRepo.GetAllCustomers();
+            var shopId = GetShopId();
+            IEnumerable<Customer> customers = _customerRepo.GetAllCustomers(shopId);
             return View(customers);
         }
 
@@ -88,6 +99,8 @@ namespace LedgerLink.Controllers
             {
                 customer.Id = Guid.NewGuid();
             }
+            // Set ShopId from session
+            customer.ShopId = GetShopId();
             // CRITICAL FIX: Assign a new Guid directly to Barcode
 
             if (ModelState.IsValid)
@@ -118,7 +131,7 @@ namespace LedgerLink.Controllers
             }
 
             // CRITICAL FIX: Pass the Guid to GetCustomerByBarcode
-            Customer? customer = _customerRepo.GetCustomerById(parsedBarcodeGuid);
+            Customer? customer = _customerRepo.GetCustomerById(parsedBarcodeGuid, GetShopId());
             if (customer == null)
             {
                 return NotFound("Customer not found for the given barcode.");
@@ -140,7 +153,8 @@ namespace LedgerLink.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            Customer? customer = _customerRepo.GetCustomerById(id);
+            var shopId = GetShopId();
+            Customer? customer = _customerRepo.GetCustomerById(id, shopId);
             if (customer == null)
             {
                 return NotFound();
@@ -159,15 +173,18 @@ public IActionResult Edit(Customer customer)
 
     if (ModelState.IsValid)
     {
+        var shopId = GetShopId();
         // ✅ Fetch the existing customer first
-        var existingCustomer = _customerRepo.GetCustomerById(customer.Id);
+        var existingCustomer = _customerRepo.GetCustomerById(customer.Id, shopId);
         if (existingCustomer == null)
         {
             return NotFound();
         }
 
-        // ✅ Preserve CurrentBalance (don’t reset it to 0)
+        // ✅ Preserve CurrentBalance (don't reset it to 0)
         customer.CurrentBalance = existingCustomer.CurrentBalance;
+        // Preserve ShopId
+        customer.ShopId = existingCustomer.ShopId;
 
         // ✅ Now update with other changes
         _customerRepo.UpdateCustomer(customer);
@@ -185,7 +202,8 @@ public IActionResult Edit(Customer customer)
                 return RedirectToAction("Login", "Account");
             }
 
-            Customer? customer = _customerRepo.GetCustomerById(id);
+            var shopId = GetShopId();
+            Customer? customer = _customerRepo.GetCustomerById(id, shopId);
             if (customer == null)
             {
                 return NotFound();
@@ -202,7 +220,8 @@ public IActionResult Edit(Customer customer)
                 return RedirectToAction("Login", "Account");
             }
 
-            _customerRepo.DeleteCustomer(id);
+            var shopId = GetShopId();
+            _customerRepo.DeleteCustomer(id, shopId);
             return RedirectToAction(nameof(Index));
         }
     }

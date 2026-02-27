@@ -13,13 +13,10 @@ namespace LedgerLink.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ShopSettings _shopSettings;
 
-        // CRITICAL FIX: Combine all dependencies into a single constructor
-        public HomeController(ILogger<HomeController> logger, IOptions<ShopSettings> shopSettingsOptions)
+        public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            _shopSettings = shopSettingsOptions.Value; // Get the ShopSettings instance
         }
 
         // --- Enhanced Session Security ---
@@ -61,15 +58,13 @@ namespace LedgerLink.Controllers
             {
                 return RedirectToAction("Login", "Account"); // Redirect to login if not authenticated
             }
-            ViewBag.ShopName = _shopSettings.ShopName; // Pass ShopName to View
-            ViewBag.AppName = _shopSettings.AppName;   // Pass AppName to View
             return View();
         }
 
          public IActionResult Privacy()
         {
             // No login check needed for Privacy page, it should be public
-            return View(_shopSettings); // Pass the ShopSettings model directly
+            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

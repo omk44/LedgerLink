@@ -17,16 +17,15 @@ namespace LedgerLink.Services
             _context = context;
         }
 
-        public IEnumerable<Payment> GetAllPayments()
+        public IEnumerable<Payment> GetAllPayments(Guid shopId)
         {
-            return _context.Payments.ToList();
+            return _context.Payments.Where(p => p.ShopId == shopId).ToList();
         }
 
         // Changed parameter type to Guid
-        public Payment? GetPaymentById(Guid id)
+        public Payment? GetPaymentById(Guid id, Guid shopId)
         {
-            // Find() method can take Guid as primary key
-            return _context.Payments.Find(id);
+            return _context.Payments.FirstOrDefault(p => p.Id == id && p.ShopId == shopId);
         }
 
         public Payment AddPayment(Payment payment)
@@ -55,10 +54,9 @@ namespace LedgerLink.Services
         }
 
         // Changed parameter type to Guid
-        public Payment? DeletePayment(Guid id)
+        public Payment? DeletePayment(Guid id, Guid shopId)
         {
-            // Find by Guid
-            var payment = _context.Payments.Find(id);
+            var payment = _context.Payments.FirstOrDefault(p => p.Id == id && p.ShopId == shopId);
             if (payment != null)
             {
                 _context.Payments.Remove(payment);

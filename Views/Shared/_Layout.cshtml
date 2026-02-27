@@ -1,13 +1,11 @@
-﻿@using Microsoft.Extensions.Options;
-@using Microsoft.AspNetCore.Http;
-@inject IOptions<LedgerLink.ViewModels.ShopSettings> ShopSettingsOptions
+﻿@using Microsoft.AspNetCore.Http;
 
 @{
-    // Access ShopSettings directly in the layout
-    var shopName = ShopSettingsOptions.Value.ShopName;
-    var appName = ShopSettingsOptions.Value.AppName;
-    var shopEmail = ShopSettingsOptions.Value.ShopEmail; // Get shop email
-    var shopPhoneNumber = ShopSettingsOptions.Value.ShopPhoneNumber; // Get shop phone number
+    // Access shop info from session (set during login)
+    var shopName = Context.Session.GetString("ShopName") ?? "LedgerLink";
+    var appName = "LedgerLink";
+    var shopEmail = Context.Session.GetString("AdminEmail") ?? "";
+    var shopPhoneNumber = Context.Session.GetString("ShopPhoneNumber") ?? "";
 
     ViewData["Title"] ??= appName; // Set default title if not already set by a view
 }

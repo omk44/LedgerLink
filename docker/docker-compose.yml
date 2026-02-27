@@ -37,10 +37,6 @@ services:
       - EmailSettings__SmtpPassword=${SMTP_PASSWORD}
       - EmailSettings__SenderEmail=${SENDER_EMAIL:-info@ledgerlink.com}
       - EmailSettings__SenderName=${SENDER_NAME:-LedgerLink}
-      - ShopSettings__ShopName=${SHOP_NAME:-Miracle Technoz}
-      - ShopSettings__AppName=LedgerLink
-      - ShopSettings__ShopEmail=${SHOP_EMAIL:-info@miracletechnoz.com}
-      - ShopSettings__ShopPhoneNumber=${SHOP_PHONE:-+919876543210}
     ports:
       - "8080:8080"
     depends_on:

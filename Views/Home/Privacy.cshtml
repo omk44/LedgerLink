@@ -1,12 +1,8 @@
 ﻿@* Path: LedgerLink/Views/Home/Privacy.cshtml *@
-@model LedgerLink.ViewModels.ShopSettings 
-@using Microsoft.Extensions.Options;
-@inject IOptions<LedgerLink.ViewModels.ShopSettings> ShopSettingsOptions 
 
 @{
     ViewData["Title"] = "Privacy Policy & Terms of Service";
-    var shopName = ShopSettingsOptions.Value.ShopName;
-    var appName = ShopSettingsOptions.Value.AppName;
+    var appName = "LedgerLink";
     var currentYear = DateTime.Now.Year;
 }
 
@@ -77,14 +73,14 @@
         <h1>@ViewData["Title"]</h1>
         <p class="text-center text-muted">Last Updated: @DateTime.Now.ToString("MMMM dd, yyyy")</p>
 
-        <p>Welcome to **@appName**, an innovative digital ledger and credit management application provided by **@shopName**. We are committed to protecting your privacy and ensuring the security of the data you entrust to our service. This Privacy Policy and Terms of Service outlines how we collect, use, protect, and manage your information.</p>
+        <p>Welcome to **@appName**, an innovative digital ledger and credit management application provided by **Your Shop**. We are committed to protecting your privacy and ensuring the security of the data you entrust to our service. This Privacy Policy and Terms of Service outlines how we collect, use, protect, and manage your information.</p>
 
         <hr/>
 
         <h2>1. Data We Collect</h2>
         <p>To provide our services, **@appName** collects and stores the following types of information:</p>
         <ul>
-            <li><strong>Shop Admin Data:</strong> Your username, password (securely hashed), and the name of your shop (**@shopName**).</li>
+            <li><strong>Shop Admin Data:</strong> Your username, password (securely hashed), and the name of your shop (**Your Shop**).</li>
             <li><strong>Customer Data:</strong> Full name, phone number, email address, physical address, and a unique QR/barcode ID for each of your customers.</li>
             <li><strong>Transaction Data:</strong> Details of product sales (product, quantity, unit price, total amount, purchase date, credit status, notes).</li>
             <li><strong>Payment Data:</strong> Records of payments received from customers (amount paid, payment date, payment mode).</li>
@@ -94,7 +90,7 @@
         <hr/>
 
         <h2>2. How We Use Your Data</h2>
-        <p>Your data is used exclusively to operate, maintain, and improve the **@appName** service for **@shopName**:</p>
+        <p>Your data is used exclusively to operate, maintain, and improve the **@appName** service for **Your Shop**:</p>
         <ul>
             <li>To manage customer credit accounts and track outstanding balances.</li>
             <li>To record and track product sales and customer payments.</li>
@@ -123,11 +119,11 @@
         <hr/>
 
         <h2>5. Your Rights and Choices</h2>
-        <p>As the administrator of **@appName** for **@shopName**, you have control over your data:</p>
+        <p>As the administrator of **@appName** for **Your Shop**, you have control over your data:</p>
         <ul>
             <li>You can add, edit, and delete customer and product information at any time.</li>
             <li>You can access transaction and payment history.</li>
-            <li>For data deletion requests beyond the application's interface, please contact **@shopName** directly.</li>
+            <li>For data deletion requests beyond the application's interface, please contact **Your Shop** directly.</li>
         </ul>
 
         <hr/>
@@ -137,7 +133,7 @@
         <p>By using **@appName**, you agree to be bound by these Privacy Policy and Terms of Service. If you do not agree, you may not use the application.</p>
 
         <h3>6.2. License to Use</h3>
-        <p>**@appName** grants **@shopName** a limited, non-exclusive, non-transferable, revocable license to use the application for its internal business operations. This license does not permit sublicensing or redistribution of the application.</p>
+        <p>**@appName** grants **Your Shop** a limited, non-exclusive, non-transferable, revocable license to use the application for its internal business operations. This license does not permit sublicensing or redistribution of the application.</p>
 
         <h3>6.3. Intellectual Property (IP) Protection <span class="highlight">(Crucial for your project!)</span></h3>
         <p>All intellectual property rights in **@appName**, including but not limited to its code, design, features, and underlying technology, are owned by **Om Kapadiya** (the developer). This application is provided for your use under license and is not sold. You agree:</p>
@@ -149,7 +145,7 @@
         </ul>
 
         <h3>6.4. Limitation of Liability</h3>
-        <p>**@appName** is provided "as is" without any warranties. **Om Kapadiya** and **@shopName** shall not be liable for any damages arising from the use or inability to use the application.</p>
+        <p>**@appName** is provided "as is" without any warranties. **Om Kapadiya** and **Your Shop** shall not be liable for any damages arising from the use or inability to use the application.</p>
 
         <hr/>
 
@@ -159,10 +155,10 @@
         <hr/>
 
         <h2>8. Contact Us</h2>
-        <p>If you have any questions about this Privacy Policy or Terms of Service, please contact **@shopName** directly.</p>
+        <p>If you have any questions about this Privacy Policy or Terms of Service, please contact **Your Shop** directly.</p>
 
         <div class="footer-text">
-            <p>&copy; @currentYear @shopName. All rights reserved. Powered by @appName.</p>
+            <p>&copy; @currentYear Your Shop. All rights reserved. Powered by @appName.</p>
         </div>
     </div>
 </body>

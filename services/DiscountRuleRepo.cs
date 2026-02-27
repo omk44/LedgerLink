@@ -2,6 +2,7 @@
 using LedgerLink.Data;
 using LedgerLink.Interface;
 using LedgerLink.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,14 +17,14 @@ namespace LedgerLink.Services
             _context = context;
         }
 
-        public IEnumerable<DiscountRule> GetAllDiscountRules()
+        public IEnumerable<DiscountRule> GetAllDiscountRules(Guid shopId)
         {
-            return _context.DiscountRules.ToList();
+            return _context.DiscountRules.Where(r => r.ShopId == shopId).ToList();
         }
 
-        public DiscountRule? GetDiscountRuleById(int id)
+        public DiscountRule? GetDiscountRuleById(int id, Guid shopId)
         {
-            return _context.DiscountRules.Find(id);
+            return _context.DiscountRules.FirstOrDefault(r => r.Id == id && r.ShopId == shopId);
         }
 
         public DiscountRule AddDiscountRule(DiscountRule discountRule)
@@ -44,9 +45,9 @@ namespace LedgerLink.Services
             return existingRule;
         }
 
-        public DiscountRule? DeleteDiscountRule(int id)
+        public DiscountRule? DeleteDiscountRule(int id, Guid shopId)
         {
-            var rule = _context.DiscountRules.Find(id);
+            var rule = _context.DiscountRules.FirstOrDefault(r => r.Id == id && r.ShopId == shopId);
             if (rule != null)
             {
                 _context.DiscountRules.Remove(rule);

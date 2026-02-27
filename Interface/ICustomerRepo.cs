@@ -6,10 +6,10 @@ namespace LedgerLink.Interface
 {
     public interface ICustomerRepo
     {
-        IEnumerable<Customer> GetAllCustomers();
-        Customer? GetCustomerById(Guid id);
+        IEnumerable<Customer> GetAllCustomers(Guid shopId);
+        Customer? GetCustomerById(Guid id, Guid shopId);
         Customer AddCustomer(Customer customer);
         Customer? UpdateCustomer(Customer customer);
-        Customer? DeleteCustomer(Guid id);
+        Customer? DeleteCustomer(Guid id, Guid shopId);
     }
 }

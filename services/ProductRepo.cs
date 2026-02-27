@@ -1,4 +1,5 @@
 // Path: LedgerLink/Services/ProductRepo.cs
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using LedgerLink.Data; // Required to inject AppDbContext
@@ -16,14 +17,14 @@ namespace LedgerLink.Services
             _context = context;
         }
 
-        public IEnumerable<Product> GetAllProducts()
+        public IEnumerable<Product> GetAllProducts(Guid shopId)
         {
-            return _context.Products.ToList();
+            return _context.Products.Where(p => p.ShopId == shopId).ToList();
         }
 
-        public Product? GetProductById(int id)
+        public Product? GetProductById(int id, Guid shopId)
         {
-            return _context.Products.Find(id);
+            return _context.Products.FirstOrDefault(p => p.Id == id && p.ShopId == shopId);
         }
 
         public Product AddProduct(Product product)
@@ -44,9 +45,9 @@ namespace LedgerLink.Services
             return existingProduct;
         }
 
-        public Product? DeleteProduct(int id)
+        public Product? DeleteProduct(int id, Guid shopId)
         {
-            var product = _context.Products.Find(id);
+            var product = _context.Products.FirstOrDefault(p => p.Id == id && p.ShopId == shopId);
             if (product != null)
             {
                 _context.Products.Remove(product);

@@ -20,9 +20,10 @@ namespace LedgerLink.Controllers
         private readonly ITransactionRepo _transactionRepo;
         private readonly IPaymentRepo _paymentRepo;
         private readonly IEmailService _emailService;
-        private readonly ShopSettings _shopSettings;
         private readonly IFestivalRepo _festivalRepo;
         private readonly IDiscountRuleRepo _discountRuleRepo;
+        private readonly IShopRepo _shopRepo;
+        private readonly IAdminRepo _adminRepo;
 
         public TransactionController(
             ICustomerRepo customerRepo,
@@ -30,18 +31,20 @@ namespace LedgerLink.Controllers
             ITransactionRepo transactionRepo,
             IPaymentRepo paymentRepo,
             IEmailService emailService,
-            IOptions<ShopSettings> shopSettingsOptions,
             IFestivalRepo festivalRepo,
-            IDiscountRuleRepo discountRuleRepo)
+            IDiscountRuleRepo discountRuleRepo,
+            IShopRepo shopRepo,
+            IAdminRepo adminRepo)
         {
             _customerRepo = customerRepo;
             _productRepo = productRepo;
             _transactionRepo = transactionRepo;
             _paymentRepo = paymentRepo;
             _emailService = emailService;
-            _shopSettings = shopSettingsOptions.Value;
             _festivalRepo = festivalRepo;
             _discountRuleRepo = discountRuleRepo;
+            _shopRepo = shopRepo;
+            _adminRepo = adminRepo;
         }
 
         // --- Enhanced Session Security ---
@@ -77,6 +80,16 @@ namespace LedgerLink.Controllers
             return !string.IsNullOrEmpty(token) && token.StartsWith("ADMIN_");
         }
 
+        private Guid GetShopId()
+        {
+            var shopId = HttpContext.Session.GetString("ShopId");
+            if (string.IsNullOrEmpty(shopId) || !Guid.TryParse(shopId, out var parsedShopId))
+            {
+                throw new InvalidOperationException("ShopId not found in session");
+            }
+            return parsedShopId;
+        }
+
         public IActionResult Scan()
         {
             if (!IsAdminLoggedIn())
@@ -104,7 +117,8 @@ namespace LedgerLink.Controllers
                 return BadRequest("Invalid customer ID format received.");
             }
 
-            Customer? customer = _customerRepo.GetCustomerById(scannedCustomerId);
+            var shopId = GetShopId();
+            Customer? customer = _customerRepo.GetCustomerById(scannedCustomerId, shopId);
 
             if (customer == null)
             {
@@ -122,29 +136,30 @@ public IActionResult CustomerDetails(Guid id, int transactionPage = 1, int payme
         return RedirectToAction("Login", "Account");
     }
 
-    var customer = _customerRepo.GetCustomerById(id);
+    var shopId = GetShopId();
+    var customer = _customerRepo.GetCustomerById(id, shopId);
     if (customer == null)
     {
         return NotFound("Customer not found.");
     }
 
-    var products = _productRepo.GetAllProducts();
+    var products = _productRepo.GetAllProducts(shopId);
 
-    var activeFestivals = _festivalRepo.GetAllFestivals()
+    var activeFestivals = _festivalRepo.GetAllFestivals(shopId)
         .Where(f => f.IsActive && f.StartDate.Date <= DateTime.UtcNow.Date && f.EndDate.Date >= DateTime.UtcNow.Date)
         .ToList();
 
-    var transactions = _transactionRepo.GetAllTransactions()
+    var transactions = _transactionRepo.GetAllTransactions(shopId)
         .Where(t => t.CustomerId == id)
         .OrderByDescending(t => t.PurchaseDate)
         .ToPagedList(transactionPage, 10);
 
-    var payments = _paymentRepo.GetAllPayments()
+    var payments = _paymentRepo.GetAllPayments(shopId)
         .Where(p => p.CustomerId == id)
         .OrderByDescending(p => p.PaymentDate)
         .ToPagedList(paymentPage, 10);
 
-    var activeRules = _discountRuleRepo.GetAllDiscountRules()
+    var activeRules = _discountRuleRepo.GetAllDiscountRules(shopId)
         .Where(r => activeFestivals.Select(f => f.Id).Contains(r.FestivalId))
         .ToList();
 
@@ -174,8 +189,9 @@ public IActionResult CustomerDetails(Guid id, int transactionPage = 1, int payme
                 return RedirectToAction("Login", "Account");
             }
 
-            Customer? customer = _customerRepo.GetCustomerById(customerId);
-            Product? product = _productRepo.GetProductById(productId);
+            var shopId = GetShopId();
+            Customer? customer = _customerRepo.GetCustomerById(customerId, shopId);
+            Product? product = _productRepo.GetProductById(productId, shopId);
 
             if (customer == null || product == null)
             {
@@ -197,11 +213,11 @@ public IActionResult CustomerDetails(Guid id, int transactionPage = 1, int payme
 
             if (applyDiscountFestivalId.HasValue)
             {
-                Festival? activeFestival = _festivalRepo.GetFestivalById(applyDiscountFestivalId.Value);
+                Festival? activeFestival = _festivalRepo.GetFestivalById(applyDiscountFestivalId.Value, shopId);
 
                 if (activeFestival != null)
                 {
-                    DiscountRule? matchingRule = _discountRuleRepo.GetAllDiscountRules()
+                    DiscountRule? matchingRule = _discountRuleRepo.GetAllDiscountRules(shopId)
                                                                   .Where(r => r.FestivalId == activeFestival.Id)
                                                                   .FirstOrDefault(r =>
                                                                       customer.CurrentBalance >= r.MinCustomerCreditBalance &&
@@ -221,6 +237,7 @@ public IActionResult CustomerDetails(Guid id, int transactionPage = 1, int payme
             var newTransaction = new Transaction
             {
                 Id = 0,
+                ShopId = shopId,
                 CustomerId = customerId,
                 ProductId = productId,
                 Quantity = quantity,
@@ -255,6 +272,7 @@ public IActionResult CustomerDetails(Guid id, int transactionPage = 1, int payme
                 var newPayment = new Payment
                 {
                     Id = Guid.NewGuid(),
+                    ShopId = shopId,
                     CustomerId = customerId,
                     AmountPaid = finalAmount,
                     PaymentMode = paymentMode,
@@ -274,7 +292,8 @@ public IActionResult CustomerDetails(Guid id, int transactionPage = 1, int payme
                 return RedirectToAction("Login", "Account");
             }
 
-            Customer? customer = _customerRepo.GetCustomerById(customerId);
+            var shopId = GetShopId();
+            Customer? customer = _customerRepo.GetCustomerById(customerId, shopId);
 
             if (customer == null)
             {
@@ -291,6 +310,7 @@ public IActionResult CustomerDetails(Guid id, int transactionPage = 1, int payme
             var newPayment = new Payment
             {
                 Id = Guid.NewGuid(),
+                ShopId = shopId,
                 CustomerId = customerId,
                 AmountPaid = amountPaid,
                 PaymentMode = paymentMode,
@@ -311,30 +331,40 @@ public IActionResult CustomerDetails(Guid id, int transactionPage = 1, int payme
             return RedirectToAction("ShowReceipt", new { paymentId = newPayment.Id, isTransaction = false });
         }
 
-        public IActionResult ShowReceipt(int? transactionId, Guid? paymentId, bool isTransaction)
+        public async Task<IActionResult> ShowReceipt(int? transactionId, Guid? paymentId, bool isTransaction)
         {
             if (!IsAdminLoggedIn())
             {
                 return RedirectToAction("Login", "Account");
             }
 
+            var shopId = GetShopId();
+            var adminIdString = HttpContext.Session.GetString("UserId");
+            
+            // Get shop and admin details from database
+            var shop = await _shopRepo.GetByIdAsync(shopId);
+            var admin = adminIdString != null && Guid.TryParse(adminIdString, out var adminId) 
+                ? await _adminRepo.GetByIdAsync(adminId) 
+                : null;
+
             ReceiptViewModel viewModel = new ReceiptViewModel
             {
-                ShopName = _shopSettings.ShopName,
-                AppName = _shopSettings.AppName
+                ShopName = shop?.ShopName ?? "Shop",
+                AdminName = admin?.FullName ?? "Admin",
+                AdminEmail = admin?.Email ?? ""
             };
             Customer? customer = null;
 
             if (isTransaction && transactionId.HasValue)
             {
-                Transaction? transaction = _transactionRepo.GetAllTransactions()
+                Transaction? transaction = _transactionRepo.GetAllTransactions(shopId)
                                                           .FirstOrDefault(t => t.Id == transactionId.Value);
                 if (transaction == null)
                 {
                     return NotFound("Transaction receipt not found.");
                 }
 
-                customer = _customerRepo.GetCustomerById(transaction.CustomerId);
+                customer = _customerRepo.GetCustomerById(transaction.CustomerId, shopId);
 
                 viewModel.ReceiptType = "Sale";
                 viewModel.Transaction = transaction;
@@ -343,14 +373,14 @@ public IActionResult CustomerDetails(Guid id, int transactionPage = 1, int payme
             }
             else if (!isTransaction && paymentId.HasValue)
             {
-                Payment? payment = _paymentRepo.GetAllPayments()
+                Payment? payment = _paymentRepo.GetAllPayments(shopId)
                                               .FirstOrDefault(p => p.Id == paymentId.Value);
                 if (payment == null)
                 {
                     return NotFound("Payment receipt not found.");
                 }
 
-                customer = _customerRepo.GetCustomerById(payment.CustomerId);
+                customer = _customerRepo.GetCustomerById(payment.CustomerId, shopId);
 
                 viewModel.ReceiptType = "Payment";
                 viewModel.Payment = payment;
@@ -367,7 +397,7 @@ public IActionResult CustomerDetails(Guid id, int transactionPage = 1, int payme
             }
 
             viewModel.Customer = customer;
-            viewModel.CustomerNewBalance = _customerRepo.GetCustomerById(customer.Id)?.CurrentBalance ?? 0.00m;
+            viewModel.CustomerNewBalance = _customerRepo.GetCustomerById(customer.Id, shopId)?.CurrentBalance ?? 0.00m;
 
             return View(viewModel);
         }
@@ -381,7 +411,8 @@ public async Task<IActionResult> SendReminder(Guid customerId)
         return Unauthorized();
     }
 
-    Customer? customer = _customerRepo.GetCustomerById(customerId);
+    var shopId = GetShopId();
+    Customer? customer = _customerRepo.GetCustomerById(customerId, shopId);
     if (customer == null)
     {
         TempData["ErrorMessage"] = "Customer not found.";
@@ -394,11 +425,28 @@ public async Task<IActionResult> SendReminder(Guid customerId)
         return RedirectToAction("CustomerDetails", new { id = customerId });
     }
 
+    // Get admin and shop details from database
+    var adminIdString = HttpContext.Session.GetString("UserId");
+    var shop = await _shopRepo.GetByIdAsync(shopId);
+    var admin = adminIdString != null && Guid.TryParse(adminIdString, out var adminId) 
+        ? await _adminRepo.GetByIdAsync(adminId) 
+        : null;
+
+    var shopName = shop?.ShopName ?? "Our Shop";
+    var adminName = admin?.FullName ?? "Admin";
+    var adminEmail = admin?.Email ?? "";
+
     var indiaCulture = new CultureInfo("en-IN");
     string formattedBalance = customer.CurrentBalance.ToString("C", indiaCulture);
 
-    string subject = $"Payment Reminder from {_shopSettings.ShopName}";
-    string messageBody = $"Dear {customer.FullName},\n\nThis is a friendly reminder that your outstanding balance at {_shopSettings.ShopName} is {formattedBalance}.\n\nPlease settle your dues at your earliest convenience.\n\nThank you,\n{_shopSettings.ShopName}";
+    string subject = $"Payment Reminder from {shopName}";
+    string messageBody = $"Dear {customer.FullName},\n\n" +
+        $"This is a friendly reminder that your outstanding balance at {shopName} is {formattedBalance}.\n\n" +
+        $"Please settle your dues at your earliest convenience.\n\n" +
+        $"Thank you,\n" +
+        $"{adminName}\n" +
+        $"{shopName}\n" +
+        $"Contact: {adminEmail}";
 
     bool emailSent = await _emailService.SendEmailAsync(customer.Email, subject, messageBody);
 
@@ -414,10 +462,43 @@ public async Task<IActionResult> SendReminder(Guid customerId)
     return RedirectToAction("CustomerDetails", new { id = customerId });
 }
 
+        // Test email endpoint - remove in production
+        [HttpGet]
+        public async Task<IActionResult> TestEmail()
+        {
+            if (!IsAdminLoggedIn())
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
+                var adminEmail = HttpContext.Session.GetString("AdminEmail") ?? "test@example.com";
+                bool emailSent = await _emailService.SendEmailAsync(
+                    adminEmail, 
+                    "LedgerLink Email Test", 
+                    "This is a test email from LedgerLink. If you received this, your email configuration is working correctly!");
+
+                if (emailSent)
+                {
+                    return Ok(new { success = true, message = $"Test email sent successfully to {adminEmail}. Check your inbox!" });
+                }
+                else
+                {
+                    return Ok(new { success = false, message = "Failed to send test email. Check application logs for details." });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { success = false, message = $"Error: {ex.Message}" });
+            }
+        }
+
 
         [HttpPost]
         public IActionResult CalculateDiscount([FromBody] CalculateDiscountRequestModel request)
         {
+            var shopId = GetShopId();
             decimal originalAmount = request.quantity * request.unitPrice;
             decimal discountPercentage = 0.00m;
             decimal discountAmount = 0.00m;
@@ -426,16 +507,16 @@ public async Task<IActionResult> SendReminder(Guid customerId)
 
             if (request.applyDiscountFestivalId.HasValue)
             {
-                Festival? selectedFestival = _festivalRepo.GetFestivalById(request.applyDiscountFestivalId.Value);
+                Festival? selectedFestival = _festivalRepo.GetFestivalById(request.applyDiscountFestivalId.Value, shopId);
 
                 if (selectedFestival != null && selectedFestival.IsActive &&
                     selectedFestival.StartDate.Date <= DateTime.UtcNow.Date &&
                     selectedFestival.EndDate.Date >= DateTime.UtcNow.Date)
                 {
-                    Customer? customer = _customerRepo.GetCustomerById(request.customerId);
+                    Customer? customer = _customerRepo.GetCustomerById(request.customerId, shopId);
                     if (customer != null)
                     {
-                        DiscountRule? matchingRule = _discountRuleRepo.GetAllDiscountRules()
+                        DiscountRule? matchingRule = _discountRuleRepo.GetAllDiscountRules(shopId)
                             .Where(r => r.FestivalId == selectedFestival.Id)
                             .FirstOrDefault(r =>
                                 customer.CurrentBalance >= r.MinCustomerCreditBalance &&

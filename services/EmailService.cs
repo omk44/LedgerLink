@@ -41,6 +41,8 @@ namespace LedgerLink.Services
 
             try
             {
+                _logger.LogInformation("Attempting to send email to {Recipient} via {SmtpHost}:{SmtpPort}", toEmail, _smtpHost, _smtpPort);
+
                 var emailMessage = new MimeMessage();
                 emailMessage.From.Add(new MailboxAddress(_senderName, _senderEmail));
                 emailMessage.To.Add(new MailboxAddress("", toEmail));
@@ -55,12 +57,21 @@ namespace LedgerLink.Services
 
                 using (var client = new SmtpClient())
                 {
-                    // Connect to Gmail's SMTP server
+                    // Set timeout to 30 seconds
+                    client.Timeout = 30000;
+
+                    _logger.LogInformation("Connecting to SMTP server {SmtpHost}:{SmtpPort}...", _smtpHost, _smtpPort);
+                    
+                    // Connect to Gmail's SMTP server with timeout
                     await client.ConnectAsync(_smtpHost, _smtpPort, SecureSocketOptions.StartTls);
 
+                    _logger.LogInformation("Authenticating with SMTP server...");
+                    
                     // Authenticate
                     await client.AuthenticateAsync(_smtpUsername, _smtpPassword);
 
+                    _logger.LogInformation("Sending email...");
+                    
                     // Send email
                     await client.SendAsync(emailMessage);
 

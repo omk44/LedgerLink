@@ -79,6 +79,16 @@ namespace LedgerLink.Controllers
             }
         }
 
+        private Guid GetShopId()
+        {
+            var shopId = HttpContext.Session.GetString("ShopId");
+            if (string.IsNullOrEmpty(shopId) || !Guid.TryParse(shopId, out var parsedShopId))
+            {
+                throw new InvalidOperationException("ShopId not found in session");
+            }
+            return parsedShopId;
+        }
+
         // GET: Festival/Index
         public IActionResult Index()
         {
@@ -86,7 +96,8 @@ namespace LedgerLink.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-            IEnumerable<Festival> festivals = _festivalRepo.GetAllFestivals();
+            var shopId = GetShopId();
+            IEnumerable<Festival> festivals = _festivalRepo.GetAllFestivals(shopId);
             return View(festivals);
         }
 
@@ -124,6 +135,8 @@ namespace LedgerLink.Controllers
 
             if (ModelState.IsValid)
             {
+                // Set ShopId
+                festival.ShopId = GetShopId();
                 // CRITICAL FIX: Convert StartDate and EndDate to UTC before saving.
                 // The incoming DateTime from the form has an Unspecified Kind, which PostgreSQL rejects.
                 festival.StartDate = DateTime.SpecifyKind(festival.StartDate, DateTimeKind.Utc);
@@ -144,7 +157,8 @@ namespace LedgerLink.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            Festival? festival = _festivalRepo.GetFestivalById(id);
+            var shopId = GetShopId();
+            Festival? festival = _festivalRepo.GetFestivalById(id, shopId);
             if (festival == null)
             {
                 return NotFound();
@@ -163,7 +177,8 @@ namespace LedgerLink.Controllers
             }
 
             // Get the existing festival to check if it has already started
-            var existingFestival = _festivalRepo.GetFestivalById(festival.Id);
+            var shopId = GetShopId();
+            var existingFestival = _festivalRepo.GetFestivalById(festival.Id, shopId);
             if (existingFestival == null)
             {
                 return NotFound();
@@ -189,6 +204,8 @@ namespace LedgerLink.Controllers
 
             if (ModelState.IsValid)
             {
+                // Preserve ShopId
+                festival.ShopId = existingFestival.ShopId;
                 // CRITICAL FIX: Convert StartDate and EndDate to UTC before saving.
                 festival.StartDate = DateTime.SpecifyKind(festival.StartDate, DateTimeKind.Utc);
                 festival.EndDate = DateTime.SpecifyKind(festival.EndDate, DateTimeKind.Utc);
@@ -208,7 +225,8 @@ namespace LedgerLink.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            Festival? festival = _festivalRepo.GetFestivalById(id);
+            var shopId = GetShopId();
+            Festival? festival = _festivalRepo.GetFestivalById(id, shopId);
             if (festival == null)
             {
                 return NotFound();
@@ -226,7 +244,8 @@ namespace LedgerLink.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            _festivalRepo.DeleteFestival(id);
+            var shopId = GetShopId();
+            _festivalRepo.DeleteFestival(id, shopId);
             return RedirectToAction(nameof(Index));
         }
     }

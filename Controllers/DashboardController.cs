@@ -87,6 +87,16 @@ namespace LedgerLink.Controllers
             }
         }
 
+        private Guid GetShopId()
+        {
+            var shopId = HttpContext.Session.GetString("ShopId");
+            if (string.IsNullOrEmpty(shopId) || !Guid.TryParse(shopId, out var parsedShopId))
+            {
+                throw new InvalidOperationException("ShopId not found in session");
+            }
+            return parsedShopId;
+        }
+
         // GET: Dashboard/Index - Displays the main dashboard with optional date filtering and pagination
         public IActionResult Index(DateTime? startDate, DateTime? endDate, int transactionPage = 1, int paymentPage = 1)
         {
@@ -119,10 +129,11 @@ namespace LedgerLink.Controllers
             periodEndDate = periodEndDate.Date.AddDays(1).AddTicks(-1); // End of today
 
             // Get all data (for filtering and overall counts)
-            var allCustomers = _customerRepo.GetAllCustomers().ToList();
-            var allProducts = _productRepo.GetAllProducts().ToList();
-            var allTransactions = _transactionRepo.GetAllTransactions().ToList();
-            var allPayments = _paymentRepo.GetAllPayments().ToList();
+            var shopId = GetShopId();
+            var allCustomers = _customerRepo.GetAllCustomers(shopId).ToList();
+            var allProducts = _productRepo.GetAllProducts(shopId).ToList();
+            var allTransactions = _transactionRepo.GetAllTransactions(shopId).ToList();
+            var allPayments = _paymentRepo.GetAllPayments(shopId).ToList();
 
             // Filter data by date range
             var transactionsInPeriod = allTransactions

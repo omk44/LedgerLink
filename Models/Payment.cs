@@ -11,6 +11,10 @@ namespace LedgerLink.Models
         [Required(ErrorMessage = "Payment ID is required.")]
 
         public Guid Id { get; set; }
+
+        // Foreign Key: Shop
+        [Required]
+        public Guid ShopId { get; set; }
         
         // Scalar Property: Foreign Key to Customer
         [Required]
@@ -32,5 +36,8 @@ namespace LedgerLink.Models
         [Required(ErrorMessage = "Payment Mode is required.")]
         [StringLength(50, ErrorMessage = "Payment Mode cannot exceed 50 characters.")]
         public string PaymentMode { get; set; } = string.Empty;
+
+        // Navigation property: The shop this payment belongs to
+        public Shop? Shop { get; set; }
     }
 }

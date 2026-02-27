@@ -1,4 +1,5 @@
 // Path: LedgerLink/Models/DiscountRule.cs
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace LedgerLink.Models
@@ -9,6 +10,10 @@ namespace LedgerLink.Models
     public class DiscountRule
     {
         public int Id { get; set; } // Primary Key
+
+        // Foreign Key: Shop
+        [Required]
+        public Guid ShopId { get; set; }
 
         [Required]
         public int FestivalId { get; set; } // Foreign Key to Festival
@@ -32,5 +37,8 @@ namespace LedgerLink.Models
 
         [StringLength(500)]
         public string? Description { get; set; }
+
+        // Navigation property: The shop this discount rule belongs to
+        public Shop? Shop { get; set; }
     }
 }

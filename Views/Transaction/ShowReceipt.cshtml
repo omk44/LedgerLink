@@ -83,7 +83,8 @@
     <div class="receipt-container">
         <div class="receipt-header">
             <h4>@Model.ShopName</h4>
-            <p>@Model.AppName</p>
+            <p><strong>From:</strong> @Model.AdminName</p>
+            <p><strong>Contact:</strong> @Model.AdminEmail</p>
             <p>Date: @Model.ReceiptDate.ToLocalTime().ToString("g")</p>
             <p>@Model.ReceiptType Receipt</p>
             <hr style="border-top: 1px dashed #333;" />
