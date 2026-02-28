@@ -62,8 +62,9 @@ namespace LedgerLink.Services
 
                     _logger.LogInformation("Connecting to SMTP server {SmtpHost}:{SmtpPort}...", _smtpHost, _smtpPort);
                     
-                    // Connect to Gmail's SMTP server with timeout
-                    await client.ConnectAsync(_smtpHost, _smtpPort, SecureSocketOptions.StartTls);
+                    // Use SSL for port 465, StartTls for port 587
+                    var secureSocketOptions = _smtpPort == 465 ? SecureSocketOptions.SslOnConnect : SecureSocketOptions.StartTls;
+                    await client.ConnectAsync(_smtpHost, _smtpPort, secureSocketOptions);
 
                     _logger.LogInformation("Authenticating with SMTP server...");
                     
