@@ -13,6 +13,8 @@ using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add Health Checks for Render deployment
+builder.Services.AddHealthChecks();
 
 // Configure Application Culture for India (en-IN)
 builder.Services.Configure<RequestLocalizationOptions>(options =>
@@ -90,6 +92,9 @@ app.UseRouting();
 
 // Enable Session Middleware
 app.UseSession();
+
+// Add health check endpoint for Render
+app.MapHealthChecks("/health");
 
 app.MapControllerRoute(
     name: "default",
