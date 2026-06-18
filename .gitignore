@@ -59,3 +59,7 @@ awscli_tmp/
 *.DS_Store
 *.localized
 Thumbs.db
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

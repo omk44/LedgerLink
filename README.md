@@ -2,7 +2,7 @@
 
 ## Demo
 
-- **LIVE DEMO**: https://ledgerlink-app.onrender.com
+- **LIVE DEMO**: http://ledgerlink-live.eba-npdv9dat.ap-south-1.elasticbeanstalk.com
 - DEMO VIDEO: https://youtu.be/7z4iqupO4BA?si=ftecDmpzImNlgg2I
 - github Repo: https://github.com/omk44/LedgerLink
 
