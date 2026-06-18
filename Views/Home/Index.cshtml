@@ -1,21 +1,23 @@
 ﻿@* Path: LedgerLink/Views/Home/Index.cshtml *@
 @* No @model directive needed as we're using ViewBag *@
+@using Microsoft.AspNetCore.Http
 
 @{
-    ViewData["Title"] = "Welcome to " + ViewBag.ShopName; // Dynamic title
+    var shopName = (ViewBag.ShopName as string) ?? (Context.Session.GetString("ShopName") ?? "LedgerLink");
+    var appName = (ViewBag.AppName as string) ?? "LedgerLink";
+    ViewData["Title"] = shopName;
 }
 
 <div class="container mt-5">
     <!-- Header Section -->
     <div class="text-center mb-5">
-        <h1 class="display-4 fw-bold text-gradient">@ViewBag.ShopName Admin Home Page</h1>
+        <h1 class="display-4 fw-bold text-gradient">@shopName @SR["HomePageTitle"]</h1>
         <p class="lead text-muted">
-            Your digital ledger, powered by 
-            <strong class="text-primary">@ViewBag.AppName</strong>, 
-            is here to simplify your business management.
+            @SR["LedgerSubtitle"]
+            <strong class="text-primary">@appName</strong>
         </p>
         <hr class="my-4 w-50 mx-auto">
-        <p class="text-secondary">Quick access to your essential tools below</p>
+        <p class="text-secondary">@SR["QuickTools"]</p>
     </div>
 
     <!-- Feature Cards -->
@@ -26,9 +28,9 @@
                     <div class="mb-3 text-success fs-2">
                         <i class="bi bi-box-seam"></i>
                     </div>
-                    <h5 class="card-title text-success">Manage Products</h5>
-                    <p class="card-text">Add, edit, or remove items you sell.</p>
-                    <a asp-controller="Product" asp-action="Index" class="btn btn-outline-success">Go to Products</a>
+                    <h5 class="card-title text-success">@SR["ManageProducts"]</h5>
+                    <p class="card-text">@SR["ManageProductsDesc"]</p>
+                    <a asp-controller="Product" asp-action="Index" class="btn btn-outline-success">@SR["GoToProducts"]</a>
                 </div>
             </div>
         </div>
@@ -38,9 +40,9 @@
                     <div class="mb-3 text-info fs-2">
                         <i class="bi bi-people"></i>
                     </div>
-                    <h5 class="card-title text-info">Manage Customers</h5>
-                    <p class="card-text">View, add, or edit customer details and generate QR codes.</p>
-                    <a asp-controller="Customer" asp-action="Index" class="btn btn-outline-info">Go to Customers</a>
+                    <h5 class="card-title text-info">@SR["ManageCustomers"]</h5>
+                    <p class="card-text">@SR["ManageCustomersDesc"]</p>
+                    <a asp-controller="Customer" asp-action="Index" class="btn btn-outline-info">@SR["GoToCustomers"]</a>
                 </div>
             </div>
         </div>
@@ -50,9 +52,9 @@
                     <div class="mb-3 text-warning fs-2">
                         <i class="bi bi-qr-code-scan"></i>
                     </div>
-                    <h5 class="card-title text-warning">Process Transactions</h5>
-                    <p class="card-text">Scan customer QR codes to record sales and payments.</p>
-                    <a asp-controller="Transaction" asp-action="Scan" class="btn btn-outline-warning">Start Scanning</a>
+                    <h5 class="card-title text-warning">@SR["ProcessTransactions"]</h5>
+                    <p class="card-text">@SR["ProcessTransactionsDesc"]</p>
+                    <a asp-controller="Transaction" asp-action="Scan" class="btn btn-outline-warning">@SR["StartScanning"]</a>
                 </div>
             </div>
         </div>

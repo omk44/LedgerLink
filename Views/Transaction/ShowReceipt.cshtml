@@ -3,7 +3,7 @@
 @using System.Globalization;
 
 @{
-    ViewData["Title"] = $"{Model.ReceiptType} Receipt";
+    ViewData["Title"] = $"{Model.ReceiptType} {SR["Receipt"]}";
     Layout = null;
     var indiaCulture = new CultureInfo("en-IN");
 }
@@ -83,17 +83,17 @@
     <div class="receipt-container">
         <div class="receipt-header">
             <h4>@Model.ShopName</h4>
-            <p><strong>From:</strong> @Model.AdminName</p>
-            <p><strong>Contact:</strong> @Model.AdminEmail</p>
-            <p>Date: @Model.ReceiptDate.ToLocalTime().ToString("g")</p>
-            <p>@Model.ReceiptType Receipt</p>
+            <p><strong>@SR["From"]:</strong> @Model.AdminName</p>
+            <p><strong>@SR["Contact"]:</strong> @Model.AdminEmail</p>
+            <p>@SR["Date"]: @Model.ReceiptDate.ToLocalTime().ToString("g")</p>
+            <p>@Model.ReceiptType @SR["Receipt"]</p>
             <hr style="border-top: 1px dashed #333;" />
         </div>
 
         <div class="receipt-customer-info">
-            <p><strong>Customer:</strong> @Model.Customer.FullName</p>
-            <p><strong>Phone:</strong> @Model.Customer.PhoneNumber</p>
-            <p><strong>Email:</strong> @Model.Customer.Email</p>
+            <p><strong>@SR["Customer"]:</strong> @Model.Customer.FullName</p>
+            <p><strong>@SR["Phone"]:</strong> @Model.Customer.PhoneNumber</p>
+            <p><strong>@SR["Email"]:</strong> @Model.Customer.Email</p>
             <hr style="border-top: 1px dashed #333;" />
         </div>
 
@@ -104,9 +104,9 @@
                     <thead>
                         <tr>
                             <th>Item</th>
-                            <th>Qty</th>
-                            <th>Price</th>
-                            <th>Total</th>
+                            <th>@SR["Qty"]</th>
+                            <th>@SR["Price"]</th>
+                            <th>@SR["Total"]</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -125,37 +125,37 @@
                 <div class="receipt-summary">
                     @if (Model.Transaction.DiscountAmount > 0)
                     {
-                        <p>Subtotal: @Model.Transaction.TotalAmount.ToString("C", indiaCulture)</p>
-                        <p>Discount (@Model.Transaction.DiscountPercentage.ToString("F2")%): -@Model.Transaction.DiscountAmount.ToString("C", indiaCulture)</p>
+                        <p>@SR["Subtotal"]: @Model.Transaction.TotalAmount.ToString("C", indiaCulture)</p>
+                        <p>@SR["Discount"] (@Model.Transaction.DiscountPercentage.ToString("F2")%): -@Model.Transaction.DiscountAmount.ToString("C", indiaCulture)</p>
                     }
-                    <p>Final Amount: @Model.Transaction.FinalAmount.ToString("C", indiaCulture)</p>
-                    <p>Status: @(Model.Transaction.IsCreditTransaction ? "On Credit" : "Paid")</p>
+                    <p>@SR["FinalAmount"]: @Model.Transaction.FinalAmount.ToString("C", indiaCulture)</p>
+                    <p>@SR["Status"]: @(Model.Transaction.IsCreditTransaction ? SR["OnCredit"] : SR["Paid"])</p>
                 </div>
             </div>
         }
         else if (Model.ReceiptType == "Payment" && Model.Payment != null)
         {
             <div class="receipt-details">
-                <p>Amount Paid: @Model.Payment.AmountPaid.ToString("C", indiaCulture)</p>
-                <p>Payment Mode: @Model.Payment.PaymentMode</p>
+                <p>@SR["AmountPaid"]: @Model.Payment.AmountPaid.ToString("C", indiaCulture)</p>
+                <p>@SR["PaymentMode"]: @Model.Payment.PaymentMode</p>
             </div>
         }
 
         <hr style="border-top: 1px dashed #333;" />
         <div class="receipt-balance">
-            <p>New Balance: @Model.CustomerNewBalance.ToString("C", indiaCulture)</p>
+            <p>@SR["NewBalance"]: @Model.CustomerNewBalance.ToString("C", indiaCulture)</p>
         </div>
         <hr style="border-top: 1px dashed #333;" />
 
         <div class="receipt-footer">
-            <p>Thank you for your business!</p>
+            <p>@SR["ThankYouForYourBusiness"]</p>
             <p>@Model.ShopName - @Model.ReceiptDate.Year</p>
         </div>
     </div>
 
     <div class="print-button-container">
-        <button class="btn btn-primary" onclick="window.print()">Print Receipt</button>
-        <a asp-controller="Transaction" asp-action="CustomerDetails" asp-route-id="@Model.Customer.Id" class="btn btn-secondary ml-2">Back to Customer Details</a>
+        <button class="btn btn-primary" onclick="window.print()">@SR["PrintReceipt"]</button>
+        <a asp-controller="Transaction" asp-action="CustomerDetails" asp-route-id="@Model.Customer.Id" class="btn btn-secondary ml-2">@SR["BackToCustomerDetails"]</a>
     </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

@@ -2,15 +2,15 @@
 @model LedgerLink.Models.Festival
 
 @{
-    ViewData["Title"] = "Delete Festival";
+    ViewData["Title"] = SR["DeleteFestival"];
 }
 
 <div class="container mt-5">
     <h2>@ViewData["Title"]</h2>
-    <h3 class="text-danger">Are you sure you want to delete this festival?</h3>
+    <h3 class="text-danger">@SR["ConfirmDeleteFestival"]</h3>
     <hr />
     <div>
-        <h4>Festival Details</h4>
+        <h4>@SR["FestivalDetails"]</h4>
         <dl class="row">
             <dt class="col-sm-3">
                 @Html.DisplayNameFor(model => model.Name)
@@ -34,7 +34,7 @@
                 @Html.DisplayNameFor(model => model.IsActive)
             </dt>
             <dd class="col-sm-9">
-                @(Model.IsActive ? "Yes" : "No")
+                @(Model.IsActive ? SR["Yes"] : SR["No"])
             </dd>
             <dt class="col-sm-3">
                 @Html.DisplayNameFor(model => model.Description)
@@ -46,8 +46,8 @@
 
         <form asp-action="Delete">
             <input type="hidden" asp-for="Id" />
-            <input type="submit" value="Delete" class="btn btn-danger" />
-            <a asp-action="Index" class="btn btn-secondary ml-2">Back to List</a>
+            <input type="submit" value="@SR["Delete"]" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary ml-2">@SR["BackToList"]</a>
         </form>
     </div>
 </div>

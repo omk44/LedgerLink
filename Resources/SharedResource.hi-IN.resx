@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, ...</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, ...</value>
+  </resheader>
+
+  <data name="Language" xml:space="preserve"><value>भाषा</value></data>
+  <data name="English" xml:space="preserve"><value>अंग्रेज़ी</value></data>
+  <data name="Hindi" xml:space="preserve"><value>हिंदी</value></data>
+  <data name="Gujarati" xml:space="preserve"><value>गुजराती</value></data>
+
+  <data name="Home" xml:space="preserve"><value>होम</value></data>
+  <data name="Dashboard" xml:space="preserve"><value>डैशबोर्ड</value></data>
+  <data name="Management" xml:space="preserve"><value>प्रबंधन</value></data>
+  <data name="Customers" xml:space="preserve"><value>ग्राहक</value></data>
+  <data name="Products" xml:space="preserve"><value>उत्पाद</value></data>
+  <data name="FestivalsAndDiscounts" xml:space="preserve"><value>त्योहार और छूट</value></data>
+  <data name="ScanAndTransact" xml:space="preserve"><value>स्कैन और लेन-देन</value></data>
+  <data name="Login" xml:space="preserve"><value>लॉगिन</value></data>
+  <data name="Logout" xml:space="preserve"><value>लॉगआउट</value></data>
+  <data name="Privacy" xml:space="preserve"><value>गोपनीयता</value></data>
+  <data name="Account" xml:space="preserve"><value>खाता</value></data>
+
+  <data name="HomePageTitle" xml:space="preserve"><value>एडमिन होम पेज</value></data>
+  <data name="LedgerSubtitle" xml:space="preserve"><value>आपका डिजिटल लेखा-जोखा आपके व्यापार को सरल बनाने के लिए तैयार है।</value></data>
+  <data name="QuickTools" xml:space="preserve"><value>नीचे आपके जरूरी टूल्स के लिए त्वरित पहुंच</value></data>
+  <data name="ManageProducts" xml:space="preserve"><value>उत्पाद प्रबंधन</value></data>
+  <data name="ManageCustomers" xml:space="preserve"><value>ग्राहक प्रबंधन</value></data>
+  <data name="ProcessTransactions" xml:space="preserve"><value>लेन-देन प्रक्रिया</value></data>
+  <data name="ManageProductsDesc" xml:space="preserve"><value>जो सामान आप बेचते हैं, उसे जोड़ें, संपादित करें या हटाएं।</value></data>
+  <data name="ManageCustomersDesc" xml:space="preserve"><value>ग्राहक विवरण देखें, जोड़ें या संपादित करें और QR कोड बनाएं।</value></data>
+  <data name="ProcessTransactionsDesc" xml:space="preserve"><value>बिक्री और भुगतान दर्ज करने के लिए ग्राहक QR कोड स्कैन करें।</value></data>
+  <data name="GoToProducts" xml:space="preserve"><value>उत्पाद पर जाएं</value></data>
+  <data name="GoToCustomers" xml:space="preserve"><value>ग्राहकों पर जाएं</value></data>
+  <data name="StartScanning" xml:space="preserve"><value>स्कैन शुरू करें</value></data>
+
+  <data name="AdminLoginTitle" xml:space="preserve"><value>एडमिन लॉगिन</value></data>
+  <data name="AccessDashboard" xml:space="preserve"><value>अपने शॉप मैनेजमेंट डैशबोर्ड तक पहुंचें</value></data>
+  <data name="PleaseCorrectErrors" xml:space="preserve"><value>कृपया नीचे दी गई त्रुटियां सुधारें:</value></data>
+  <data name="Username" xml:space="preserve"><value>यूज़रनेम</value></data>
+  <data name="EnterUsername" xml:space="preserve"><value>अपना यूज़रनेम दर्ज करें</value></data>
+  <data name="Password" xml:space="preserve"><value>पासवर्ड</value></data>
+  <data name="EnterPassword" xml:space="preserve"><value>अपना पासवर्ड दर्ज करें</value></data>
+  <data name="ForgotPassword" xml:space="preserve"><value>पासवर्ड भूल गए?</value></data>
+  <data name="LoginToDashboard" xml:space="preserve"><value>डैशबोर्ड में लॉगिन करें</value></data>
+  <data name="NoAccountQuestion" xml:space="preserve"><value>क्या आपका अकाउंट नहीं है?</value></data>
+  <data name="RegisterYourShop" xml:space="preserve"><value>अपनी शॉप रजिस्टर करें</value></data>
+  <data name="SecureShopManagementSystem" xml:space="preserve"><value>सुरक्षित शॉप मैनेजमेंट सिस्टम</value></data>
+  <data name="LoggingIn" xml:space="preserve"><value>लॉगिन हो रहा है...</value></data>
+
+  <data name="AdminDashboard" xml:space="preserve"><value>एडमिन डैशबोर्ड</value></data>
+  <data name="DateRangeError" xml:space="preserve"><value>तिथि सीमा त्रुटि!</value></data>
+  <data name="DateFilter" xml:space="preserve"><value>तिथि फ़िल्टर</value></data>
+  <data name="StartDate" xml:space="preserve"><value>शुरू तिथि</value></data>
+  <data name="EndDate" xml:space="preserve"><value>अंत तिथि</value></data>
+  <data name="ApplyFilter" xml:space="preserve"><value>फ़िल्टर लागू करें</value></data>
+  <data name="OverallSummary" xml:space="preserve"><value>समग्र सारांश</value></data>
+  <data name="TotalOutstandingCredit" xml:space="preserve"><value>कुल बकाया उधार</value></data>
+  <data name="TotalCustomers" xml:space="preserve"><value>कुल ग्राहक</value></data>
+  <data name="TotalProducts" xml:space="preserve"><value>कुल उत्पाद</value></data>
+  <data name="PeriodSummary" xml:space="preserve"><value>अवधि सारांश</value></data>
+  <data name="CustomerInsights" xml:space="preserve"><value>ग्राहक जानकारी</value></data>
+  <data name="TopCustomersByCredit" xml:space="preserve"><value>उधार के आधार पर शीर्ष ग्राहक</value></data>
+  <data name="Name" xml:space="preserve"><value>नाम</value></data>
+  <data name="Balance" xml:space="preserve"><value>शेष राशि</value></data>
+  <data name="ActiveCustomersInPeriod" xml:space="preserve"><value>अवधि में सक्रिय ग्राहक</value></data>
+  <data name="Phone" xml:space="preserve"><value>फ़ोन</value></data>
+  <data name="CustomerCreditManagement" xml:space="preserve"><value>ग्राहक उधार प्रबंधन</value></data>
+  <data name="CustomerBalances" xml:space="preserve"><value>ग्राहक शेष राशि</value></data>
+  <data name="CustomerName" xml:space="preserve"><value>ग्राहक का नाम</value></data>
+  <data name="CurrentBalance" xml:space="preserve"><value>वर्तमान शेष राशि</value></data>
+  <data name="SendReminder" xml:space="preserve"><value>रिमाइंडर भेजें</value></data>
+  <data name="Details" xml:space="preserve"><value>विवरण</value></data>
+  <data name="RecentActivity" xml:space="preserve"><value>हाल की गतिविधि</value></data>
+  <data name="RecentTransactions" xml:space="preserve"><value>हाल के लेन-देन</value></data>
+  <data name="RecentPayments" xml:space="preserve"><value>हाल के भुगतान</value></data>
+  <data name="Date" xml:space="preserve"><value>तिथि</value></data>
+  <data name="Customer" xml:space="preserve"><value>ग्राहक</value></data>
+  <data name="Total" xml:space="preserve"><value>कुल</value></data>
+  <data name="Credit" xml:space="preserve"><value>उधार</value></data>
+  <data name="Paid" xml:space="preserve"><value>भुगतान किया</value></data>
+  <data name="Amount" xml:space="preserve"><value>राशि</value></data>
+  <data name="Mode" xml:space="preserve"><value>मोड</value></data>
+  <data name="AllTransactions" xml:space="preserve"><value>सभी लेन-देन</value></data>
+  <data name="AllPayments" xml:space="preserve"><value>सभी भुगतान</value></data>
+  <data name="PaymentMode" xml:space="preserve"><value>भुगतान मोड</value></data>
+  <data name="ViewDetails" xml:space="preserve"><value>विवरण देखें</value></data>
+  <data name="ViewCustomer" xml:space="preserve"><value>ग्राहक देखें</value></data>
+
+  <data name="CustomerList" xml:space="preserve"><value>ग्राहक सूची</value></data>
+  <data name="AddCustomer" xml:space="preserve"><value>ग्राहक जोड़ें</value></data>
+  <data name="Actions" xml:space="preserve"><value>क्रियाएं</value></data>
+  <data name="Edit" xml:space="preserve"><value>संपादित करें</value></data>
+  <data name="Delete" xml:space="preserve"><value>हटाएं</value></data>
+  <data name="CreateCustomer" xml:space="preserve"><value>ग्राहक बनाएं</value></data>
+  <data name="BackToList" xml:space="preserve"><value>सूची पर वापस जाएं</value></data>
+  <data name="Create" xml:space="preserve"><value>बनाएं</value></data>
+  <data name="EditCustomer" xml:space="preserve"><value>ग्राहक संपादित करें</value></data>
+  <data name="SaveChanges" xml:space="preserve"><value>परिवर्तन सहेजें</value></data>
+  <data name="DeleteCustomer" xml:space="preserve"><value>ग्राहक हटाएं</value></data>
+  <data name="ConfirmDeleteCustomer" xml:space="preserve"><value>क्या आप इस ग्राहक को हटाना चाहते हैं?</value></data>
+  <data name="CustomerDetails" xml:space="preserve"><value>ग्राहक विवरण</value></data>
+  <data name="CustomerQrCodeTitle" xml:space="preserve"><value>ग्राहक QR कोड</value></data>
+  <data name="QrCodeFor" xml:space="preserve"><value>QR कोड:</value></data>
+  <data name="PrintQrCode" xml:space="preserve"><value>QR कोड प्रिंट करें</value></data>
+  <data name="BackToCustomerList" xml:space="preserve"><value>ग्राहक सूची पर वापस जाएं</value></data>
+
+  <data name="ProductList" xml:space="preserve"><value>उत्पाद सूची</value></data>
+  <data name="AddProduct" xml:space="preserve"><value>उत्पाद जोड़ें</value></data>
+  <data name="Quantity" xml:space="preserve"><value>मात्रा</value></data>
+  <data name="CreateProduct" xml:space="preserve"><value>उत्पाद बनाएं</value></data>
+  <data name="EditProduct" xml:space="preserve"><value>उत्पाद संपादित करें</value></data>
+  <data name="DeleteProduct" xml:space="preserve"><value>उत्पाद हटाएं</value></data>
+  <data name="ProductDetails" xml:space="preserve"><value>उत्पाद विवरण</value></data>
+
+  <data name="ManageFestivals" xml:space="preserve"><value>त्योहार प्रबंधन</value></data>
+  <data name="AddFestival" xml:space="preserve"><value>त्योहार जोड़ें</value></data>
+  <data name="Active" xml:space="preserve"><value>सक्रिय</value></data>
+  <data name="Inactive" xml:space="preserve"><value>निष्क्रिय</value></data>
+  <data name="Rules" xml:space="preserve"><value>नियम</value></data>
+  <data name="CreateFestival" xml:space="preserve"><value>त्योहार बनाएं</value></data>
+  <data name="EditFestival" xml:space="preserve"><value>त्योहार संपादित करें</value></data>
+  <data name="DeleteFestival" xml:space="preserve"><value>त्योहार हटाएं</value></data>
+  <data name="FestivalDetails" xml:space="preserve"><value>त्योहार विवरण</value></data>
+  <data name="Yes" xml:space="preserve"><value>हां</value></data>
+  <data name="No" xml:space="preserve"><value>नहीं</value></data>
+
+  <data name="ScanCustomerCard" xml:space="preserve"><value>ग्राहक कार्ड स्कैन करें</value></data>
+  <data name="HoldQrToBeginTransaction" xml:space="preserve"><value>लेन-देन शुरू करने के लिए ग्राहक का QR कोड कैमरे के सामने रखें।</value></data>
+  <data name="InitializingScanner" xml:space="preserve"><value>स्कैनर प्रारंभ हो रहा है...</value></data>
+  <data name="ScanAgain" xml:space="preserve"><value>फिर से स्कैन करें</value></data>
+  <data name="ScanFailed" xml:space="preserve"><value>स्कैन असफल रहा।</value></data>
+
+  <data name="TransactionFor" xml:space="preserve"><value>लेन-देन:</value></data>
+  <data name="CustomerInformation" xml:space="preserve"><value>ग्राहक जानकारी</value></data>
+  <data name="AddItemToTransaction" xml:space="preserve"><value>लेन-देन में आइटम जोड़ें</value></data>
+  <data name="SelectProduct" xml:space="preserve"><value>उत्पाद चुनें</value></data>
+  <data name="RecordSale" xml:space="preserve"><value>बिक्री दर्ज करें</value></data>
+  <data name="RecordPayment" xml:space="preserve"><value>भुगतान दर्ज करें</value></data>
+  <data name="TransactionHistory" xml:space="preserve"><value>लेन-देन इतिहास</value></data>
+  <data name="PaymentHistory" xml:space="preserve"><value>भुगतान इतिहास</value></data>
+  <data name="Item" xml:space="preserve"><value>आइटम</value></data>
+  <data name="Qty" xml:space="preserve"><value>मात्रा</value></data>
+  <data name="Price" xml:space="preserve"><value>मूल्य</value></data>
+  <data name="Discount" xml:space="preserve"><value>छूट</value></data>
+  <data name="Final" xml:space="preserve"><value>अंतिम</value></data>
+  <data name="AmountPaid" xml:space="preserve"><value>भुगतान राशि</value></data>
+
+  <data name="Receipt" xml:space="preserve"><value>रसीद</value></data>
+  <data name="From" xml:space="preserve"><value>से</value></data>
+  <data name="Contact" xml:space="preserve"><value>संपर्क</value></data>
+  <data name="Subtotal" xml:space="preserve"><value>उप-योग</value></data>
+  <data name="Status" xml:space="preserve"><value>स्थिति</value></data>
+  <data name="OnCredit" xml:space="preserve"><value>उधार पर</value></data>
+  <data name="NewBalance" xml:space="preserve"><value>नई शेष राशि</value></data>
+  <data name="ThankYouForYourBusiness" xml:space="preserve"><value>आपके व्यापार के लिए धन्यवाद!</value></data>
+  <data name="PrintReceipt" xml:space="preserve"><value>रसीद प्रिंट करें</value></data>
+  <data name="BackToCustomerDetails" xml:space="preserve"><value>ग्राहक विवरण पर वापस जाएं</value></data>
+</root>

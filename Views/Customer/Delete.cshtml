@@ -2,15 +2,15 @@
 @model LedgerLink.Models.Customer
 
 @{
-    ViewData["Title"] = "Delete Customer";
+    ViewData["Title"] = SR["DeleteCustomer"];
 }
 
 <div class="container mt-5">
     <h2>@ViewData["Title"]</h2>
-    <h3 class="text-danger">Are you sure you want to delete this customer?</h3>
+    <h3 class="text-danger">@SR["ConfirmDeleteCustomer"]</h3>
     <hr />
     <div>
-        <h4>Customer Details</h4>
+        <h4>@SR["CustomerDetails"]</h4>
         <dl class="row">
             <dt class="col-sm-3">
                 @Html.DisplayNameFor(model => model.FullName)
@@ -47,8 +47,8 @@
 
         <form asp-action="Delete">
             <input type="hidden" asp-for="Id" /> @* Hidden field for the Customer Id (Guid) *@
-            <input type="submit" value="Delete" class="btn btn-danger" />
-            <a asp-action="Index" class="btn btn-secondary ml-2">Back to List</a>
+            <input type="submit" value="@SR["Delete"]" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary ml-2">@SR["BackToList"]</a>
         </form>
     </div>
 </div>

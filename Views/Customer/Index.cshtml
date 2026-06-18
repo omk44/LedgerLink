@@ -2,7 +2,7 @@
 @model IEnumerable<LedgerLink.Models.Customer>
 
 @{
-    ViewData["Title"] = "Customer List";
+    ViewData["Title"] = SR["CustomerList"];
 }
 
 <div class="container mt-5">
@@ -12,7 +12,7 @@
             <i class="bi bi-people me-2"></i> @ViewData["Title"]
         </h2>
         <a asp-action="Create" class="btn btn-success">
-            <i class="bi bi-person-plus me-1"></i> Add Customer
+            <i class="bi bi-person-plus me-1"></i> @SR["AddCustomer"]
         </a>
     </div>
 
@@ -25,7 +25,7 @@
                     <th>@Html.DisplayNameFor(model => model.PhoneNumber)</th>
                     <th>@Html.DisplayNameFor(model => model.Email)</th>
                     <th>@Html.DisplayNameFor(model => model.CurrentBalance)</th>
-                    <th class="text-center">Actions</th>
+                    <th class="text-center">@SR["Actions"]</th>
                 </tr>
             </thead>
             <tbody>
@@ -47,13 +47,13 @@
                         </td>
                         <td class="text-center">
                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info me-1">
-                                <i class="bi bi-pencil-square"></i> Edit
+                                <i class="bi bi-pencil-square"></i> @SR["Edit"]
                             </a>
                             <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger me-1">
-                                <i class="bi bi-trash"></i> Delete
+                                <i class="bi bi-trash"></i> @SR["Delete"]
                             </a>
                             <a asp-action="ShowQrCode" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">
-                                <i class="bi bi-qr-code"></i> QR Code
+                                <i class="bi bi-qr-code"></i> @SR["QrCode"]
                             </a>
                         </td>
                     </tr>

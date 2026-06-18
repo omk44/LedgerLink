@@ -2,12 +2,14 @@
 @model LedgerLink.ViewModels.LoginViewModel 
 
 @{
-    ViewData["Title"] = "Admin Login - LedgerLink";
+    ViewData["Title"] = SR["AdminLoginTitle"] + " - LedgerLink";
     Layout = null;
+    var currentCulture = System.Globalization.CultureInfo.CurrentUICulture.Name;
+    var returnUrl = Context.Request.Path + Context.Request.QueryString;
 }
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="@currentCulture">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -274,9 +276,28 @@
 
                 <!-- Right Panel - Login Form -->
                 <div class="col-lg-7 login-right">
+                    <div class="d-flex justify-content-end mb-3">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-language me-1"></i>@SR["Language"]
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Home" asp-action="SetLanguage" asp-route-culture="en-IN" asp-route-returnUrl="@returnUrl">@SR["English"]</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Home" asp-action="SetLanguage" asp-route-culture="hi-IN" asp-route-returnUrl="@returnUrl">@SR["Hindi"]</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Home" asp-action="SetLanguage" asp-route-culture="gu-IN" asp-route-returnUrl="@returnUrl">@SR["Gujarati"]</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
                     <div class="login-header">
-                        <h2>Admin Login</h2>
-                        <p>Access your shop management dashboard</p>
+                        <h2>@SR["AdminLoginTitle"]</h2>
+                        <p>@SR["AccessDashboard"]</p>
                     </div>
 
                     @* Display success message from registration *@
@@ -294,16 +315,16 @@
                         {
                             <div asp-validation-summary="All" class="validation-summary-errors">
                                 <i class="fas fa-exclamation-triangle me-2"></i>
-                                Please correct the errors below:
+                                @SR["PleaseCorrectErrors"]
                             </div>
                         }
 
                         <div class="form-group">
                             <label asp-for="Username" class="form-label">
-                                <i class="fas fa-user me-2"></i>Username
+                                <i class="fas fa-user me-2"></i>@SR["Username"]
                             </label>
                             <div class="input-group">
-                                <input asp-for="Username" class="form-control" placeholder="Enter your username" autofocus />
+                                <input asp-for="Username" class="form-control" placeholder="@SR["EnterUsername"]" autofocus />
                                 <i class="fas fa-user input-icon"></i>
                             </div>
                             <span asp-validation-for="Username" class="text-danger"></span>
@@ -311,10 +332,10 @@
 
                         <div class="form-group">
                             <label asp-for="Password" class="form-label">
-                                <i class="fas fa-lock me-2"></i>Password
+                                <i class="fas fa-lock me-2"></i>@SR["Password"]
                             </label>
                             <div class="input-group">
-                                <input asp-for="Password" type="password" class="form-control" placeholder="Enter your password" />
+                                <input asp-for="Password" type="password" class="form-control" placeholder="@SR["EnterPassword"]" />
                                 <i class="fas fa-lock input-icon"></i>
                             </div>
                             <span asp-validation-for="Password" class="text-danger"></span>
@@ -322,19 +343,19 @@
 
                         <div class="text-end mb-3">
                             <a href="@Url.Action("ForgotPassword", "AdminManagement")" style="color: #3498db; text-decoration: none; font-size: 0.9rem;">
-                                <i class="fas fa-key"></i> Forgot Password?
+                                <i class="fas fa-key"></i> @SR["ForgotPassword"]
                             </a>
                         </div>
 
                         <button type="submit" class="btn login-btn">
                             <i class="fas fa-sign-in-alt me-2"></i>
-                            Login to Dashboard
+                            @SR["LoginToDashboard"]
                         </button>
 
                         <div class="text-center mt-3">
-                            <p style="color: #7f8c8d; margin-bottom: 10px;">Don't have an account?</p>
+                            <p style="color: #7f8c8d; margin-bottom: 10px;">@SR["NoAccountQuestion"]</p>
                             <a href="@Url.Action("Register", "Shop")" class="btn btn-outline-primary" style="border-radius: 10px; padding: 12px 30px; font-weight: 600;">
-                                <i class="fas fa-store me-2"></i>Register Your Shop
+                                <i class="fas fa-store me-2"></i>@SR["RegisterYourShop"]
                             </a>
                         </div>
 
@@ -343,7 +364,7 @@
 
                     <div class="footer-text">
                         <i class="fas fa-shield-alt me-1"></i>
-                        Secure Shop Management System<br>
+                        @SR["SecureShopManagementSystem"]<br>
                         <small>&copy; 2024 LedgerLink - Digital Khata Solution</small>
                     </div>
                 </div>
@@ -378,7 +399,7 @@
             const originalBtnText = loginBtn.innerHTML;
 
             loginForm.addEventListener('submit', function() {
-                loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Logging in...';
+                loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>@SR["LoggingIn"]';
                 loginBtn.disabled = true;
                 
                 // Re-enable after 5 seconds in case of error

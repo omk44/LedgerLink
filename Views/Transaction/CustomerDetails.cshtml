@@ -4,7 +4,7 @@
 @using X.PagedList
 
 @{
-    ViewData["Title"] = $"Transaction for {Model.Customer.FullName}";
+    ViewData["Title"] = $"{SR["TransactionFor"]} {Model.Customer.FullName}";
     var indiaCulture = new CultureInfo("en-IN");
 
     // Use Model instead of ViewBag because of CustomerDetailsViewModel used for strongly typed
@@ -30,7 +30,7 @@
         <ul>
             @foreach (var rule in Model.ActiveDiscountRules)
             {
-                var festName = Model.ActiveFestivals.FirstOrDefault(f => f.Id == rule.FestivalId)?.Name ?? "Festival";
+                var festName = Model.ActiveFestivals.FirstOrDefault(f => f.Id == rule.FestivalId)?.Name ?? SR["Festival"].Value;
 
                 <li>
                     🎁 <strong>@rule.DiscountPercentage %</strong> discount 
@@ -44,7 +44,7 @@
 else
 {
     <div class="alert alert-info shadow-sm">
-        No active festival offers right now.
+        @SR["NoActiveFestivalOffers"]
     </div>
 }
 
@@ -442,7 +442,7 @@ else
 
 <div class="page-header">
     <div class="container">
-        <h2>Transaction for @Model.Customer.FullName</h2>
+        <h2>@SR["TransactionFor"] @Model.Customer.FullName</h2>
     </div>
 </div>
 
@@ -467,28 +467,28 @@ else
         <div>
             <div class="classic-card">
                 <div class="classic-card-header info">
-                    Customer Information
+                    @SR["CustomerInformation"]
                 </div>
                 <div class="classic-card-body">
                     <div class="info-item">
-                        <span class="info-label">Name:</span>
+                        <span class="info-label">@SR["Name"]:</span>
                         <span class="info-value">@Model.Customer.FullName</span>
                     </div>
                     <div class="info-item">
-                        <span class="info-label">Phone:</span>
+                        <span class="info-label">@SR["Phone"]:</span>
                         <span class="info-value">@Model.Customer.PhoneNumber</span>
                     </div>
                     <div class="info-item">
-                        <span class="info-label">Email:</span>
+                        <span class="info-label">@SR["Email"]:</span>
                         <span class="info-value">@Model.Customer.Email</span>
                     </div>
                     <div class="info-item">
-                        <span class="info-label">Address:</span>
+                        <span class="info-label">@SR["Address"]:</span>
                         <span class="info-value">@Model.Customer.Address</span>
                     </div>
                     
                     <div class="balance-display">
-                        <div style="font-size: 0.9rem; color: #666; margin-bottom: 0.25rem;">Current Balance</div>
+                        <div style="font-size: 0.9rem; color: #666; margin-bottom: 0.25rem;">@SR["CurrentBalance"]</div>
                         <div class="amount">@Model.Customer.CurrentBalance.ToString("C", indiaCulture)</div>
                     </div>
 
@@ -497,7 +497,7 @@ else
                         <form asp-controller="Transaction" asp-action="SendReminder" method="post" style="margin-top: 1rem;">
                             <input type="hidden" name="customerId" value="@Model.Customer.Id" />
                             <button type="submit" class="classic-btn classic-btn-outline-danger">
-                                Send Payment Reminder (Email)
+                                @SR["SendPaymentReminderEmail"]
                             </button>
                         </form>
                     }
@@ -510,14 +510,14 @@ else
             <!-- Add Item Form -->
             <div class="classic-card">
                 <div class="classic-card-header success">
-                    Add Item to Transaction
+                    @SR["AddItemToTransaction"]
                 </div>
                 <div class="classic-card-body">
                     <form id="addItemForm" asp-controller="Transaction" asp-action="AddItem" method="post" class="classic-form">
                         <input type="hidden" name="customerId" id="customerId" value="@Model.Customer.Id" />
                         
                         <div class="form-group">
-                            <label for="productId">Select Product:</label>
+                            <label for="productId">@SR["SelectProduct"]:</label>
                             <select id="productId" name="productId" class="form-control">
                                 @if (Model.Products.Any())
                                 {
@@ -530,25 +530,25 @@ else
                                 }
                                 else
                                 {
-                                    <option value="">No products available. Add some from Product Management.</option>
+                                    <option value="">@SR["NoProductsAvailableAddFromProductManagement"]</option>
                                 }
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="quantity">Quantity:</label>
+                            <label for="quantity">@SR["Quantity"]:</label>
                             <input type="number" id="quantity" name="quantity" class="form-control" value="1" min="1" />
                         </div>
 
                         <div class="form-group">
                             <div class="checkbox-wrapper">
                                 <input type="checkbox" id="isCreditTransaction" name="isCreditTransaction" value="true" />
-                                <label for="isCreditTransaction">Add to Credit (Money Pending)</label>
+                                <label for="isCreditTransaction">@SR["AddToCreditMoneyPending"]</label>
                             </div>
                         </div>
 
                         <div class="form-group" id="paymentModeForAddItemDiv">
-                            <label for="paymentMode">Payment Mode (if not credit):</label>
+                            <label for="paymentMode">@SR["PaymentModeIfNotCredit"]:</label>
                             <select id="paymentMode" name="paymentMode" class="form-control">
                                 <option value="Cash">Cash</option>
                                 <option value="UPI">UPI</option>
@@ -560,9 +560,9 @@ else
                         @if (hasActiveFestival)
                         {
                             <div class="form-group">
-                                <label for="applyDiscountFestivalId">Apply Festival Discount?</label>
+                                <label for="applyDiscountFestivalId">@SR["ApplyFestivalDiscountQuestion"]</label>
                                 <select id="applyDiscountFestivalId" name="applyDiscountFestivalId" class="form-control">
-                                    <option value="">No Discount</option>
+                                    <option value="">@SR["NoDiscount"]</option>
                                     @foreach (var festival in activeFestivals)
                                     {
                                         <option value="@festival.Id">@festival.Name</option>
@@ -576,26 +576,26 @@ else
                                 <span id="discountMessage"></span>
                             </div>
                             <div class="info-row">
-                                <span>Original Amount:</span>
+                                <span>@SR["OriginalAmount"]:</span>
                                 <span id="originalAmountSpan"></span>
                             </div>
                             <div class="info-row">
-                                <span>Discount Applied:</span>
+                                <span>@SR["DiscountApplied"]:</span>
                                 <span id="discountAmountSpan" style="color: var(--success-color);"></span>
                             </div>
                             <div class="info-row">
-                                <span>Final Amount:</span>
+                                <span>@SR["FinalAmount"]:</span>
                                 <span id="finalAmountSpan"></span>
                             </div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="notes">Notes (Optional):</label>
+                            <label for="notes">@SR["NotesOptional"]:</label>
                             <textarea id="notes" name="notes" class="form-control" rows="3" style="resize: vertical;"></textarea>
                         </div>
 
                         <button type="submit" class="classic-btn classic-btn-success">
-                            Record Sale
+                            @SR["RecordSale"]
                         </button>
                     </form>
                 </div>
@@ -604,19 +604,19 @@ else
             <!-- Record Payment Form -->
             <div class="classic-card">
                 <div class="classic-card-header warning">
-                    Record Payment
+                    @SR["RecordPayment"]
                 </div>
                 <div class="classic-card-body">
                     <form id="addPaymentForm" asp-controller="Transaction" asp-action="AddPayment" method="post" class="classic-form">
                         <input type="hidden" name="customerId" value="@Model.Customer.Id" />
                         
                         <div class="form-group">
-                            <label for="amountPaid">Amount Paid:</label>
+                            <label for="amountPaid">@SR["AmountPaid"]:</label>
                             <input type="number" step="0.01" id="amountPaid" name="amountPaid" class="form-control" value="0.00" min="0.01" />
                         </div>
 
                         <div class="form-group">
-                            <label for="paymentMode">Payment Mode:</label>
+                            <label for="paymentMode">@SR["PaymentMode"]:</label>
                             <select id="paymentMode" name="paymentMode" class="form-control">
                                 <option value="Cash">Cash</option>
                                 <option value="UPI">UPI</option>
@@ -626,7 +626,7 @@ else
                         </div>
 
                         <button type="submit" class="classic-btn classic-btn-warning">
-                            Record Payment
+                            @SR["RecordPayment"]
                         </button>
                     </form>
                 </div>
@@ -637,13 +637,13 @@ else
     <!-- Transaction History -->
 <div class="classic-card">
     <div class="classic-card-header primary">
-        Transaction History
+        @SR["TransactionHistory"]
     </div>
     <div class="classic-card-body">
         @if (!Model.Transactions.Any())
         {
             <div class="empty-state">
-                <p>No transactions recorded for this customer yet.</p>
+                <p>@SR["NoTransactionsRecordedForCustomerYet"]</p>
             </div>
         }
         else
@@ -652,13 +652,13 @@ else
                 <table class="classic-table">
                     <thead>
                         <tr>
-                            <th>Date</th>
-                            <th>Item</th>
-                            <th>Qty</th>
-                            <th>Price</th>
-                            <th>Discount</th>
-                            <th>Final</th>
-                            <th>Credit?</th>
+                            <th>@SR["Date"]</th>
+                            <th>@SR["Item"]</th>
+                            <th>@SR["Qty"]</th>
+                            <th>@SR["Price"]</th>
+                            <th>@SR["Discount"]</th>
+                            <th>@SR["Final"]</th>
+                            <th>@SR["CreditQuestion"]</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -674,11 +674,11 @@ else
                                 <td>
                                     @if(transaction.IsCreditTransaction)
                                     {
-                                        <span style="color: var(--danger-color); font-weight: 500;">Yes</span>
+                                        <span style="color: var(--danger-color); font-weight: 500;">@SR["Yes"]</span>
                                     }
                                     else
                                     {
-                                        <span style="color: var(--success-color);">No</span>
+                                        <span style="color: var(--success-color);">@SR["No"]</span>
                                     }
                                 </td>
                             </tr>
@@ -700,13 +700,13 @@ else
 
 <div class="classic-card">
     <div class="classic-card-header" style="background: var(--secondary-color); color: white;">
-        Payment History
+        @SR["PaymentHistory"]
     </div>
     <div class="classic-card-body">
         @if (!Model.Payments.Any())
         {
             <div class="empty-state">
-                <p>No payments recorded for this customer yet.</p>
+                <p>@SR["NoPaymentsRecordedForCustomerYet"]</p>
             </div>
         }
         else
@@ -715,9 +715,9 @@ else
                 <table class="classic-table">
                     <thead>
                         <tr>
-                            <th>Date</th>
-                            <th>Amount Paid</th>
-                            <th>Payment Mode</th>
+                            <th>@SR["Date"]</th>
+                            <th>@SR["AmountPaid"]</th>
+                            <th>@SR["PaymentMode"]</th>
                         </tr>
                     </thead>
                     <tbody>

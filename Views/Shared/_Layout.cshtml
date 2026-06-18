@@ -6,12 +6,14 @@
     var appName = "LedgerLink";
     var shopEmail = Context.Session.GetString("AdminEmail") ?? "";
     var shopPhoneNumber = Context.Session.GetString("ShopPhoneNumber") ?? "";
+    var currentCulture = System.Globalization.CultureInfo.CurrentUICulture.Name;
+    var returnUrl = Context.Request.Path + Context.Request.QueryString;
 
     ViewData["Title"] ??= appName; // Set default title if not already set by a view
 }
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="@currentCulture">
 
 <head>
     <meta charset="utf-8" />
@@ -83,7 +85,7 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
-                                <i class="fas fa-home me-1"></i>Home
+                                <i class="fas fa-home me-1"></i>@SR["Home"]
                             </a>
                         </li>
                         
@@ -91,41 +93,57 @@
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Dashboard" asp-action="Index">
-                                    <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                                    <i class="fas fa-tachometer-alt me-1"></i>@SR["Dashboard"]
                                 </a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-cogs me-1"></i>Management
+                                    <i class="fas fa-cogs me-1"></i>@SR["Management"]
                                 </a>
                                 <ul class="dropdown-menu shadow-lg border-0">
                                     <li>
                                         <a class="dropdown-item" asp-area="" asp-controller="Customer" asp-action="Index">
-                                            <i class="fas fa-users me-2 text-primary"></i>Customers
+                                            <i class="fas fa-users me-2 text-primary"></i>@SR["Customers"]
                                         </a>
                                     </li>
                                     <li>
                                         <a class="dropdown-item" asp-area="" asp-controller="Product" asp-action="Index">
-                                            <i class="fas fa-box me-2 text-success"></i>Products
+                                            <i class="fas fa-box me-2 text-success"></i>@SR["Products"]
                                         </a>
                                     </li>
                                     <li>
                                         <a class="dropdown-item" asp-area="" asp-controller="Festival" asp-action="Index">
-                                            <i class="fas fa-percentage me-2 text-warning"></i>Festivals & Discounts
+                                            <i class="fas fa-percentage me-2 text-warning"></i>@SR["FestivalsAndDiscounts"]
                                         </a>
                                     </li>
                                 </ul>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link btn-scan" asp-area="" asp-controller="Transaction" asp-action="Scan">
-                                    <i class="fas fa-qrcode me-1"></i>Scan & Transact
+                                    <i class="fas fa-qrcode me-1"></i>@SR["ScanAndTransact"]
                                 </a>
                             </li>
                         }
                     </ul>
 
                     <!-- Right side navigation -->
-                    <ul class="navbar-nav">
+                    <ul class="navbar-nav align-items-lg-center">
+                        <li class="nav-item dropdown me-lg-2">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-language me-1"></i>@SR["Language"]
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0">
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Home" asp-action="SetLanguage" asp-route-culture="en-IN" asp-route-returnUrl="@returnUrl">@SR["English"]</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Home" asp-action="SetLanguage" asp-route-culture="hi-IN" asp-route-returnUrl="@returnUrl">@SR["Hindi"]</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Home" asp-action="SetLanguage" asp-route-culture="gu-IN" asp-route-returnUrl="@returnUrl">@SR["Gujarati"]</a>
+                                </li>
+                            </ul>
+                        </li>
                         @if (Context.Session.GetString("IsAdminLoggedIn") == "true")
                         {
                             <li class="nav-item dropdown">
@@ -138,13 +156,13 @@
                                 <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0">
                                     <li>
                                         <h6 class="dropdown-header">
-                                            <i class="fas fa-user-circle me-2"></i>Account
+                                            <i class="fas fa-user-circle me-2"></i>@SR["Account"]
                                         </h6>
                                     </li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li>
                                         <a class="dropdown-item text-danger" asp-area="" asp-controller="Account" asp-action="Logout">
-                                            <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                            <i class="fas fa-sign-out-alt me-2"></i>@SR["Logout"]
                                         </a>
                                     </li>
                                 </ul>
@@ -154,13 +172,13 @@
                         {
                             <li class="nav-item">
                                 <a class="nav-link btn-login" asp-area="" asp-controller="Account" asp-action="Login">
-                                    <i class="fas fa-sign-in-alt me-1"></i>Login
+                                    <i class="fas fa-sign-in-alt me-1"></i>@SR["Login"]
                                 </a>
                             </li>
                         }
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">
-                                <i class="fas fa-shield-alt me-1"></i>Privacy
+                                <i class="fas fa-shield-alt me-1"></i>@SR["Privacy"]
                             </a>
                         </li>
                     </ul>

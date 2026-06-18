@@ -50,6 +50,11 @@ appsettings.Test.json
 docker/.env
 *.env
 
+# AWS deployment temp files
+awscliv2.zip
+awscli_tmp/
+.elasticbeanstalk/
+
 # Other common ignore patterns
 *.DS_Store
 *.localized

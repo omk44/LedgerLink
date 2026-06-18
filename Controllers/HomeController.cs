@@ -4,6 +4,7 @@ using System.Diagnostics;
 using LedgerLink.Models;
 using LedgerLink.ViewModels;
 using Microsoft.AspNetCore.Http; // Required for HttpContext.Session
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging; // Required for ILogger
 using Microsoft.Extensions.Options; // Required for IOptions
@@ -58,7 +59,7 @@ namespace LedgerLink.Controllers
             {
                 return RedirectToAction("Login", "Account"); // Redirect to login if not authenticated
             }
-            return View();
+            return RedirectToAction("Index", "Dashboard");
         }
 
          public IActionResult Privacy()
@@ -71,6 +72,34 @@ namespace LedgerLink.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [HttpGet]
+        public IActionResult SetLanguage(string culture, string? returnUrl)
+        {
+            var supportedCultures = new[] { "en-IN", "hi-IN", "gu-IN" };
+            if (Array.IndexOf(supportedCultures, culture) < 0)
+            {
+                culture = "en-IN";
+            }
+
+            Response.Cookies.Append(
+                CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                new CookieOptions
+                {
+                    Expires = DateTimeOffset.UtcNow.AddYears(1),
+                    IsEssential = true,
+                    HttpOnly = false,
+                    SameSite = SameSiteMode.Lax
+                });
+
+            if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
+            {
+                return LocalRedirect(returnUrl);
+            }
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

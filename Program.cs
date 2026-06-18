@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using LedgerLink.Data;
 using LedgerLink.Interface;
@@ -16,6 +17,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add Health Checks for Render deployment
 builder.Services.AddHealthChecks();
 
+// Add localization services
+builder.Services.AddLocalization();
+
 // Configure Application Culture for India (en-IN)
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
@@ -23,17 +27,27 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     var supportedCultures = new[]
     {
         defaultCulture,
-        new CultureInfo("en-US"),
+        new CultureInfo("hi-IN"),
+        new CultureInfo("gu-IN"),
     };
 
     options.DefaultRequestCulture = new RequestCulture(defaultCulture);
     options.SupportedCultures = supportedCultures;
     options.SupportedUICultures = supportedCultures;
+    options.RequestCultureProviders = new List<IRequestCultureProvider>
+    {
+        new QueryStringRequestCultureProvider(),
+        new CookieRequestCultureProvider(),
+        new AcceptLanguageHeaderRequestCultureProvider()
+    };
 });
 
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services
+    .AddControllersWithViews()
+    .AddViewLocalization()
+    .AddDataAnnotationsLocalization();
 
 // Configure DbContext with PostgreSQL
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -98,6 +112,6 @@ app.MapHealthChecks("/health");
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Account}/{action=Login}/{id?}");
 
 app.Run();

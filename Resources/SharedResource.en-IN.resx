@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, ...</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, ...</value>
+  </resheader>
+
+  <data name="Language" xml:space="preserve"><value>Language</value></data>
+  <data name="English" xml:space="preserve"><value>English</value></data>
+  <data name="Hindi" xml:space="preserve"><value>Hindi</value></data>
+  <data name="Gujarati" xml:space="preserve"><value>Gujarati</value></data>
+
+  <data name="Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Dashboard" xml:space="preserve"><value>Dashboard</value></data>
+  <data name="Management" xml:space="preserve"><value>Management</value></data>
+  <data name="Customers" xml:space="preserve"><value>Customers</value></data>
+  <data name="Products" xml:space="preserve"><value>Products</value></data>
+  <data name="FestivalsAndDiscounts" xml:space="preserve"><value>Festivals &amp; Discounts</value></data>
+  <data name="ScanAndTransact" xml:space="preserve"><value>Scan &amp; Transact</value></data>
+  <data name="Login" xml:space="preserve"><value>Login</value></data>
+  <data name="Logout" xml:space="preserve"><value>Logout</value></data>
+  <data name="Privacy" xml:space="preserve"><value>Privacy</value></data>
+  <data name="Account" xml:space="preserve"><value>Account</value></data>
+
+  <data name="HomePageTitle" xml:space="preserve"><value>Admin Home Page</value></data>
+  <data name="LedgerSubtitle" xml:space="preserve"><value>Your digital ledger is here to simplify your business management.</value></data>
+  <data name="QuickTools" xml:space="preserve"><value>Quick access to your essential tools below</value></data>
+  <data name="ManageProducts" xml:space="preserve"><value>Manage Products</value></data>
+  <data name="ManageCustomers" xml:space="preserve"><value>Manage Customers</value></data>
+  <data name="ProcessTransactions" xml:space="preserve"><value>Process Transactions</value></data>
+  <data name="ManageProductsDesc" xml:space="preserve"><value>Add, edit, or remove items you sell.</value></data>
+  <data name="ManageCustomersDesc" xml:space="preserve"><value>View, add, or edit customer details and generate QR codes.</value></data>
+  <data name="ProcessTransactionsDesc" xml:space="preserve"><value>Scan customer QR codes to record sales and payments.</value></data>
+  <data name="GoToProducts" xml:space="preserve"><value>Go to Products</value></data>
+  <data name="GoToCustomers" xml:space="preserve"><value>Go to Customers</value></data>
+  <data name="StartScanning" xml:space="preserve"><value>Start Scanning</value></data>
+
+  <data name="AdminLoginTitle" xml:space="preserve"><value>Admin Login</value></data>
+  <data name="AccessDashboard" xml:space="preserve"><value>Access your shop management dashboard</value></data>
+  <data name="PleaseCorrectErrors" xml:space="preserve"><value>Please correct the errors below:</value></data>
+  <data name="Username" xml:space="preserve"><value>Username</value></data>
+  <data name="EnterUsername" xml:space="preserve"><value>Enter your username</value></data>
+  <data name="Password" xml:space="preserve"><value>Password</value></data>
+  <data name="EnterPassword" xml:space="preserve"><value>Enter your password</value></data>
+  <data name="ForgotPassword" xml:space="preserve"><value>Forgot Password?</value></data>
+  <data name="LoginToDashboard" xml:space="preserve"><value>Login to Dashboard</value></data>
+  <data name="NoAccountQuestion" xml:space="preserve"><value>Don't have an account?</value></data>
+  <data name="RegisterYourShop" xml:space="preserve"><value>Register Your Shop</value></data>
+  <data name="SecureShopManagementSystem" xml:space="preserve"><value>Secure Shop Management System</value></data>
+  <data name="LoggingIn" xml:space="preserve"><value>Logging in...</value></data>
+
+  <data name="AdminDashboard" xml:space="preserve"><value>Admin Dashboard</value></data>
+  <data name="ComprehensiveBusinessInsights" xml:space="preserve"><value>Comprehensive business insights and management tools</value></data>
+  <data name="DateRangeError" xml:space="preserve"><value>Date Range Error!</value></data>
+  <data name="DateFilter" xml:space="preserve"><value>Date Filter</value></data>
+  <data name="StartDate" xml:space="preserve"><value>Start Date</value></data>
+  <data name="SelectStartDate" xml:space="preserve"><value>Select start date</value></data>
+  <data name="PleaseSelectValidStartDate" xml:space="preserve"><value>Please select a valid start date.</value></data>
+  <data name="EndDate" xml:space="preserve"><value>End Date</value></data>
+  <data name="SelectEndDate" xml:space="preserve"><value>Select end date</value></data>
+  <data name="EndDateMustBeAfterStartDate" xml:space="preserve"><value>End date must be after start date.</value></data>
+  <data name="ApplyFilter" xml:space="preserve"><value>Apply Filter</value></data>
+  <data name="OverallSummary" xml:space="preserve"><value>Overall Summary</value></data>
+  <data name="TotalOutstandingCredit" xml:space="preserve"><value>Total Outstanding Credit</value></data>
+  <data name="MoneyPendingFromAllCustomers" xml:space="preserve"><value>Money pending from all customers</value></data>
+  <data name="TotalCustomers" xml:space="preserve"><value>Total Customers</value></data>
+  <data name="RegisteredCustomersInSystem" xml:space="preserve"><value>Registered customers in system</value></data>
+  <data name="TotalProducts" xml:space="preserve"><value>Total Products</value></data>
+  <data name="ItemsAvailableInShop" xml:space="preserve"><value>Items available in your shop</value></data>
+  <data name="PeriodSummary" xml:space="preserve"><value>Period Summary</value></data>
+  <data name="TotalSalesInPeriod" xml:space="preserve"><value>Total Sales in Period</value></data>
+  <data name="RevenueGeneratedInSelectedPeriod" xml:space="preserve"><value>Revenue generated in selected period</value></data>
+  <data name="TotalPaymentsInPeriod" xml:space="preserve"><value>Total Payments in Period</value></data>
+  <data name="PaymentsReceivedInSelectedPeriod" xml:space="preserve"><value>Payments received in selected period</value></data>
+  <data name="CustomerInsights" xml:space="preserve"><value>Customer Insights</value></data>
+  <data name="TopCustomersByCredit" xml:space="preserve"><value>Top Customers by Credit</value></data>
+  <data name="NoCustomersWithOutstandingCredit" xml:space="preserve"><value>No customers with outstanding credit</value></data>
+  <data name="Name" xml:space="preserve"><value>Name</value></data>
+  <data name="Balance" xml:space="preserve"><value>Balance</value></data>
+  <data name="ActiveCustomersInPeriod" xml:space="preserve"><value>Active Customers in Period</value></data>
+  <data name="NoCustomerActivityInSelectedPeriod" xml:space="preserve"><value>No customer activity in selected period</value></data>
+  <data name="Phone" xml:space="preserve"><value>Phone</value></data>
+  <data name="CustomerCreditManagement" xml:space="preserve"><value>Customer Credit Management</value></data>
+  <data name="CustomerBalances" xml:space="preserve"><value>Customer Balances</value></data>
+  <data name="NoCustomersFound" xml:space="preserve"><value>No customers found</value></data>
+  <data name="CustomerName" xml:space="preserve"><value>Customer Name</value></data>
+  <data name="CurrentBalance" xml:space="preserve"><value>Current Balance</value></data>
+  <data name="SendReminder" xml:space="preserve"><value>Send Reminder</value></data>
+  <data name="Details" xml:space="preserve"><value>Details</value></data>
+  <data name="RecentActivity" xml:space="preserve"><value>Recent Activity</value></data>
+  <data name="RecentTransactions" xml:space="preserve"><value>Recent Transactions</value></data>
+  <data name="NoTransactionsInSelectedPeriod" xml:space="preserve"><value>No transactions in selected period</value></data>
+  <data name="Date" xml:space="preserve"><value>Date</value></data>
+  <data name="Customer" xml:space="preserve"><value>Customer</value></data>
+  <data name="Total" xml:space="preserve"><value>Total</value></data>
+  <data name="Credit" xml:space="preserve"><value>Credit</value></data>
+  <data name="Paid" xml:space="preserve"><value>Paid</value></data>
+  <data name="RecentPayments" xml:space="preserve"><value>Recent Payments</value></data>
+  <data name="NoPaymentsInSelectedPeriod" xml:space="preserve"><value>No payments in selected period</value></data>
+  <data name="Amount" xml:space="preserve"><value>Amount</value></data>
+  <data name="Mode" xml:space="preserve"><value>Mode</value></data>
+  <data name="AllTransactions" xml:space="preserve"><value>All Transactions</value></data>
+  <data name="AllTransactionsPaginated" xml:space="preserve"><value>All Transactions (Paginated)</value></data>
+  <data name="NoTransactionsFound" xml:space="preserve"><value>No transactions found</value></data>
+  <data name="TotalAmount" xml:space="preserve"><value>Total Amount</value></data>
+  <data name="Type" xml:space="preserve"><value>Type</value></data>
+  <data name="ViewDetails" xml:space="preserve"><value>View Details</value></data>
+  <data name="AllPayments" xml:space="preserve"><value>All Payments</value></data>
+  <data name="AllPaymentsPaginated" xml:space="preserve"><value>All Payments (Paginated)</value></data>
+  <data name="NoPaymentsFound" xml:space="preserve"><value>No payments found</value></data>
+  <data name="PaymentMode" xml:space="preserve"><value>Payment Mode</value></data>
+  <data name="ViewCustomer" xml:space="preserve"><value>View Customer</value></data>
+
+  <data name="CustomerList" xml:space="preserve"><value>Customer List</value></data>
+  <data name="AddCustomer" xml:space="preserve"><value>Add Customer</value></data>
+  <data name="Actions" xml:space="preserve"><value>Actions</value></data>
+  <data name="Edit" xml:space="preserve"><value>Edit</value></data>
+  <data name="Delete" xml:space="preserve"><value>Delete</value></data>
+  <data name="QrCode" xml:space="preserve"><value>QR Code</value></data>
+  <data name="CreateCustomer" xml:space="preserve"><value>Create Customer</value></data>
+  <data name="EnterFullName" xml:space="preserve"><value>Enter full name</value></data>
+  <data name="EnterPhoneNumber" xml:space="preserve"><value>Enter phone number</value></data>
+  <data name="EnterEmailAddress" xml:space="preserve"><value>Enter email address</value></data>
+  <data name="EnterCustomerAddress" xml:space="preserve"><value>Enter customer address</value></data>
+  <data name="BackToList" xml:space="preserve"><value>Back to List</value></data>
+  <data name="Create" xml:space="preserve"><value>Create</value></data>
+  <data name="EditCustomer" xml:space="preserve"><value>Edit Customer</value></data>
+  <data name="EnterAddress" xml:space="preserve"><value>Enter address</value></data>
+  <data name="SaveChanges" xml:space="preserve"><value>Save Changes</value></data>
+  <data name="DeleteCustomer" xml:space="preserve"><value>Delete Customer</value></data>
+  <data name="ConfirmDeleteCustomer" xml:space="preserve"><value>Are you sure you want to delete this customer?</value></data>
+  <data name="CustomerDetails" xml:space="preserve"><value>Customer Details</value></data>
+  <data name="CustomerQrCodeTitle" xml:space="preserve"><value>Customer QR Code</value></data>
+  <data name="QrCodeFor" xml:space="preserve"><value>QR Code for</value></data>
+  <data name="ScanQrForCustomerIdentification" xml:space="preserve"><value>Scan this QR code for quick customer identification.</value></data>
+  <data name="BarcodeId" xml:space="preserve"><value>Barcode ID</value></data>
+  <data name="QrCodeGenerationFailed" xml:space="preserve"><value>QR Code could not be generated.</value></data>
+  <data name="PrintQrCode" xml:space="preserve"><value>Print QR Code</value></data>
+  <data name="SaveQrCodeImage" xml:space="preserve"><value>Save QR Code Image</value></data>
+  <data name="BackToCustomerList" xml:space="preserve"><value>Back to Customer List</value></data>
+
+  <data name="ProductList" xml:space="preserve"><value>Product List</value></data>
+  <data name="AddProduct" xml:space="preserve"><value>Add Product</value></data>
+  <data name="Quantity" xml:space="preserve"><value>Quantity</value></data>
+  <data name="CreateProduct" xml:space="preserve"><value>Create Product</value></data>
+  <data name="EnterProductName" xml:space="preserve"><value>Enter product name</value></data>
+  <data name="EnterPriceInInr" xml:space="preserve"><value>Enter price in INR</value></data>
+  <data name="EnterProductDescription" xml:space="preserve"><value>Enter product description</value></data>
+  <data name="EnterQuantity" xml:space="preserve"><value>Enter quantity</value></data>
+  <data name="SelectUnit" xml:space="preserve"><value>-- Select Unit --</value></data>
+  <data name="EditProduct" xml:space="preserve"><value>Edit Product</value></data>
+  <data name="DeleteProduct" xml:space="preserve"><value>Delete Product</value></data>
+  <data name="ConfirmDeleteProduct" xml:space="preserve"><value>Are you sure you want to delete this product?</value></data>
+  <data name="ProductDetails" xml:space="preserve"><value>Product Details</value></data>
+
+  <data name="ManageFestivals" xml:space="preserve"><value>Manage Festivals</value></data>
+  <data name="AddFestival" xml:space="preserve"><value>Add Festival</value></data>
+  <data name="Active" xml:space="preserve"><value>Active</value></data>
+  <data name="Inactive" xml:space="preserve"><value>Inactive</value></data>
+  <data name="Rules" xml:space="preserve"><value>Rules</value></data>
+  <data name="CreateFestival" xml:space="preserve"><value>Create Festival</value></data>
+  <data name="EnterFestivalName" xml:space="preserve"><value>Enter festival name</value></data>
+  <data name="EnterDescription" xml:space="preserve"><value>Enter description</value></data>
+  <data name="IsActiveQuestion" xml:space="preserve"><value>Is Active?</value></data>
+  <data name="EditFestival" xml:space="preserve"><value>Edit Festival</value></data>
+  <data name="ActiveFestivalQuestion" xml:space="preserve"><value>Active Festival?</value></data>
+  <data name="DeleteFestival" xml:space="preserve"><value>Delete Festival</value></data>
+  <data name="ConfirmDeleteFestival" xml:space="preserve"><value>Are you sure you want to delete this festival?</value></data>
+  <data name="FestivalDetails" xml:space="preserve"><value>Festival Details</value></data>
+  <data name="Yes" xml:space="preserve"><value>Yes</value></data>
+  <data name="No" xml:space="preserve"><value>No</value></data>
+
+  <data name="ScanCustomerCard" xml:space="preserve"><value>Scan Customer Card</value></data>
+  <data name="HoldQrToBeginTransaction" xml:space="preserve"><value>Hold the customer's QR code in front of the camera to begin a transaction.</value></data>
+  <data name="InitializingScanner" xml:space="preserve"><value>Initializing scanner...</value></data>
+  <data name="ScanAgain" xml:space="preserve"><value>Scan Again</value></data>
+  <data name="Scanned" xml:space="preserve"><value>Scanned</value></data>
+  <data name="LookingUpCustomer" xml:space="preserve"><value>Looking up customer...</value></data>
+  <data name="CustomerFoundRedirecting" xml:space="preserve"><value>Customer found! Redirecting...</value></data>
+  <data name="CustomerIdNotReceivedFromServer" xml:space="preserve"><value>Customer ID not received from server.</value></data>
+  <data name="ServerError" xml:space="preserve"><value>Server error</value></data>
+  <data name="Error" xml:space="preserve"><value>Error</value></data>
+  <data name="PleaseTryAgain" xml:space="preserve"><value>Please try again.</value></data>
+  <data name="ScanFailed" xml:space="preserve"><value>Scan failed.</value></data>
+  <data name="ScanningEnsureQrCodeIsClear" xml:space="preserve"><value>Scanning... (Ensure QR code is clear)</value></data>
+
+  <data name="TransactionFor" xml:space="preserve"><value>Transaction for</value></data>
+  <data name="Festival" xml:space="preserve"><value>Festival</value></data>
+  <data name="NoActiveFestivalOffers" xml:space="preserve"><value>No active festival offers right now.</value></data>
+  <data name="CustomerInformation" xml:space="preserve"><value>Customer Information</value></data>
+  <data name="SendPaymentReminderEmail" xml:space="preserve"><value>Send Payment Reminder (Email)</value></data>
+  <data name="AddItemToTransaction" xml:space="preserve"><value>Add Item to Transaction</value></data>
+  <data name="SelectProduct" xml:space="preserve"><value>Select Product</value></data>
+  <data name="NoProductsAvailableAddFromProductManagement" xml:space="preserve"><value>No products available. Add some from Product Management.</value></data>
+  <data name="AddToCreditMoneyPending" xml:space="preserve"><value>Add to Credit (Money Pending)</value></data>
+  <data name="PaymentModeIfNotCredit" xml:space="preserve"><value>Payment Mode (if not credit)</value></data>
+  <data name="ApplyFestivalDiscountQuestion" xml:space="preserve"><value>Apply Festival Discount?</value></data>
+  <data name="NoDiscount" xml:space="preserve"><value>No Discount</value></data>
+  <data name="OriginalAmount" xml:space="preserve"><value>Original Amount</value></data>
+  <data name="DiscountApplied" xml:space="preserve"><value>Discount Applied</value></data>
+  <data name="FinalAmount" xml:space="preserve"><value>Final Amount</value></data>
+  <data name="NotesOptional" xml:space="preserve"><value>Notes (Optional)</value></data>
+  <data name="RecordSale" xml:space="preserve"><value>Record Sale</value></data>
+  <data name="RecordPayment" xml:space="preserve"><value>Record Payment</value></data>
+  <data name="TransactionHistory" xml:space="preserve"><value>Transaction History</value></data>
+  <data name="NoTransactionsRecordedForCustomerYet" xml:space="preserve"><value>No transactions recorded for this customer yet.</value></data>
+  <data name="Item" xml:space="preserve"><value>Item</value></data>
+  <data name="Qty" xml:space="preserve"><value>Qty</value></data>
+  <data name="Price" xml:space="preserve"><value>Price</value></data>
+  <data name="Discount" xml:space="preserve"><value>Discount</value></data>
+  <data name="Final" xml:space="preserve"><value>Final</value></data>
+  <data name="CreditQuestion" xml:space="preserve"><value>Credit?</value></data>
+  <data name="PaymentHistory" xml:space="preserve"><value>Payment History</value></data>
+  <data name="NoPaymentsRecordedForCustomerYet" xml:space="preserve"><value>No payments recorded for this customer yet.</value></data>
+
+  <data name="Receipt" xml:space="preserve"><value>Receipt</value></data>
+  <data name="From" xml:space="preserve"><value>From</value></data>
+  <data name="Contact" xml:space="preserve"><value>Contact</value></data>
+  <data name="Subtotal" xml:space="preserve"><value>Subtotal</value></data>
+  <data name="Status" xml:space="preserve"><value>Status</value></data>
+  <data name="OnCredit" xml:space="preserve"><value>On Credit</value></data>
+  <data name="NewBalance" xml:space="preserve"><value>New Balance</value></data>
+  <data name="ThankYouForYourBusiness" xml:space="preserve"><value>Thank you for your business!</value></data>
+  <data name="PrintReceipt" xml:space="preserve"><value>Print Receipt</value></data>
+  <data name="BackToCustomerDetails" xml:space="preserve"><value>Back to Customer Details</value></data>
+</root>

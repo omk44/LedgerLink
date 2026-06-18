@@ -108,18 +108,12 @@ namespace LedgerLink.Controllers
         }
 
         // GET: /Account/Login - Displays the login form
-        public async Task<IActionResult> Login()
+        public IActionResult Login()
         {
-            // Check if need to create first admin
-            if (!await _adminRepo.HasAnyAdminAsync())
-            {
-                return RedirectToAction("Register", "AdminManagement");
-            }
-
             // If the admin is already logged in, redirect them to the home page.
             if (IsAdminLoggedIn())
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Dashboard");
             }
 
             return View(); // Return the Login view
@@ -130,11 +124,11 @@ namespace LedgerLink.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            // Check if need to create first admin
+            // Keep users on login page; do not redirect to a separate registration page.
             if (!await _adminRepo.HasAnyAdminAsync())
             {
-                TempData["Info"] = "No admin account exists. Please register first.";
-                return RedirectToAction("Register", "AdminManagement");
+                ModelState.AddModelError(string.Empty, "No admin account found. Please register your shop first.");
+                return View(model);
             }
 
             // Check if the submitted model data is valid based on data annotations
@@ -188,7 +182,7 @@ namespace LedgerLink.Controllers
                     HttpContext.Session.SetString("ShopPhoneNumber", shop?.PhoneNumber ?? "");
                     HttpContext.Session.SetString("IsAdminLoggedIn", "true");
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Dashboard");
                 }
                 else
                 {

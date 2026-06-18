@@ -2,7 +2,7 @@
 @model LedgerLink.Models.Product
 
 @{
-    ViewData["Title"] = "Edit Product";
+    ViewData["Title"] = SR["EditProduct"];
 }
 
 <div class="container mt-5">
@@ -20,28 +20,28 @@
                         <!-- Product Name -->
                         <div class="form-group mb-3">
                             <label asp-for="Name" class="form-label fw-semibold"></label>
-                            <input asp-for="Name" class="form-control" placeholder="Enter product name" />
+                            <input asp-for="Name" class="form-control" placeholder="@SR["EnterProductName"]" />
                             <span asp-validation-for="Name" class="text-danger small"></span>
                         </div>
 
                         <!-- Price -->
                         <div class="form-group mb-3">
                             <label asp-for="Price" class="form-label fw-semibold"></label>
-                            <input asp-for="Price" class="form-control" placeholder="Enter price in INR" />
+                            <input asp-for="Price" class="form-control" placeholder="@SR["EnterPriceInInr"]" />
                             <span asp-validation-for="Price" class="text-danger small"></span>
                         </div>
 
                         <!-- Description -->
                         <div class="form-group mb-3">
                             <label asp-for="Description" class="form-label fw-semibold"></label>
-                            <textarea asp-for="Description" class="form-control" rows="3" placeholder="Enter product description"></textarea>
+                            <textarea asp-for="Description" class="form-control" rows="3" placeholder="@SR["EnterProductDescription"]"></textarea>
                             <span asp-validation-for="Description" class="text-danger small"></span>
                         </div>
 
                         <!-- Quantity Value -->
                         <div class="form-group mb-3">
                             <label asp-for="QuantityValue" class="form-label fw-semibold"></label>
-                            <input asp-for="QuantityValue" class="form-control" placeholder="Enter quantity" />
+                            <input asp-for="QuantityValue" class="form-control" placeholder="@SR["EnterQuantity"]" />
                             <span asp-validation-for="QuantityValue" class="text-danger small"></span>
                         </div>
 
@@ -49,7 +49,7 @@
                         <div class="form-group mb-4">
                             <label asp-for="QuantityUnit" class="form-label fw-semibold"></label>
                             <select asp-for="QuantityUnit" class="form-select">
-                                <option value="">-- Select Unit --</option>
+                                <option value="">@SR["SelectUnit"]</option>
                                 <option value="pcs">pcs</option>
                                 <option value="ml">ml</option>
                                 <option value="gm">gm</option>
@@ -63,10 +63,10 @@
                         <!-- Submit Buttons -->
                         <div class="d-flex justify-content-between">
                             <a asp-action="Index" class="btn btn-outline-secondary">
-                                <i class="bi bi-arrow-left"></i> Back to List
+                                <i class="bi bi-arrow-left"></i> @SR["BackToList"]
                             </a>
                             <button type="submit" class="btn btn-warning text-dark px-4">
-                                <i class="bi bi-pencil-square"></i> Save Changes
+                                <i class="bi bi-pencil-square"></i> @SR["SaveChanges"]
                             </button>
                         </div>
                     </form>

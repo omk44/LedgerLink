@@ -2,7 +2,7 @@
 @model IEnumerable<LedgerLink.Models.Festival>
 
 @{
-    ViewData["Title"] = "Manage Festivals";
+    ViewData["Title"] = SR["ManageFestivals"];
 }
 
 <div class="container mt-5">
@@ -12,7 +12,7 @@
             <i class="bi bi-calendar-event me-2"></i> @ViewData["Title"]
         </h2>
         <a asp-action="Create" class="btn btn-success">
-            <i class="bi bi-plus-circle me-1"></i> Add Festival
+            <i class="bi bi-plus-circle me-1"></i> @SR["AddFestival"]
         </a>
     </div>
 
@@ -25,7 +25,7 @@
                     <th>@Html.DisplayNameFor(model => model.StartDate)</th>
                     <th>@Html.DisplayNameFor(model => model.EndDate)</th>
                     <th>@Html.DisplayNameFor(model => model.IsActive)</th>
-                    <th class="text-center">Actions</th>
+                    <th class="text-center">@SR["Actions"]</th>
                 </tr>
             </thead>
             <tbody>
@@ -38,22 +38,22 @@
                         <td>
                             @if (item.IsActive)
                             {
-                                <span class="badge bg-success px-3 py-2">Active</span>
+                                <span class="badge bg-success px-3 py-2">@SR["Active"]</span>
                             }
                             else
                             {
-                                <span class="badge bg-secondary px-3 py-2">Inactive</span>
+                                <span class="badge bg-secondary px-3 py-2">@SR["Inactive"]</span>
                             }
                         </td>
                         <td class="text-center">
                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info me-1">
-                                <i class="bi bi-pencil-square"></i> Edit
+                                <i class="bi bi-pencil-square"></i> @SR["Edit"]
                             </a>
                             <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger me-1">
-                                <i class="bi bi-trash"></i> Delete
+                                <i class="bi bi-trash"></i> @SR["Delete"]
                             </a>
                             <a asp-controller="DiscountRule" asp-action="Index" asp-route-festivalId="@item.Id" class="btn btn-sm btn-outline-secondary">
-                                <i class="bi bi-sliders"></i> Rules
+                                <i class="bi bi-sliders"></i> @SR["Rules"]
                             </a>
                         </td>
                     </tr>

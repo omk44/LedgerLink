@@ -1,18 +1,18 @@
 @* Path: LedgerLink/Views/Transaction/Scan.cshtml *@
 @{
-    ViewData["Title"] = "Scan Customer Card";
+    ViewData["Title"] = SR["ScanCustomerCard"];
 }
 
 <div class="container mt-5 text-center">
     <h2>@ViewData["Title"]</h2>
-    <p class="text-muted">Hold the customer's QR code in front of the camera to begin a transaction.</p>
+    <p class="text-muted">@SR["HoldQrToBeginTransaction"]</p>
 
     <div id="reader" style="width: 100%; max-width: 500px; margin: 20px auto; border: 1px solid #ddd; border-radius: 8px; overflow: hidden;"></div>
-    <p id="scan-status" class="mt-3 text-info">Initializing scanner...</p>
+    <p id="scan-status" class="mt-3 text-info">@SR["InitializingScanner"]</p>
     <div id="scan-error" class="mt-3 text-danger" style="display: none;"></div>
 
     @* Manual Scan Again Button *@
-    <button id="scanAgainButton" class="btn btn-secondary mt-3" style="display: none;">Scan Again</button>
+    <button id="scanAgainButton" class="btn btn-secondary mt-3" style="display: none;">@SR["ScanAgain"]</button>
 </div>
 
 @section Scripts {
@@ -28,7 +28,7 @@
 
         // Function to handle successful QR code scan or server response
         async function onScanSuccess(decodedText, decodedResult) {
-            scanStatusP.textContent = `Scanned: ${decodedText}. Looking up customer...`;
+            scanStatusP.textContent = `@SR["Scanned"]: ${decodedText}. @SR["LookingUpCustomer"]`;
             scanErrorDiv.style.display = 'none';
             scanAgainButton.style.display = 'none'; // Hide scan again button
 
@@ -57,20 +57,20 @@
                 if (response.ok) {
                     const data = await response.json();
                     if (data.customerId) {
-                        scanStatusP.textContent = 'Customer found! Redirecting...';
+                        scanStatusP.textContent = '@SR["CustomerFoundRedirecting"]';
                         window.location.href = `/Transaction/CustomerDetails/${data.customerId}`;
                     } else {
-                        throw new Error('Customer ID not received from server.');
+                        throw new Error('@SR["CustomerIdNotReceivedFromServer"]');
                     }
                 } else {
                     const errorText = await response.text();
-                    throw new Error(`Server error: ${response.status} - ${errorText}`);
+                    throw new Error(`@SR["ServerError"]: ${response.status} - ${errorText}`);
                 }
             } catch (error) {
                 console.error('Error processing scan:', error);
-                scanErrorDiv.textContent = `Error: ${error.message}. Please try again.`;
+                scanErrorDiv.textContent = `@SR["Error"]: ${error.message}. @SR["PleaseTryAgain"]`;
                 scanErrorDiv.style.display = 'block';
-                scanStatusP.textContent = 'Scan failed.';
+                scanStatusP.textContent = '@SR["ScanFailed"]';
 
                 // This stops the camera and prevents continuous re-scanning of the invalid code.
                 if (html5QrcodeScanner) {
@@ -94,7 +94,7 @@
         function onScanError(errorMessage) {
             // This function is called continuously as the scanner tries to read.
             // Only update status, don't try to stop/clear here unless it's a critical scanner error.
-            scanStatusP.textContent = 'Scanning... (Ensure QR code is clear)';
+            scanStatusP.textContent = '@SR["ScanningEnsureQrCodeIsClear"]';
             scanErrorDiv.style.display = 'none'; // Hide error on continuous scan attempts
             scanAgainButton.style.display = 'none'; // Hide button while scanning
         }
@@ -107,7 +107,7 @@
             }
 
             readerDiv.style.display = 'block'; // Show the reader div for camera feed
-            scanStatusP.textContent = 'Initializing scanner...';
+            scanStatusP.textContent = '@SR["InitializingScanner"]';
             scanErrorDiv.style.display = 'none';
             scanAgainButton.style.display = 'none';
 

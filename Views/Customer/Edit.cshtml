@@ -2,7 +2,7 @@
 @model LedgerLink.Models.Customer
 
 @{
-    ViewData["Title"] = "Edit Customer";
+    ViewData["Title"] = SR["EditCustomer"];
 }
 
 <div class="container mt-5">
@@ -24,38 +24,38 @@
                         <!-- Full Name -->
                         <div class="form-group mb-3">
                             <label asp-for="FullName" class="form-label fw-semibold"></label>
-                            <input asp-for="FullName" class="form-control" placeholder="Enter full name" />
+                            <input asp-for="FullName" class="form-control" placeholder="@SR["EnterFullName"]" />
                             <span asp-validation-for="FullName" class="text-danger small"></span>
                         </div>
 
                         <!-- Phone Number -->
                         <div class="form-group mb-3">
                             <label asp-for="PhoneNumber" class="form-label fw-semibold"></label>
-                            <input asp-for="PhoneNumber" class="form-control" placeholder="Enter phone number" />
+                            <input asp-for="PhoneNumber" class="form-control" placeholder="@SR["EnterPhoneNumber"]" />
                             <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
                         </div>
 
                         <!-- Email -->
                         <div class="form-group mb-3">
                             <label asp-for="Email" class="form-label fw-semibold"></label>
-                            <input asp-for="Email" class="form-control" placeholder="Enter email address" />
+                            <input asp-for="Email" class="form-control" placeholder="@SR["EnterEmailAddress"]" />
                             <span asp-validation-for="Email" class="text-danger small"></span>
                         </div>
 
                         <!-- Address -->
                         <div class="form-group mb-4">
                             <label asp-for="Address" class="form-label fw-semibold"></label>
-                            <textarea asp-for="Address" class="form-control" rows="3" placeholder="Enter address"></textarea>
+                            <textarea asp-for="Address" class="form-control" rows="3" placeholder="@SR["EnterAddress"]"></textarea>
                             <span asp-validation-for="Address" class="text-danger small"></span>
                         </div>
 
                         <!-- Buttons -->
                         <div class="d-flex justify-content-between">
                             <a asp-action="Index" class="btn btn-outline-secondary">
-                                <i class="bi bi-arrow-left"></i> Back to List
+                                <i class="bi bi-arrow-left"></i> @SR["BackToList"]
                             </a>
                             <button type="submit" class="btn btn-warning text-dark px-4">
-                                <i class="bi bi-save"></i> Save Changes
+                                <i class="bi bi-save"></i> @SR["SaveChanges"]
                             </button>
                         </div>
                     </form>
